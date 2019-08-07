@@ -2,9 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://myblog.com/uncategorized/hello-world/</loc>
+    <loc>http://myblog.com/uncategorized/first/</loc>
     
-    <lastmod>2019-08-06T10:38:29.637Z</lastmod>
+    <lastmod>2019-08-07T09:03:33.858Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://myblog.com/uncategorized/%E6%B5%8B%E8%AF%95%E6%96%87%E6%A1%A3/</loc>
+    
+    <lastmod>2019-08-07T08:38:13.948Z</lastmod>
     
   </url>
   

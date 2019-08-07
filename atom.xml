@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://myblog.com/"/>
-  <updated>2019-08-06T10:38:29.637Z</updated>
+  <updated>2019-08-07T08:38:13.948Z</updated>
   <id>http://myblog.com/</id>
   
   <author>
@@ -17,19 +17,40 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>Hello World</title>
-    <link href="http://myblog.com/uncategorized/hello-world/"/>
-    <id>http://myblog.com/uncategorized/hello-world/</id>
-    <published>2019-08-06T10:38:29.635Z</published>
-    <updated>2019-08-06T10:38:29.637Z</updated>
+    <title></title>
+    <link href="http://myblog.com/uncategorized/%E6%B5%8B%E8%AF%95%E6%96%87%E6%A1%A3/"/>
+    <id>http://myblog.com/uncategorized/测试文档/</id>
+    <published>2019-08-07T06:15:20.896Z</published>
+    <updated>2019-08-07T08:38:13.948Z</updated>
     
-    <content type="html"><![CDATA[<!-- build time:Wed Aug 07 2019 12:42:00 GMT+0800 (GMT+08:00) --><p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p><h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p><h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p><h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p><!-- rebuild by neat -->]]></content>
+    <content type="html"><![CDATA[<!-- build time:Wed Aug 07 2019 17:03:51 GMT+0800 (GMT+08:00) --><hr><h3 id="问题：怎样使大规模项目更加的有效率？"><a href="#问题：怎样使大规模项目更加的有效率？" class="headerlink" title="问题：怎样使大规模项目更加的有效率？"></a>问题：怎样使大规模项目更加的有效率？</h3><h4 id="1-问题分析（eg：项目为什么延期了）"><a href="#1-问题分析（eg：项目为什么延期了）" class="headerlink" title="1.问题分析（eg：项目为什么延期了）"></a>1.问题分析（eg：项目为什么延期了）</h4><p>*RDT模式 （需求，开发，测试）</p><p>1.1 需求人员不继续跟进后续的项目，导致后期开发很多需求不明确</p><p>R：了解客户的需求</p><p>D：保证需求是可开发的</p><p>T：保证需求是可使用的</p><p>*测试人员应尽尽早进入（若进入时间太晚，工作量会陡然增大）尽早发现问题能节省大量的时间。</p><h5 id="敏捷开发（万达-gt-DevOps）"><a href="#敏捷开发（万达-gt-DevOps）" class="headerlink" title="敏捷开发（万达-&gt;DevOps）"></a>敏捷开发（万达-&gt;DevOps）</h5><p>增量式的开发</p><p>让客户参与进来，协助我们完成测试工作。</p><h5 id="自动化测试"><a href="#自动化测试" class="headerlink" title="自动化测试"></a>自动化测试</h5><p>固有的功能使用原来的自动测试用例完成，人只负责完成测试新加入的功能（效率的极大提升）</p><p>需要不断的编写测试用例</p><p>UI变化太快，因而我们主要针对Server端（接口）进行测试</p><h5 id="测试完成"><a href="#测试完成" class="headerlink" title="测试完成"></a>测试完成</h5><p>编写单元测试用例</p><p>*边界值+等价类划分</p><hr><h4 id="EOS-8是做什么的？"><a href="#EOS-8是做什么的？" class="headerlink" title="EOS_8是做什么的？"></a>EOS_8是做什么的？</h4><p>*增加测试数据</p><p>不同的人员登录后看到的权限是不一样的</p><p>10.15.15.184</p><p>10.15.15.191:404</p><p>资源权限</p><p>*灰度调用：针对不同的的发布版本进行控制（消费者不同的调用请求会进入到不同版本的服务提供者中）</p><p><a href="http://10.15.15.191:4000/" target="_blank" rel="noopener">http://10.15.15.191:4000</a>： 开发文档</p><p><a href="http://10.15.15.184/" target="_blank" rel="noopener">http://10.15.15.184/</a></p><!-- rebuild by neat -->]]></content>
     
     <summary type="html">
     
       
       
-        &lt;!-- build time:Wed Aug 07 2019 12:42:00 GMT+0800 (GMT+08:00) --&gt;&lt;p&gt;Welcome to &lt;a href=&quot;https://hexo.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Hex
+        &lt;!-- build time:Wed Aug 07 2019 17:03:51 GMT+0800 (GMT+08:00) --&gt;&lt;hr&gt;&lt;h3 id=&quot;问题：怎样使大规模项目更加的有效率？&quot;&gt;&lt;a href=&quot;#问题：怎样使大规模项目更加的有效率？&quot; class=&quot;header
+      
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>开山篇，如何将自己的本地博客上传到GitHub上</title>
+    <link href="http://myblog.com/uncategorized/first/"/>
+    <id>http://myblog.com/uncategorized/first/</id>
+    <published>2019-08-07T04:45:26.492Z</published>
+    <updated>2019-08-07T09:03:33.858Z</updated>
+    
+    <content type="html"><![CDATA[<!-- build time:Wed Aug 07 2019 17:03:51 GMT+0800 (GMT+08:00) --><figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hexo clean  #clean本地项目，防止缓存</span><br><span class="line">hexo g      #根据你编辑的<span class="built_in">md</span>格式的博客，生成静态网页</span><br><span class="line">hexo d      #将本地博客发布到github</span><br></pre></td></tr></table></figure><!-- rebuild by neat -->]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;!-- build time:Wed Aug 07 2019 17:03:51 GMT+0800 (GMT+08:00) --&gt;&lt;figure class=&quot;highlight cmd&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span clas
       
     
     </summary>
