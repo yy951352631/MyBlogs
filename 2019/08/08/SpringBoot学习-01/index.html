@@ -266,7 +266,7 @@ height:50vh;
                 
                 
                     <div class="post-intro-read">
-                        <span>Word count: <span class="post-count word-count">2.5k</span>Reading time: <span class="post-count reading-time">10 min</span></span>
+                        <span>Word count: <span class="post-count word-count">2.5k</span>Reading time: <span class="post-count reading-time">11 min</span></span>
                     </div>
                 
                 <div class="post-intro-meta">
@@ -406,6 +406,9 @@ height:50vh;
 <p>1.2.3 forward 与redirect的区别（好多人都在粘这份答案，所以我也不知道原作者是谁，反正写的不错向你致敬了）</p>
 <figure class="highlight tex"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">1）从地址栏显示来说</span><br><span class="line">forward是服务器请求资源,服务器直接访问目标地址的URL,把那个URL的响应内容读取过来,然后把这些内容再发给浏览器.浏览器根本不知道服务器发送的内容从哪里来的,所以它的地址栏还是原来的地址.</span><br><span class="line">redirect是服务端根据逻辑,发送一个状态码,告诉浏览器重新去请求那个地址.所以地址栏显示的是新的URL.</span><br><span class="line"></span><br><span class="line">2）从数据共享来说</span><br><span class="line">forward:转发页面和转发到的页面可以共享request里面的数据.</span><br><span class="line">redirect:不能共享数据.</span><br><span class="line"></span><br><span class="line">3）从运用地方来说</span><br><span class="line">forward:一般用于用户登陆的时候,根据角色转发到相应的模块.</span><br><span class="line">redirect:一般用于用户注销登陆时返回主页面和跳转到其它的网站等.</span><br><span class="line"></span><br><span class="line">4）从效率来说</span><br><span class="line">forward:高.</span><br><span class="line">redirect:低.</span><br><span class="line">-----------------------------------------------------------------------------------------</span><br><span class="line">本质区别</span><br><span class="line">一句话，转发是服务器行为，重定向是客户端行为。为什么这样说呢，这就要看两个动作的工作流程：</span><br><span class="line">转发过程：客户浏览器发送http请求 ----&gt; web服务器接受此请求 ----&gt; 调用内部的一个方法在容器内部完成请求处理和转发动作 ----&gt; 将目标资源 发送给客户；</span><br><span class="line">在这里，转发的路径必须是同一个web容器下的url，其不能转向到其他的web路径上去，中间传递的是自己的容器内的request。在客户浏览器路径栏显示的仍然是其第一次访问的路径，也就是说客户是感觉不到服务器做了转发的。转发行为是浏览器只做了一次访问请求。</span><br><span class="line">-----------------------------------------------------------------------------------------</span><br><span class="line"></span><br><span class="line">重定向过程：客户浏览器发送http请求 ----&gt; web服务器接受后发送302状态码响应及对应新的location给客户浏览器 ----&gt; 客户浏览器发现是302响应，则自动再发送一个新的http请求，请求url是新的location地址 ----&gt; 服务器根据此请求寻找资源并发送给客户。在这里 location可以重定向到任意URL，既然是浏览器重新发出了请求，则就没有什么request传递的概念了。在客户浏览器路径栏显示的是其重定向的路径，客户可以观察到地址的变化的。重定向行为是浏览器做了至少两次的访问请求的。</span><br><span class="line">-----------------------------------------------------------------------------------------</span><br></pre></td></tr></table></figure>
 
+<p>1.3补充：themeleaf中为防止我们页面forward后页面根路径改变而导致样式失效，我们可以在html页面中添加以下内容</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">base</span> <span class="attr">th:href</span>=<span class="string">"@&#123;/&#125;"</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
 <h3 id="2、问题：如何完成项目的国际化？"><a href="#2、问题：如何完成项目的国际化？" class="headerlink" title="2、问题：如何完成项目的国际化？"></a>2、问题：如何完成项目的国际化？</h3><p>2.1 成因：随着全球化的脚步，程序员也迎来了一个不得不面对的问题——–让我们的项目走向国际化</p>
 <p>2.2 解决：</p>
 <p>2.2.1 编写国际化文件login_zh_CN.properties 如下</p>
@@ -458,7 +461,7 @@ height:50vh;
             <p>Author：<a href="http://yoursite.com">wtq</a>
             <p>原文链接：<a href="http://yoursite.com/2019/08/08/SpringBoot学习-01/">http://yoursite.com/2019/08/08/SpringBoot学习-01/</a>
             <p>发表日期：<a href="http://yoursite.com/2019/08/08/SpringBoot学习-01/">August 8th 2019, 2:16:52 pm</a>
-            <p>更新日期：<a href="http://yoursite.com/2019/08/08/SpringBoot学习-01/">August 9th 2019, 3:40:16 pm</a>
+            <p>更新日期：<a href="http://yoursite.com/2019/08/08/SpringBoot学习-01/">August 12th 2019, 2:04:44 pm</a>
             <p>版权声明：本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
         </div>
     
