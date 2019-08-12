@@ -22,7 +22,7 @@
     <meta name="description" content>
     <meta http-equiv="Cache-control" content="no-cache">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>开山篇，hexo常用操作&amp;注意事项 · 王某人的博客</title>
+    <title>SpringBoot-02 · 王某人的博客</title>
     <style type="text/css">
     @font-face {
         font-family: 'Oswald-Regular';
@@ -217,7 +217,7 @@
                 <a href="/" >王某人的个人博客</a>
             </div>
             <div class="post-title">
-                <a href="#" class="post-name">开山篇，hexo常用操作&注意事项</a>
+                <a href="#" class="post-name">SpringBoot-02</a>
             </div>
     </div>
     
@@ -247,7 +247,7 @@ height:50vh;
         <h1 class="intro-title">
             <!-- 主页  -->
             
-            开山篇，hexo常用操作&注意事项
+            SpringBoot-02
             <!-- 404 -->
             
         </h1>
@@ -266,12 +266,12 @@ height:50vh;
                 
                 
                     <div class="post-intro-read">
-                        <span>Word count: <span class="post-count word-count">321</span>Reading time: <span class="post-count reading-time">1 min</span></span>
+                        <span>Word count: <span class="post-count word-count">877</span>Reading time: <span class="post-count reading-time">4 min</span></span>
                     </div>
                 
                 <div class="post-intro-meta">
                     <span class="post-intro-calander iconfont-archer">&#xe676;</span>
-                    <span class="post-intro-time">2019/08/08</span>
+                    <span class="post-intro-time">2019/08/12</span>
                     
                     <span id="busuanzi_container_page_pv" class="busuanzi-pv">
                         <span class="iconfont-archer">&#xe602;</span>
@@ -395,27 +395,50 @@ height:50vh;
         <div class="container container-unloaded">
             <main class="main post-page">
     <article class="article-entry">
-        <h2 id="1-在GitHub上创建仓库，格式必须为："><a href="#1-在GitHub上创建仓库，格式必须为：" class="headerlink" title="1.在GitHub上创建仓库，格式必须为："></a>1.在GitHub上创建仓库，格式必须为：</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">你的GitHub账户.github.io</span><br><span class="line">如：zhangSan_git.github.io</span><br></pre></td></tr></table></figure>
+        <h1 id="使用SpringBoot开发Web工程"><a href="#使用SpringBoot开发Web工程" class="headerlink" title="使用SpringBoot开发Web工程"></a>使用SpringBoot开发Web工程</h1><h3 id="1、问题：如何使用Rest风格修改一个pojo类的信息"><a href="#1、问题：如何使用Rest风格修改一个pojo类的信息" class="headerlink" title="1、问题：如何使用Rest风格修改一个pojo类的信息"></a>1、问题：如何使用Rest风格修改一个pojo类的信息</h3><h5 id="1-1-构建信息回填页面"><a href="#1-1-构建信息回填页面" class="headerlink" title="1.1 构建信息回填页面"></a>1.1 构建信息回填页面</h5><p>1）编写我们的Controller类，将待修改的entity信息以及必要的下拉框信息等传递给修改页面</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//来到我们的修改员工页面</span></span><br><span class="line"><span class="meta">@GetMapping</span>(value = <span class="string">"/emp/&#123;id&#125;"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toEditPage</span><span class="params">(@PathVariable(<span class="string">"id"</span>)</span> Integer id, Model model) </span>&#123;</span><br><span class="line">    <span class="comment">//显示部门列表</span></span><br><span class="line">    Collection&lt;Department&gt; departments = departmentDao.getDepartments();</span><br><span class="line">    model.addAttribute(<span class="string">"depts"</span>, departments);</span><br><span class="line">    Employee employee = employeeDao.get(id);</span><br><span class="line">    model.addAttribute(<span class="string">"emp"</span>, employee);</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"emp/edit"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h2 id="2-在命令行进入blog安装目录，开始上传三步曲"><a href="#2-在命令行进入blog安装目录，开始上传三步曲" class="headerlink" title="2.在命令行进入blog安装目录，开始上传三步曲"></a>2.在命令行进入blog安装目录，开始上传三步曲</h2><figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hexo clean #清除部署缓存</span><br><span class="line">hexo g -&gt; hexo generate #生成静态页面至public目录</span><br><span class="line">hexo d -&gt; hexo deploy #将.deploy目录部署到GitHub</span><br></pre></td></tr></table></figure>
+<p>2）编写修改编辑页面，接收数据</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">form</span> <span class="attr">th:action</span>=<span class="string">"@&#123;/emp&#125;"</span> <span class="attr">method</span>=<span class="string">"post"</span> <span class="attr">th:if</span>=<span class="string">"$&#123;emp!=null&#125;"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"hidden"</span> <span class="attr">name</span>=<span class="string">"id"</span> <span class="attr">th:if</span>=<span class="string">'$&#123;emp!=null&#125;'</span>  <span class="attr">th:value</span>=<span class="string">"$&#123;emp.id&#125;"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">name</span>=<span class="string">"lastName"</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">class</span>=<span class="string">"form-control"</span> <span class="attr">placeholder</span>=<span class="string">"zhangsan"</span> <span class="attr">th:value</span>=<span class="string">"$&#123;emp.lastName&#125;"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">select</span> <span class="attr">class</span>=<span class="string">"form-control"</span> <span class="attr">name</span>=<span class="string">"department.id"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">option</span> <span class="attr">th:selected</span>=<span class="string">"$&#123;dept.id == emp.department.id&#125;"</span> <span class="attr">th:value</span>=<span class="string">"$&#123;dept.id&#125;"</span> <span class="attr">th:each</span>=<span class="string">"dept:$&#123;depts&#125;"</span> <span class="attr">th:text</span>=<span class="string">"$&#123;dept.departmentName&#125;"</span>&gt;</span><span class="tag">&lt;/<span class="name">option</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">th:value</span>=<span class="string">"$&#123;#dates.format(emp.birth,'yyyy-MM-dd HH:mm')&#125;"</span> <span class="attr">name</span>=<span class="string">"birth"</span>  <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">class</span>=<span class="string">"form-control"</span> <span class="attr">placeholder</span>=<span class="string">"birth"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">button</span> <span class="attr">class</span>=<span class="string">"btn btn-sm btn-success"</span> <span class="attr">type</span>=<span class="string">"submit"</span> &gt;</span>修改员工信息<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
-<h2 id="3-关于主题安装注意事项"><a href="#3-关于主题安装注意事项" class="headerlink" title="3.关于主题安装注意事项"></a>3.关于主题安装注意事项</h2><h3 id="3-1-–depth-1-命令"><a href="#3-1-–depth-1-命令" class="headerlink" title="3.1  –depth=1 命令"></a>3.1  –depth=1 命令</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1)问题：当项目过大时，git clone时会出现error: RPC failed; HTTP 504 curl 22 The requested URL returned error: 504 Gateway Time-out的问题</span><br><span class="line">2)解决：解决方法很简单，在git clone时加上--depth=1即可解决</span><br><span class="line">3)解释：depth用于指定克隆深度，为1即表示只克隆最近一次commit.</span><br><span class="line">4)实例：</span><br><span class="line">git clone https://github.com/fi3ework/hexo-theme-archer.git themes/archer --depth=1</span><br></pre></td></tr></table></figure>
+<h5 id="1-2-构造修改表单及对应Controller方法"><a href="#1-2-构造修改表单及对应Controller方法" class="headerlink" title="1.2 构造修改表单及对应Controller方法"></a>1.2 构造修改表单及对应Controller方法</h5><p>1）构建一个post方法法表单如下</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">form</span> <span class="attr">th:action</span>=<span class="string">"@&#123;/emp&#125;"</span> <span class="attr">method</span>=<span class="string">"post"</span> <span class="attr">th:if</span>=<span class="string">"$&#123;emp!=null&#125;"</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
-<h3 id="3-2在我们的博客安装目录下修改文件-config-yml"><a href="#3-2在我们的博客安装目录下修改文件-config-yml" class="headerlink" title="3.2在我们的博客安装目录下修改文件_config.yml"></a>3.2在我们的博客安装目录下修改文件_config.yml</h3><figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">themes:</span> <span class="string">archer（你的新主题名）</span> <span class="comment">#注意themes:后面有空格</span></span><br></pre></td></tr></table></figure>
+<p>2）写隐藏表单如下</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--Rest 风格，声明这是一个put（添加）请求 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"hidden"</span> <span class="attr">name</span>=<span class="string">"_method"</span> <span class="attr">th:value</span>=<span class="string">"put"</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!--修改信息时需要携带id --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"hidden"</span> <span class="attr">name</span>=<span class="string">"id"</span> <span class="attr">th:if</span>=<span class="string">'$&#123;emp!=null&#125;'</span>  <span class="attr">th:value</span>=<span class="string">"$&#123;emp.id&#125;"</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
-<h3 id="3-3克隆后进入新下载的主题目录执行git-pull-操作更新git"><a href="#3-3克隆后进入新下载的主题目录执行git-pull-操作更新git" class="headerlink" title="3.3克隆后进入新下载的主题目录执行git pull 操作更新git"></a>3.3克隆后进入新下载的主题目录执行git pull 操作更新git</h3><figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git pull</span><br></pre></td></tr></table></figure>
+<p>解释：</p>
+<p>3）编写我们的Controller层方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//这里用于受理我们的修改员工请求  ;需要提交员工id</span></span><br><span class="line"><span class="meta">@PutMapping</span>(value=<span class="string">"/emp"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">updateEmployee</span><span class="params">(Employee employee)</span></span>&#123;</span><br><span class="line">    employeeDao.save(employee);<span class="comment">//save方法会通过id值是否为null 来判读进行添加或修改操作</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">"redirect:/emps"</span>;<span class="comment">//返回entity列表页面</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h3 id="3-4接下来就可以进入我们的安装目录下正常查看我们的本地访问啦"><a href="#3-4接下来就可以进入我们的安装目录下正常查看我们的本地访问啦" class="headerlink" title="3.4接下来就可以进入我们的安装目录下正常查看我们的本地访问啦"></a>3.4接下来就可以进入我们的安装目录下正常查看我们的本地访问啦</h3><figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span>）命令行运行 hexo s #(默认在<span class="number">4000</span>端口启动，如果端口被占用可使用命令hexo s -p <span class="number">5000</span>更换启动端口)</span><br><span class="line"><span class="number">2</span>）在网页访问：http://localhost:<span class="number">4000</span></span><br></pre></td></tr></table></figure>
+<p>4）完结撒❀</p>
+<h3 id="2、问题：如何使用Rest风格删除一个pojo类的信息"><a href="#2、问题：如何使用Rest风格删除一个pojo类的信息" class="headerlink" title="2、问题：如何使用Rest风格删除一个pojo类的信息"></a>2、问题：如何使用Rest风格删除一个pojo类的信息</h3><h5 id="2-1-表单方式"><a href="#2-1-表单方式" class="headerlink" title="2.1 表单方式"></a>2.1 表单方式</h5><p>1）在我们的列表页面编写表单如下</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">form</span> <span class="attr">th:action</span>=<span class="string">"@&#123;/emp/&#125;+$&#123;emp.id&#125;"</span> <span class="attr">method</span>=<span class="string">"post"</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--声明这是一个delete请求--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"hidden"</span> <span class="attr">name</span>=<span class="string">"_method"</span> <span class="attr">th:value</span>=<span class="string">"delete"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">button</span> <span class="attr">type</span>=<span class="string">"submit"</span> <span class="attr">class</span>=<span class="string">"btn btn-sm btn-danger"</span>&gt;</span>删除<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
+<p>2）编写我们的删除方法如下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//这里来处理我们的删除请求</span></span><br><span class="line"><span class="meta">@DeleteMapping</span>(value = <span class="string">"/emp/&#123;id&#125;"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">deleteEmployee</span><span class="params">(@PathVariable(<span class="string">"id"</span>)</span> Integer id) </span>&#123;</span><br><span class="line">    employeeDao.delete(id);</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"redirect:/emps"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>*隐含问题：这种方式过‘重’，即为了删除操作，我们每有一项数据都要构造一个表单，渲染页面需要我们消耗更多资源</p>
+<p>*解决：原删除按钮使用a标签，form表单放在循环外面，然后提交时我们使用js进行提交操作。</p>
+<h5 id="2-2-删除操作Js提交步骤如下："><a href="#2-2-删除操作Js提交步骤如下：" class="headerlink" title="2.2 删除操作Js提交步骤如下："></a>2.2 删除操作Js提交步骤如下：</h5><p>1）在列表项循环中构建携带信息的button按钮如下</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">button</span> <span class="attr">th:attr</span>=<span class="string">"delete_uri=@&#123;/emp/&#125;+$&#123;emp.id&#125;"</span> </span></span><br><span class="line"><span class="tag">        <span class="attr">class</span>=<span class="string">"btn btn-sm btn-danger deleteBtn"</span>&gt;</span>删除<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>2）将表单移到循环外部，并制定Form的id（用于后期提交表单）</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">form</span> <span class="attr">id</span>=<span class="string">"deleteEmpForm"</span> <span class="attr">method</span>=<span class="string">"post"</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"hidden"</span> <span class="attr">name</span>=<span class="string">"_method"</span> <span class="attr">th:value</span>=<span class="string">"delete"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>3）按钮点击时使用jquery提交表单如下</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="string">".deleteBtn"</span>).click(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">//将表单#deleteEmpForm的action值设置后提交</span></span><br><span class="line">    <span class="comment">//$(this).attr("delete_uri") :获取当前按钮的delete_uri属性值 </span></span><br><span class="line">    $(<span class="string">"#deleteEmpForm"</span>).attr(<span class="string">"action"</span>,$(<span class="keyword">this</span>).attr(<span class="string">"delete_uri"</span>)).submit();</span><br><span class="line">    <span class="comment">//阻止按钮的其他操作</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>4）问题解决，完结撒花❀❀❀</p>
 
     </article>
     <!-- license  -->
     
         <div class="license-wrapper">
             <p>Author：<a href="http://yoursite.com">wtq</a>
-            <p>原文链接：<a href="http://yoursite.com/2019/08/08/first/">http://yoursite.com/2019/08/08/first/</a>
-            <p>发表日期：<a href="http://yoursite.com/2019/08/08/first/">August 8th 2019, 9:34:29 am</a>
-            <p>更新日期：<a href="http://yoursite.com/2019/08/08/first/">August 8th 2019, 10:45:43 am</a>
+            <p>原文链接：<a href="http://yoursite.com/2019/08/12/SpringBoot学习-02/">http://yoursite.com/2019/08/12/SpringBoot学习-02/</a>
+            <p>发表日期：<a href="http://yoursite.com/2019/08/12/SpringBoot学习-02/">August 12th 2019, 6:00:26 pm</a>
+            <p>更新日期：<a href="http://yoursite.com/2019/08/12/SpringBoot学习-02/">August 12th 2019, 7:15:49 pm</a>
             <p>版权声明：本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
         </div>
     
@@ -423,13 +446,13 @@ height:50vh;
     <ul class="post-paginator">
         <li class="next">
             
-                <div class="nextSlogan">Next Post</div>
-                <a href= "/2019/08/08/SpringBoot学习-01/" title= "SpringBoot-01">
-                    <div class="nextTitle">SpringBoot-01</div>
-                </a>
-            
         </li>
         <li class="previous">
+            
+                <div class="prevSlogan">Previous Post</div>
+                <a href= "/2019/08/12/Hibernate-01/" title= "Hibernate-01">
+                    <div class="prevTitle">Hibernate-01</div>
+                </a>
             
         </li>
     </ul>
@@ -538,7 +561,7 @@ top:50vh;
         <div class="toc-catalog">
             <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
         </div>
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-在GitHub上创建仓库，格式必须为："><span class="toc-number">1.</span> <span class="toc-text">1.在GitHub上创建仓库，格式必须为：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-在命令行进入blog安装目录，开始上传三步曲"><span class="toc-number">2.</span> <span class="toc-text">2.在命令行进入blog安装目录，开始上传三步曲</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-关于主题安装注意事项"><span class="toc-number">3.</span> <span class="toc-text">3.关于主题安装注意事项</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-–depth-1-命令"><span class="toc-number">3.1.</span> <span class="toc-text">3.1  –depth=1 命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2在我们的博客安装目录下修改文件-config-yml"><span class="toc-number">3.2.</span> <span class="toc-text">3.2在我们的博客安装目录下修改文件_config.yml</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3克隆后进入新下载的主题目录执行git-pull-操作更新git"><span class="toc-number">3.3.</span> <span class="toc-text">3.3克隆后进入新下载的主题目录执行git pull 操作更新git</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4接下来就可以进入我们的安装目录下正常查看我们的本地访问啦"><span class="toc-number">3.4.</span> <span class="toc-text">3.4接下来就可以进入我们的安装目录下正常查看我们的本地访问啦</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#使用SpringBoot开发Web工程"><span class="toc-number">1.</span> <span class="toc-text">使用SpringBoot开发Web工程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、问题：如何使用Rest风格修改一个pojo类的信息"><span class="toc-number">1.0.1.</span> <span class="toc-text">1、问题：如何使用Rest风格修改一个pojo类的信息</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-1-构建信息回填页面"><span class="toc-number">1.0.1.0.1.</span> <span class="toc-text">1.1 构建信息回填页面</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#1-2-构造修改表单及对应Controller方法"><span class="toc-number">1.0.1.0.2.</span> <span class="toc-text">1.2 构造修改表单及对应Controller方法</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、问题：如何使用Rest风格删除一个pojo类的信息"><span class="toc-number">1.0.2.</span> <span class="toc-text">2、问题：如何使用Rest风格删除一个pojo类的信息</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#2-1-表单方式"><span class="toc-number">1.0.2.0.1.</span> <span class="toc-text">2.1 表单方式</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-2-删除操作Js提交步骤如下："><span class="toc-number">1.0.2.0.2.</span> <span class="toc-text">2.2 删除操作Js提交步骤如下：</span></a></li></ol></li></ol></li></ol></li></ol></li></ol>
     </div>
     
     <div class="back-top iconfont-archer">&#xe639;</div>
