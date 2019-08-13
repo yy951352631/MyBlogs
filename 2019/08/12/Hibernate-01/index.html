@@ -410,7 +410,7 @@ height:50vh;
 <p>持久性（durability）。持续性也称永久性（permanence），指一个事务一旦提交，它对数据库中数据的改变就应该是永久性的。接下来的其他操作或故障不应该对其有任何影响。</p>
 <hr>
 <h5 id="2-4-Contextual-sessions-session"><a href="#2-4-Contextual-sessions-session" class="headerlink" title="2.4 Contextual sessions (session)"></a>2.4 Contextual sessions (session)</h5><h3 id="3、Domain-Model-（域模型）"><a href="#3、Domain-Model-（域模型）" class="headerlink" title="3、Domain Model （域模型）"></a>3、Domain Model （域模型）</h3><p>术语 domain model（域模型）来自于 data modeling（数据建模）范畴。这个模型最终描述的是你要解决的 problem domain（问题域）。有时你听说过术语”持久化类（persistent classes）”。归根结底，应用程序的 domain model（域模型）是实体关系模型（ORM）中的核心角色。他拼装你想要 map（映射）的类。Hibernate 可以非常好的工作于POJO（Plain Old Java Object）或者 JavaBean 开发模式中。然而，这些规范都不是强制要求。事实上，Hibernate 没在限制持久层对象的特质。你可以用其它方式表示 domain model（域模型）（比如用 java.util.Map 的树状实例）。<br>*注意<br>尽管 Hibernate 没有将这些规范看作是强制要求，但是 JPA 是要求的。因此如果你的应用有向 JPA 移植的可能性，你最好遵守严格的 POJO 模型。我们将指出在哪里涉及到这些问题。本章将阐述 domain model（域模型）的特征，然而，不讨论 domain model（域模型）的全部内容。这是一个巨大的主题，它有自己的专用手册。参考</p>
-<h5 id="3-1-POJO类还有规范？"><a href="#3-1-POJO类还有规范？" class="headerlink" title="3.1 POJO类还有规范？"></a>3.1 POJO类还有规范？</h5><h6 id="1）实现无参构造函数（public-或protected）"><a href="#1）实现无参构造函数（public-或protected）" class="headerlink" title="1）实现无参构造函数（public 或protected）"></a>1）实现无参构造函数（public 或protected）</h6><h6 id="2）提供-identifier（标识）属性"><a href="#2）提供-identifier（标识）属性" class="headerlink" title="2）提供  identifier（标识）属性"></a>2）提供  identifier（标识）属性</h6><p>*注意<br>以前这被认为是可选的。然而在实体上不定义主键将被认为是过时的。在未来<br>的版本中，将强制要求定义标识属性。<br>标识属性不一指要求是物理映射定义的主键列。然而，它一定映射到可以唯一标识一行的列上（译者注：唯一标识列）。我们建议你在持久化类中声明一个统一命名的标识属性，你可以使用 nullable（可空的）类型（即：非 JAVA 基本数据类型）。</p>
+<h5 id="3-1-POJO类还有规范？"><a href="#3-1-POJO类还有规范？" class="headerlink" title="3.1 POJO类还有规范？"></a>3.1 POJO类还有规范？</h5><h6 id="1）实现无参构造函数（public-或protected）"><a href="#1）实现无参构造函数（public-或protected）" class="headerlink" title="1）实现无参构造函数（public 或protected）"></a>1）实现无参构造函数（public 或protected）</h6><h6 id="2）提供-identifier（标识）属性"><a href="#2）提供-identifier（标识）属性" class="headerlink" title="2）提供  identifier（标识）属性"></a>2）提供  identifier（标识）属性</h6><p>*注意<br>以前这被认为是可选的。然而在实体上不定义主键将被认为是过时的。在未来的版本中，将强制要求定义标识属性。标识属性不一指要求是物理映射定义的主键列。然而，它一定映射到可以唯一标识一行的列上（译者注：唯一标识列）。我们建议你在持久化类中声明一个统一命名的标识属性，你可以使用 nullable（可空的）类型（即：非 JAVA 基本数据类型）。</p>
 <h6 id="3）使用非-final-类"><a href="#3）使用非-final-类" class="headerlink" title="3）使用非 final 类"></a>3）使用非 final 类</h6><p>*解释</p>
 <p>Hibernate 核心功能是通过运行时代理可以懒加载（lazy load）实体数据。这个功能依赖于实体类是非终态类（final）或者 实现一个声明过所有属性 get与 set 方法的接口。你可以坚持用终态类（final）并且不实现接口。但是你将不能使用代理进行懒加载关联抓取，并且这将限制你系统的优化选项。</p>
 <h6 id="4）为持久化属性声明-get-set-方法"><a href="#4）为持久化属性声明-get-set-方法" class="headerlink" title="4）为持久化属性声明 get,set 方法"></a>4）为持久化属性声明 get,set 方法</h6><p>*解释</p>
@@ -442,7 +442,7 @@ height:50vh;
             <p>Author：<a href="http://yoursite.com">wtq</a>
             <p>原文链接：<a href="http://yoursite.com/2019/08/12/Hibernate-01/">http://yoursite.com/2019/08/12/Hibernate-01/</a>
             <p>发表日期：<a href="http://yoursite.com/2019/08/12/Hibernate-01/">August 12th 2019, 5:15:16 pm</a>
-            <p>更新日期：<a href="http://yoursite.com/2019/08/12/Hibernate-01/">August 12th 2019, 5:23:29 pm</a>
+            <p>更新日期：<a href="http://yoursite.com/2019/08/12/Hibernate-01/">August 13th 2019, 3:23:22 pm</a>
             <p>版权声明：本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
         </div>
     
@@ -634,6 +634,20 @@ top:50vh;
     
     
     
+    <div class="archive-year"> 2019 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/12</span><a class="archive-post-title" href= "/2019/08/12/SpringBoot学习-02/" >SpringBoot-02</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
     <div class="archive-year"> Invalid date </div>
     <ul class="year-list">
     
@@ -650,11 +664,6 @@ top:50vh;
     
     <div class="archive-year"> 2019 </div>
     <ul class="year-list">
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">08/12</span><a class="archive-post-title" href= "/2019/08/12/SpringBoot学习-02/" >SpringBoot-02</a>
-        </li>
     
     
         <li class="archive-post-item">
