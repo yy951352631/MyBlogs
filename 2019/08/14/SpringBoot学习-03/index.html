@@ -453,20 +453,31 @@ height:50vh;
 
 <h5 id="3-1-实现步骤"><a href="#3-1-实现步骤" class="headerlink" title="3.1 实现步骤"></a>3.1 实现步骤</h5><p>1）创建一个快速SpringBoot项目，packaging选择war，勾选web项目</p>
 <p>2）为我们的项目手动或自动创建web目录以及web.xml文件如下：</p>
-<p><img src="D:%5Cblog%5CwtqBlog%5Csource_posts%5Cimages%5Cboot-jsp2.png" alt="boot-jsp2"></p>
+<img src="images\boot-jsp1.png">
+
 <p>2.1）自动创建步骤：</p>
-<p><img src="D:%5Cblog%5CwtqBlog%5Csource_posts%5Cimages%5Cboot-jsp1.png" alt="boot-jsp1"></p>
+<img src="images\boot-jsp2.png">
+
+
+
 <p>3）在IDEA中部署外部servlet容器</p>
 <p>3.1）</p>
-<p><img src="D:%5Cblog%5CwtqBlog%5Csource_posts%5Cimages%5Cboot-jsp3.png" alt="boot-jsp3"></p>
+<img src="images\boot-jsp3.png">
+
 <p>3.2）</p>
-<p><img src="D:%5Cblog%5CwtqBlog%5Csource_posts%5Cimages%5Cboot-jsp4.png" alt="boot-jsp4"></p>
+<img src="images\boot-jsp4.png">
+
 <p>3.3）</p>
-<p><img src="D:%5Cblog%5CwtqBlog%5Csource_posts%5Cimages%5Cboot-jsp4.png" alt="boot-jsp4"></p>
+<img src="images\boot-jsp5.png">
+
 <p>3.4）</p>
-<p><img src="D:%5Cblog%5CwtqBlog%5Csource_posts%5Cimages%5Cboot-jsp5.png" alt="boot-jsp5"></p>
-<p>3.5）点击ok，TomCat部署完毕</p>
-<p><img src="D:%5Cblog%5CwtqBlog%5Csource_posts%5Cimages%5Cboot-jsp6.png" alt="boot-jsp6"></p>
+<img src="images\boot-jsp6.png">
+
+
+
+<p>3.5）点击ok，将当前的war包项目部署到Tomcat上，TomCat部署完毕。</p>
+<img src="images\boot-jsp7.png">
+
 <p>4）编写我们的hello.jsp页面</p>
 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">%@</span> <span class="attr">page</span> <span class="attr">contentType</span>=<span class="string">"text/html;charset=UTF-8"</span> <span class="attr">language</span>=<span class="string">"java"</span> %&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Title<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">h1</span>&gt;</span>久违了 jsp<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
@@ -487,10 +498,10 @@ height:50vh;
     <!-- license  -->
     
         <div class="license-wrapper">
-            <p>Author：<a href="http://yoursite.com">wtq</a>
-            <p>原文链接：<a href="http://yoursite.com/2019/08/14/SpringBoot学习-03/">http://yoursite.com/2019/08/14/SpringBoot学习-03/</a>
-            <p>发表日期：<a href="http://yoursite.com/2019/08/14/SpringBoot学习-03/">August 14th 2019, 9:32:27 am</a>
-            <p>更新日期：<a href="http://yoursite.com/2019/08/14/SpringBoot学习-03/">August 14th 2019, 4:00:46 pm</a>
+            <p>Author：<a href="http://none">wtq</a>
+            <p>原文链接：<a href="http://none/2019/08/14/SpringBoot学习-03/">http://none/2019/08/14/SpringBoot学习-03/</a>
+            <p>发表日期：<a href="http://none/2019/08/14/SpringBoot学习-03/">August 14th 2019, 9:32:27 am</a>
+            <p>更新日期：<a href="http://none/2019/08/14/SpringBoot学习-03/">August 14th 2019, 4:40:31 pm</a>
             <p>版权声明：本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
         </div>
     
@@ -704,11 +715,6 @@ top:50vh;
         </li>
     
     
-        <li class="archive-post-item">
-            <span class="archive-post-date">08/12</span><a class="archive-post-title" href= "/2019/08/12/Hibernate-01/" >Hibernate-01</a>
-        </li>
-    
-    
     
     
     
@@ -730,6 +736,11 @@ top:50vh;
     
     <div class="archive-year"> 2019 </div>
     <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/12</span><a class="archive-post-title" href= "/2019/08/12/Hibernate-01/" >Hibernate-01</a>
+        </li>
     
     
         <li class="archive-post-item">
