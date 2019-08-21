@@ -346,6 +346,34 @@
     
     
     <article class="index-post">
+        <a class="abstract-title" href = "/2019/08/08/SpringBoot学习-01/" >
+            
+                <span>SpringBoot-01-Web工程</span>
+        </a>
+        <div class="abstract-content">
+            使用SpringBoot开发Web工程1、问题：经过视图解析器转发后，我们的页面样式失效？1.1 成因：css样式以及js引入的路径为相对路径，经过转发后根路径发生变化，导致样式文件找不到从而引发样式失效的问题。
+1.2 解决：
+1.2.1 将我们的外部引入文件路径修改为如下
+12&lt;link href="&lt;%=path %&gt;/source/bookshop.css" rel="stylesheet" type="text/css"&gt;//这里的path即为 request.getContextPath()
+
+1.2.2 将我们的转发改成为redirect（重定向）方...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/08</span>
+            </div>
+            <!-- tags  -->
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
         <a class="abstract-title" href = "/2019/08/08/first/" >
             
                 <span>开山篇，hexo常用操作&amp;注意事项</span>
@@ -608,9 +636,28 @@
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 11
+        Total : 12
         </div>
         <!-- search  -->
         
@@ -655,6 +702,20 @@
     
         <li class="archive-post-item">
             <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2019/08/20/Java基础-01/" >Java基础-01-Optional</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> Invalid date </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2019/08/21/SpringCloud学习-05/" >SpringCloud-05-Hystrix</a>
         </li>
     
     

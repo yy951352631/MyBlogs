@@ -429,13 +429,29 @@ height:50vh;
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://eureka7001.com:7001/   （或http://localhost:7001/）</span><br></pre></td></tr></table></figure>
 
 <h3 id="4、Eureka相关细节"><a href="#4、Eureka相关细节" class="headerlink" title="4、Eureka相关细节"></a>4、Eureka相关细节</h3><h5 id="4-1-什么是CAP"><a href="#4-1-什么是CAP" class="headerlink" title="4.1 什么是CAP"></a>4.1 什么是CAP</h5><blockquote>
-<p>a）CAP原则又称CAP定理，指的是在一个分布式系统中，Consistency（一致性）、 Availability（可用性）、Partition tolerance（分区容错性），三者不可兼得，Netflix在设计Eureka时遵守的就是AP原则，即可用性和分区容错性，而zookeeper在设计时遵守CP原则。</p>
+<p>a）CAP原则又称CAP定理，指的是在一个分布式系统中，Consistency（一致性）、 Availability（可用性）、Partition tolerance（分区容错性），三者不可兼得。</p>
+<p>Netflix在设计Eureka时遵守的就是AP原则，即可用性和分区容错性，而zookeeper在设计时遵守CP原则。</p>
 <p>b）Consistency 和 Availability 的矛盾</p>
 <p>一致性和可用性，为什么不可能同时成立？答案很简单，因为可能通信失败（即出现分区容错）。</p>
 <p>设有G1，G2两台跨区的服务器进行通信，</p>
 <p>如果保证 G2 的一致性，那么 G1 必须在写操作时，锁定 G2 的读操作和写操作。只有数据同步后，才能重新开放读写。锁定期间，G2 不能读写，没有可用性。</p>
 <p>如果保证 G2 的可用性，那么势必不能锁定 G2，所以一致性不成立。</p>
 <p>综上所述，G2 无法同时做到一致性和可用性。系统设计时只能选择一个目标。如果追求一致性，那么无法保证所有节点的可用性；如果追求所有节点的可用性，那就没法做到一致性。</p>
+</blockquote>
+<h5 id="4-2-作为服务注册中心，Eureka比Zookeeper好在哪里"><a href="#4-2-作为服务注册中心，Eureka比Zookeeper好在哪里" class="headerlink" title="4.2 作为服务注册中心，Eureka比Zookeeper好在哪里"></a>4.2 作为服务注册中心，Eureka比Zookeeper好在哪里</h5><blockquote>
+<p>著名的CAP理论指出，一个分布式系统不可能同时满足C(一致性)、A(可用性)和P(分区容错性)。由于分区容错性P在是分布式系统中必须要保证的，因此我们只能在A和C之间进行权衡。</p>
+<p>Zookeeper保证的是CP</p>
+<p>Eureka则是AP</p>
+<p>a）Zookeeper保证CP</p>
+<p>当向注册中心查询服务列表时，我们可以容忍注册中心返回的是几分钟以前的注册信息，但不能接受服务直接down掉不可用。也就是说，服务注册功能对可用性的要求要高于一致性。但是zk会出现这样一种情况，当master节点因为网络故障与其他节点失去联系时，剩余节点会重新进行leader选举。问题在于，选举leader的时间太长，30 ~ 120s, 且选举期间整个zk集群都是不可用的，这就导致在选举期间注册服务瘫痪。在云部署的环境下，因网络问题使得zk集群失去master节点是较大概率会发生的事，虽然服务能够最终恢复，但是漫长的选举时间导致的注册长期不可用是不能容忍的。</p>
+<p>b）Eureka保证AP</p>
+<p>Eureka看明白了这一点，因此在设计时就优先保证可用性。Eureka各个节点都是平等的，几个节点挂掉不会影响正常节点的工作，剩余的节点依然可以提供注册和查询服务。而Eureka的客户端在向某个Eureka注册或时如果发现连接失败，则会自动切换至其它节点，只要有一台Eureka还在，就能保证注册服务可用(保证可用性)，只不过查到的信息可能不是最新的(不保证强一致性)。除此之外，Eureka还有一种自我保护机制，如果在15分钟内超过85%的节点都没有正常的心跳，那么Eureka就认为客户端与注册中心出现了网络故障，此时会出现以下几种情况： </p>
+<ol>
+<li>Eureka不再从注册列表中移除因为长时间没收到心跳而应该过期的服务 </li>
+<li>Eureka仍然能够接受新服务的注册和查询请求，但是不会被同步到其它节点上(即保证当前节点依然可用) </li>
+<li>当网络稳定时，当前实例新的注册信息会被同步到其它节点中</li>
+</ol>
+<p>因此， Eureka可以很好的应对因网络故障导致部分节点失去联系的情况，而不会像zookeeper那样使整个注册服务瘫痪。</p>
 </blockquote>
 <h5 id="4-2-Eureka的基本架构"><a href="#4-2-Eureka的基本架构" class="headerlink" title="4.2 Eureka的基本架构"></a>4.2 Eureka的基本架构</h5><blockquote>
 <p>Spring Cloud 封装了 Netflix 公司开发的 Eureka 模块来实现服务注册和发现(请对比Zookeeper)。</p>
@@ -520,7 +536,7 @@ height:50vh;
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Autowired</span></span><br><span class="line"><span class="keyword">private</span> DiscoveryClient client;</span><br></pre></td></tr></table></figure>
 
 <p>3）在Controller层添加测试方法discovery如下</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RequestMapping</span>(value = <span class="string">"/discovery"</span>, method = RequestMethod.GET)</span><br><span class="line"><span class="function"><span class="keyword">public</span> Object <span class="title">discovery</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    List list = client.getServices();</span><br><span class="line">    System.out.println(<span class="string">"**********"</span> + list);</span><br><span class="line">    <span class="comment">//我们想获取的微服务服务名</span></span><br><span class="line">    List&lt;ServiceInstance&gt; srvList = client.getInstances(<span class="string">"CAT-MANAGER-PROVIDER"</span>);</span><br><span class="line">    <span class="keyword">for</span> (ServiceInstance element : srvList) &#123;</span><br><span class="line">        System.out.println(element.getServiceId() + <span class="string">"\t"</span> + element.getHost() + <span class="string">"\t"</span> + element.getPort() + <span class="string">"\t"</span>+ element.getUri());</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.client;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//import org.springframework.cloud.client.ServiceInstance;</span></span><br><span class="line"><span class="meta">@RequestMapping</span>(value = <span class="string">"/discovery"</span>, method = RequestMethod.GET)</span><br><span class="line"><span class="function"><span class="keyword">public</span> Object <span class="title">discovery</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    List list = client.getServices();</span><br><span class="line">    System.out.println(<span class="string">"**********"</span> + list);</span><br><span class="line">    <span class="comment">//我们想获取的微服务服务名</span></span><br><span class="line">    List&lt;ServiceInstance&gt; srvList = client.getInstances(<span class="string">"CAT-MANAGER-PROVIDER"</span>);</span><br><span class="line">    <span class="keyword">for</span> (ServiceInstance element : srvList) &#123;</span><br><span class="line">        System.out.println(element.getServiceId() + <span class="string">"\t"</span> + element.getHost() + <span class="string">"\t"</span> + element.getPort() + <span class="string">"\t"</span>+ element.getUri());</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.client;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>4）将我们的服务(provider)复制几份，修改端口及[eureka.instance.instance-id]属性</p>
 <p>5）网址访问</p>
@@ -551,24 +567,6 @@ height:50vh;
 <figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">defaultZone:</span> <span class="attr">http://eureka7001.com:7001/eureka/,http://eureka7002.com:7002/eureka/,http://eureka7003.com:7003/eureka/</span></span><br></pre></td></tr></table></figure>
 
 <p>4）集群配置完成，每一个Eureka页面上都会有我们的服务列表。撒花❀</p>
-<h3 id="9、问题：作为服务注册中心，Eureka比Zookeeper好在哪里"><a href="#9、问题：作为服务注册中心，Eureka比Zookeeper好在哪里" class="headerlink" title="9、问题：作为服务注册中心，Eureka比Zookeeper好在哪里"></a>9、问题：作为服务注册中心，Eureka比Zookeeper好在哪里</h3><blockquote>
-<p>著名的CAP理论指出，一个分布式系统不可能同时满足C(一致性)、A(可用性)和P(分区容错性)。由于分区容错性P在是分布式系统中必须要保证的，因此我们只能在A和C之间进行权衡。</p>
-<p>Zookeeper保证的是CP</p>
-<p>Eureka则是AP</p>
-<p>a）Zookeeper保证CP</p>
-<p>当向注册中心查询服务列表时，我们可以容忍注册中心返回的是几分钟以前的注册信息，但不能接受服务直接down掉不可用。也就是说，服务注册功能对可用性的要求要高于一致性。但是zk会出现这样一种情况，当master节点因为网络故障与其他节点失去联系时，剩余节点会重新进行leader选举。问题在于，选举leader的时间太长，30 ~ 120s, 且选举期间整个zk集群都是不可用的，这就导致在选举期间注册服务瘫痪。在云部署的环境下，因网络问题使得zk集群失去master节点是较大概率会发生的事，虽然服务能够最终恢复，但是漫长的选举时间导致的注册长期不可用是不能容忍的。</p>
-<p>b）Eureka保证AP</p>
-<p>Eureka看明白了这一点，因此在设计时就优先保证可用性。Eureka各个节点都是平等的，几个节点挂掉不会影响正常节点的工作，剩余的节点依然可以提供注册和查询服务。而Eureka的客户端在向某个Eureka注册或时如果发现连接失败，则会自动切换至其它节点，只要有一台Eureka还在，就能保证注册服务可用(保证可用性)，只不过查到的信息可能不是最新的(不保证强一致性)。除此之外，Eureka还有一种自我保护机制，如果在15分钟内超过85%的节点都没有正常的心跳，那么Eureka就认为客户端与注册中心出现了网络故障，此时会出现以下几种情况： </p>
-<ol>
-<li><p>Eureka不再从注册列表中移除因为长时间没收到心跳而应该过期的服务 </p>
-</li>
-<li><p>Eureka仍然能够接受新服务的注册和查询请求，但是不会被同步到其它节点上(即保证当前节点依然可用) </p>
-</li>
-<li><p>当网络稳定时，当前实例新的注册信息会被同步到其它节点中</p>
-</li>
-</ol>
-<p>因此， Eureka可以很好的应对因网络故障导致部分节点失去联系的情况，而不会像zookeeper那样使整个注册服务瘫痪。</p>
-</blockquote>
 
     </article>
     <!-- license  -->
@@ -577,7 +575,7 @@ height:50vh;
             <p>Author：<a href="http://none">wtq</a>
             <p>原文链接：<a href="http://none/2019/08/19/SpringCloud学习-02/">http://none/2019/08/19/SpringCloud学习-02/</a>
             <p>发表日期：<a href="http://none/2019/08/19/SpringCloud学习-02/">August 19th 2019, 10:03:29 am</a>
-            <p>更新日期：<a href="http://none/2019/08/19/SpringCloud学习-02/">August 21st 2019, 1:13:15 pm</a>
+            <p>更新日期：<a href="http://none/2019/08/19/SpringCloud学习-02/">August 21st 2019, 2:54:07 pm</a>
             <p>版权声明：本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
         </div>
     
@@ -705,7 +703,7 @@ top:50vh;
         <div class="toc-catalog">
             <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
         </div>
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#SpringCloud-Eureka"><span class="toc-number">1.</span> <span class="toc-text">SpringCloud-Eureka</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、问题：Eureka是个啥？"><span class="toc-number">1.0.1.</span> <span class="toc-text">1、问题：Eureka是个啥？</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-1-图解："><span class="toc-number">1.0.1.0.1.</span> <span class="toc-text">1.1 图解：</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#1-2-运作流程"><span class="toc-number">1.0.1.0.2.</span> <span class="toc-text">1.2 运作流程</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、问题：Eureka能干啥？"><span class="toc-number">1.0.2.</span> <span class="toc-text">2、问题：Eureka能干啥？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3、问题：Eureka如何构建服务端？"><span class="toc-number">1.0.3.</span> <span class="toc-text">3、问题：Eureka如何构建服务端？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4、Eureka相关细节"><span class="toc-number">1.0.4.</span> <span class="toc-text">4、Eureka相关细节</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#4-1-什么是CAP"><span class="toc-number">1.0.4.0.1.</span> <span class="toc-text">4.1 什么是CAP</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#4-2-Eureka的基本架构"><span class="toc-number">1.0.4.0.2.</span> <span class="toc-text">4.2 Eureka的基本架构</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#4-3-Eureka的三大角色"><span class="toc-number">1.0.4.0.3.</span> <span class="toc-text">4.3 Eureka的三大角色</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#4-4-Eureka的自我保护机制"><span class="toc-number">1.0.4.0.4.</span> <span class="toc-text">4.4 Eureka的自我保护机制</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5、问题：如何将创建的服务（provider）注册在Eureka上？"><span class="toc-number">1.0.5.</span> <span class="toc-text">5、问题：如何将创建的服务（provider）注册在Eureka上？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6、问题：如何将创建的消费者（Consumer）注册在Eureka上并使用RestTemplate调用相应服务？"><span class="toc-number">1.0.6.</span> <span class="toc-text">6、问题：如何将创建的消费者（Consumer）注册在Eureka上并使用RestTemplate调用相应服务？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7、问题：如何在Eureka-Client端获取服务列表？"><span class="toc-number">1.0.7.</span> <span class="toc-text">7、问题：如何在Eureka-Client端获取服务列表？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8、问题：何为Eureka集群"><span class="toc-number">1.0.8.</span> <span class="toc-text">8、问题：何为Eureka集群</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#8-1-如何构建Eureka集群？（简介）"><span class="toc-number">1.0.8.0.1.</span> <span class="toc-text">8.1 如何构建Eureka集群？（简介）</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9、问题：作为服务注册中心，Eureka比Zookeeper好在哪里"><span class="toc-number">1.0.9.</span> <span class="toc-text">9、问题：作为服务注册中心，Eureka比Zookeeper好在哪里</span></a></li></ol></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#SpringCloud-Eureka"><span class="toc-number">1.</span> <span class="toc-text">SpringCloud-Eureka</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、问题：Eureka是个啥？"><span class="toc-number">1.0.1.</span> <span class="toc-text">1、问题：Eureka是个啥？</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-1-图解："><span class="toc-number">1.0.1.0.1.</span> <span class="toc-text">1.1 图解：</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#1-2-运作流程"><span class="toc-number">1.0.1.0.2.</span> <span class="toc-text">1.2 运作流程</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、问题：Eureka能干啥？"><span class="toc-number">1.0.2.</span> <span class="toc-text">2、问题：Eureka能干啥？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3、问题：Eureka如何构建服务端？"><span class="toc-number">1.0.3.</span> <span class="toc-text">3、问题：Eureka如何构建服务端？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4、Eureka相关细节"><span class="toc-number">1.0.4.</span> <span class="toc-text">4、Eureka相关细节</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#4-1-什么是CAP"><span class="toc-number">1.0.4.0.1.</span> <span class="toc-text">4.1 什么是CAP</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#4-2-作为服务注册中心，Eureka比Zookeeper好在哪里"><span class="toc-number">1.0.4.0.2.</span> <span class="toc-text">4.2 作为服务注册中心，Eureka比Zookeeper好在哪里</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#4-2-Eureka的基本架构"><span class="toc-number">1.0.4.0.3.</span> <span class="toc-text">4.2 Eureka的基本架构</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#4-3-Eureka的三大角色"><span class="toc-number">1.0.4.0.4.</span> <span class="toc-text">4.3 Eureka的三大角色</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#4-4-Eureka的自我保护机制"><span class="toc-number">1.0.4.0.5.</span> <span class="toc-text">4.4 Eureka的自我保护机制</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5、问题：如何将创建的服务（provider）注册在Eureka上？"><span class="toc-number">1.0.5.</span> <span class="toc-text">5、问题：如何将创建的服务（provider）注册在Eureka上？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6、问题：如何将创建的消费者（Consumer）注册在Eureka上并使用RestTemplate调用相应服务？"><span class="toc-number">1.0.6.</span> <span class="toc-text">6、问题：如何将创建的消费者（Consumer）注册在Eureka上并使用RestTemplate调用相应服务？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7、问题：如何在Eureka-Client端获取服务列表？"><span class="toc-number">1.0.7.</span> <span class="toc-text">7、问题：如何在Eureka-Client端获取服务列表？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8、问题：何为Eureka集群"><span class="toc-number">1.0.8.</span> <span class="toc-text">8、问题：何为Eureka集群</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#8-1-如何构建Eureka集群？（简介）"><span class="toc-number">1.0.8.0.1.</span> <span class="toc-text">8.1 如何构建Eureka集群？（简介）</span></a></li></ol></li></ol></li></ol></li></ol></li></ol>
     </div>
     
     <div class="back-top iconfont-archer">&#xe639;</div>
@@ -867,9 +865,28 @@ top:50vh;
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 11
+        Total : 12
         </div>
         <!-- search  -->
         
@@ -914,6 +931,20 @@ top:50vh;
     
         <li class="archive-post-item">
             <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2019/08/20/Java基础-01/" >Java基础-01-Optional</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> Invalid date </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2019/08/21/SpringCloud学习-05/" >SpringCloud-05-Hystrix</a>
         </li>
     
     

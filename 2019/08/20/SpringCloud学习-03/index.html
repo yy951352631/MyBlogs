@@ -266,7 +266,7 @@ height:50vh;
                 
                 
                     <div class="post-intro-read">
-                        <span>Word count: <span class="post-count word-count">2.2k</span>Reading time: <span class="post-count reading-time">9 min</span></span>
+                        <span>Word count: <span class="post-count word-count">2.4k</span>Reading time: <span class="post-count reading-time">10 min</span></span>
                     </div>
                 
                 <div class="post-intro-meta">
@@ -405,7 +405,18 @@ height:50vh;
 <p>②当某个服务出问题时，可以实时的调用其他运作的服务进行正常的工作。</p>
 </blockquote>
 <h3 id="2、问题：Ribbon能干啥？"><a href="#2、问题：Ribbon能干啥？" class="headerlink" title="2、问题：Ribbon能干啥？"></a>2、问题：Ribbon能干啥？</h3><blockquote>
-<p>Ribbon能通过在RestTemplate Bean上添加注解@LoadBalance来启用我们的负载均衡（默认的负载均衡算法为轮询，即当消费者调用一个种类的微服务时，对此时服务列表中的所有服务进行顺序调用）</p>
+<p>LB，即负载均衡(Load Balance)，在微服务或分布式集群中经常用的一种应用。</p>
+<p>负载均衡简单的说就是将用户的请求平摊的分配到多个服务上，从而达到系统的HA(High Available)。</p>
+<p>常见的负载均衡有软件Nginx，LVS，硬件 F5等。</p>
+<p>相应的在中间件，例如：dubbo和SpringCloud中均给我们提供了负载均衡，SpringCloud的负载均衡算法可以自定义。 </p>
+</blockquote>
+<h5 id="2-2-两种LB"><a href="#2-2-两种LB" class="headerlink" title="2.2 两种LB"></a>2.2 两种LB</h5><blockquote>
+<p>集中式LB</p>
+<p>即在服务的消费方和提供方之间使用独立的LB设施(可以是硬件，如F5, 也可以是软件，如nginx), 由该设施负责把访问请求通过某种策略转发至服务的提供方；</p>
+<hr>
+<p>进程内LB</p>
+<p>将LB逻辑集成到消费方，消费方从服务注册中心获知有哪些地址可用，然后自己再从这些地址中选择出一个合适的服务器。</p>
+<p>Ribbon就属于进程内LB，它只是一个类库，集成于消费方进程，消费方通过它来获取到服务提供方的地址。</p>
 </blockquote>
 <h3 id="3、Ribbo怎么干？"><a href="#3、Ribbo怎么干？" class="headerlink" title="3、Ribbo怎么干？"></a>3、Ribbo怎么干？</h3><p>1）在【SpringCloud-02】中的【consumer】项目中ConfigBeans类中添加LoadBalanced注解如下</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="meta">@LoadBalanced</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> RestTemplate <span class="title">getRestTemplate</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> RestTemplate();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -486,7 +497,7 @@ height:50vh;
             <p>Author：<a href="http://none">wtq</a>
             <p>原文链接：<a href="http://none/2019/08/20/SpringCloud学习-03/">http://none/2019/08/20/SpringCloud学习-03/</a>
             <p>发表日期：<a href="http://none/2019/08/20/SpringCloud学习-03/">August 20th 2019, 2:21:50 pm</a>
-            <p>更新日期：<a href="http://none/2019/08/20/SpringCloud学习-03/">August 21st 2019, 10:00:24 am</a>
+            <p>更新日期：<a href="http://none/2019/08/20/SpringCloud学习-03/">August 21st 2019, 1:17:46 pm</a>
             <p>版权声明：本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
         </div>
     
@@ -614,7 +625,7 @@ top:50vh;
         <div class="toc-catalog">
             <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
         </div>
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#SpringCloud-Ribbon（负载平衡工具）"><span class="toc-number">1.</span> <span class="toc-text">SpringCloud-Ribbon（负载平衡工具）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、问题：Ribbon-是个啥？"><span class="toc-number">1.0.1.</span> <span class="toc-text">1、问题：Ribbon-是个啥？</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-1-解释："><span class="toc-number">1.0.1.0.1.</span> <span class="toc-text">1.1 解释：</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#1-2-好处"><span class="toc-number">1.0.1.0.2.</span> <span class="toc-text">1.2 好处</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、问题：Ribbon能干啥？"><span class="toc-number">1.0.2.</span> <span class="toc-text">2、问题：Ribbon能干啥？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3、Ribbo怎么干？"><span class="toc-number">1.0.3.</span> <span class="toc-text">3、Ribbo怎么干？</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#3-1-如何更换Ribbon负载均衡的策略？"><span class="toc-number">1.0.3.0.1.</span> <span class="toc-text">3.1 如何更换Ribbon负载均衡的策略？</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#3-1-1）使用Ribbon定义的负载均衡策略（Ribbon核心组件IRule）"><span class="toc-number">1.0.3.0.1.1.</span> <span class="toc-text">3.1.1）使用Ribbon定义的负载均衡策略（Ribbon核心组件IRule）</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#3-1-2）如何自定义的负载均衡策略"><span class="toc-number">1.0.3.0.1.2.</span> <span class="toc-text">3.1.2）如何自定义的负载均衡策略</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#SpringCloud-Ribbon（负载平衡工具）"><span class="toc-number">1.</span> <span class="toc-text">SpringCloud-Ribbon（负载平衡工具）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、问题：Ribbon-是个啥？"><span class="toc-number">1.0.1.</span> <span class="toc-text">1、问题：Ribbon-是个啥？</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-1-解释："><span class="toc-number">1.0.1.0.1.</span> <span class="toc-text">1.1 解释：</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#1-2-好处"><span class="toc-number">1.0.1.0.2.</span> <span class="toc-text">1.2 好处</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、问题：Ribbon能干啥？"><span class="toc-number">1.0.2.</span> <span class="toc-text">2、问题：Ribbon能干啥？</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#2-2-两种LB"><span class="toc-number">1.0.2.0.1.</span> <span class="toc-text">2.2 两种LB</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3、Ribbo怎么干？"><span class="toc-number">1.0.3.</span> <span class="toc-text">3、Ribbo怎么干？</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#3-1-如何更换Ribbon负载均衡的策略？"><span class="toc-number">1.0.3.0.1.</span> <span class="toc-text">3.1 如何更换Ribbon负载均衡的策略？</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#3-1-1）使用Ribbon定义的负载均衡策略（Ribbon核心组件IRule）"><span class="toc-number">1.0.3.0.1.1.</span> <span class="toc-text">3.1.1）使用Ribbon定义的负载均衡策略（Ribbon核心组件IRule）</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#3-1-2）如何自定义的负载均衡策略"><span class="toc-number">1.0.3.0.1.2.</span> <span class="toc-text">3.1.2）如何自定义的负载均衡策略</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></li></ol>
     </div>
     
     <div class="back-top iconfont-archer">&#xe639;</div>
@@ -776,9 +787,28 @@ top:50vh;
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 11
+        Total : 12
         </div>
         <!-- search  -->
         
@@ -823,6 +853,20 @@ top:50vh;
     
         <li class="archive-post-item">
             <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2019/08/20/Java基础-01/" >Java基础-01-Optional</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> Invalid date </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2019/08/21/SpringCloud学习-05/" >SpringCloud-05-Hystrix</a>
         </li>
     
     
