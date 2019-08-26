@@ -78,6 +78,8 @@
     <link rel="preload" href="/css/style.css?v=20180824" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <link rel="stylesheet" href="/css/mobile.css?v=20180824" media="(max-width: 980px)">
     
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    
     <!-- /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
 /* This file is meant as a standalone workflow for
 - testing support for link[rel=preload]
@@ -201,10 +203,8 @@
 </head>
 
     
-        <body class="home-body">
     
-    
-<header class="header index-header">
+<header class="header">
 
     <div class="read-progress"></div>
     <div class="header-sidebar-menu">&#xe775;</div>
@@ -220,34 +220,21 @@
 
 
 
-
-height:50vh;
 ">
     
     <!-- 主页  -->
-    
-    
-    <!-- 文章页  -->
             
     <div class="site-intro-placeholder"></div>
-    <div class="site-intro-img" style="background-image: url(/intro/index-bg.jpg)"></div>
+    <div class="site-intro-img" style="background-image: url(/)"></div>
     <div class="site-intro-meta">
         <!-- 标题  -->
         <h1 class="intro-title">
             <!-- 主页  -->
             
-            王某人的个人博客
-            <!-- 文章页  -->
-            
         </h1>
         <!-- 副标题 -->
         <p class="intro-subtitle">
             <!-- 主页副标题  -->
-            
-            
-                积跬步以致千里，积小流而成江海
-            
-            <!-- 文章页  -->
             
         </p>
         <!-- 文章页meta -->
@@ -359,28 +346,28 @@ height:50vh;
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2019/08/08/SpringBoot学习-01/" >
+        <a class="abstract-title" href = "/2019/08/22/SpringCloud学习-05/" >
             
-                <span>SpringBoot-01-Web工程</span>
+                <span>SpringCloud-05-Hystrix</span>
         </a>
         <div class="abstract-content">
-            使用SpringBoot开发Web工程1、问题：经过视图解析器转发后，我们的页面样式失效？1.1 成因：css样式以及js引入的路径为相对路径，经过转发后根路径发生变化，导致样式文件找不到从而引发样式失效的问题。
-1.2 解决：
-1.2.1 将我们的外部引入文件路径修改为如下
-12&lt;link href="&lt;%=path %&gt;/source/bookshop.css" rel="stylesheet" type="text/css"&gt;//这里的path即为 request.getContextPath()
-
-1.2.2 将我们的转发改成为redirect（重定向）方...
+            SpringCloud-Hystrix1、Hystrix是个啥？1.1 背景
+a）分布式系统面临的问题
+复杂分布式体系结构中的应用程序有数十个依赖关系，每个依赖关系在某些时候将不可避免地失败。
+b）服务雪崩
+多个微服务之间调用的时候，假设微服务A调用微服务B和微服务C，微服务B和微服务C又调用其它的微服务，这就是所谓的“扇出”。如果扇出的链路上某个微服务的调用响应时间过长或者不可用，对微服务A的调用就会占用越来越多的系统资源，进而引起系统崩溃，所谓的“雪崩效应”.
+对于高流量的应用来说，单一的后端依赖可能会导致所有服务器上的所有资源都在几秒钟内饱和。比失败更糟糕的是，这些应用程序还可能导...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
             <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/08</span>
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/22</span>
             </div>
             <!-- tags  -->
             
             <div class= abstract-tags >
     
-        <a class="post-tag" href="javascript:void(0);" data-tags = "SpringBoot-WEB">SpringBoot-WEB</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags = "SpringCloud">SpringCloud</a>
     
 </div>
             
@@ -393,27 +380,26 @@ height:50vh;
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2019/08/07/first/" >
+        <a class="abstract-title" href = "/2019/08/20/SpringCloud学习-04/" >
             
-                <span>Hexo常用操作</span>
+                <span>SpringCloud-04-Feign</span>
         </a>
         <div class="abstract-content">
-            1.在GitHub上创建仓库，格式必须为：12你的GitHub账户.github.io如：zhangSan_git.github.io
+            SpringCloud-Feign1、问题：Feign-是个啥？1.1 官网解释
+Feign是一个声明式WebService客户端。使用Feign能让编写Web Service客户端更加简单, 它的使用方法是定义一个接口，然后在上面添加注解，同时也支持JAX-RS标准的注解。Feign也支持可拔插式的编码器和解码器。Spring Cloud对Feign进行了封装，使其支持了Spring MVC标准注解和HttpMessageConverters。Feign可以与Eureka和Ribbon组合使用以支持负载均衡。
 
-2.在命令行进入blog安装目录，开始上传三步曲123hexo clean #清除部署缓存hexo g -&gt; hexo generate #生成静态页面至public目录hexo d -&gt; hexo deploy #将.deploy目录部署到GitHub
-
-3.关于主题安装注意事项3.1  –depth=1 命令123451)问题：当项目过大时，git clone时会出现error: RPC failed; HTTP 504 curl 22...
+Feign是一个声明式的Web服务客户端，使得编写Web服务客户端变得非常...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
             <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/07</span>
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/20</span>
             </div>
             <!-- tags  -->
             
             <div class= abstract-tags >
     
-        <a class="post-tag" href="javascript:void(0);" data-tags = "Hexo">Hexo</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags = "SpringCloud">SpringCloud</a>
     
 </div>
             
@@ -426,23 +412,94 @@ height:50vh;
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2019/08/07/Hibernate-01/" >
+        <a class="abstract-title" href = "/2019/08/16/SpringCloud学习-03/" >
             
-                <span>Hibernate-01</span>
+                <span>SpringCloud-03-Ribbon</span>
         </a>
         <div class="abstract-content">
-            Hibernate干啥的？答：Hibernate 作为一个 ORM 解决方案，实际上位于 java 应用与关系数据库之间。Hibernate 的设计目标是减少工程中95％的 SQL 与 JDBC 操作。当然还有其它的数据持久化解决方案。但是Hibernate 与其它方案不同在于它不阻断您使用强大的 SQL 与 JDBC，它只是希望您将更多的精力用于关系设计与业务逻辑上。Hibernate 可能不是最好的 data-centric applications（以数据为中心应用程序）的解决方案，它只是用存储过程来实现数据库业务逻辑。但是它是一个java 中间层，用于提供面向对象的建模与业务逻辑...
+            SpringCloud-Ribbon（负载平衡工具）1、问题：Ribbon-是个啥？Ribbon是一套负载均衡工具，作用于客户端。
+1.1 解释：
+a）正常来讲，当我们的消费者需要某种服务时，会在eureka寻找该服务，并进行调用，但是这种调用会具有不确定性，可能会导致某一个服务被长期调用，或被多个消费者调用，而其他的服务却处于相对空闲的状态，这就导致了我们所谓的“短板效应”，使得整个系统的响应时间变长，运算效率降低，为了应对这种状况，我们需要Ribbon这个工具来帮助我们将这些服务采用一定的策略“相对平均的”分配给那些需要的消费者，以此来提高系统的运作效率。
+b）ribbon是在客户端...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
             <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/07</span>
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/16</span>
             </div>
             <!-- tags  -->
             
             <div class= abstract-tags >
     
-        <a class="post-tag" href="javascript:void(0);" data-tags = "Hibernate">Hibernate</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags = "SpringCloud">SpringCloud</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2019/08/14/SpringCloud学习-02/" >
+            
+                <span>SpringCloud-02-Eureka</span>
+        </a>
+        <div class="abstract-content">
+            SpringCloud-Eureka1、问题：Eureka是个啥？是一个服务发现组件。
+1.1 图解：
+
+1.2 运作流程
+1）当服务提供者启动时，就会将其端口号以及IP地址注册到服务发现组件。
+2） 服务消费者也需要注册到服务发组件中。（服务消费者也会充当服务提供者 ）
+3）服务消费者首先调用我们的服务发现组件，获取到他想要的服务（ip和端口），进而调用我们的服务提供者相应的服务。
+*细节：
+1）服务消费者会将使用过的服务相关信息缓存到本地，因而即便服务发现组件挂掉，我们的服务消费者仍然可以在提供者缓存列表中获取相应服务。
+2） 服务发现组件有多台，保证其可靠性。
+3） 服务提供者如果...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/14</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "SpringCloud">SpringCloud</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2019/08/13/SpringCloud学习-01/" >
+            
+                <span>SpringCloud-01-配置中心</span>
+        </a>
+        <div class="abstract-content">
+            SpringCloud配置中心1、问题：SpringCloud配置中心为何物？1.1 背景&amp;概念：微服务意味着要将单体应用中的业务拆分成一个个子服务，每个服务的粒度相对较小，因此系统中会出现大量的服务。由于每个服务都需要必要的配置信息才能运行，所以一套集中式的、动态的配置管理设施是必不可少的。SpringCloud提供了ConfigServer来解决这个问题，我们每一个微服务自己带着一个application.yml，上百个配置文件的管理，使得我们分身乏术，运维工程师心态爆炸。因而SpringCloud Config为微服务架构中的微服务提供集中化的外部配置支持，配置服务器为各个...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/13</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "SpringCloud">SpringCloud</a>
     
 </div>
             
@@ -451,100 +508,8 @@ height:50vh;
     
     <!-- paginator  -->
     
-    <nav class="page-nav">
-        <a class="extend prev" rel="prev" href="/">&#60; PREV</a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
-    </nav>
-    
 </main>
             <!-- profile -->
-            
-            <div class="profile">
-    <img class="profile-avatar" alt="avatar" src= /avatar/Misaka.jpg >
-    <div class="profile-name">王某人</div>
-    
-    <div class="profile-signature">
-        追
-    </div>
-    
-    
-    <div class="profile-social">
-        
-    
-        
-            
-                <a href="mailto:951352631@qq.com" class="iconfont-archer email" title=email ></a>
-            
-        
-    
-        
-            
-                <a href="https://github.com/yy951352631" class="iconfont-archer github" target="_blank" title=github></a>
-            
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-
-    </div>
-    
-    
-        <div class="friends">
-            <div>FRIENDS</div>
-            
-                
-                    <span>
-                        <a href= //www.baidu.com target="_black">friendA</a>
-                    </span>
-                
-            
-                
-                    <span>
-                        <a href= //www.google.com target="_black">friendB</a>
-                    </span>
-                
-            
-                
-            
-        </div>
-    
-    
-        <div class="about-me">
-            <a href = "/about" >ABOUT ME</a>
-        </div>
-    
-</div>
             
         </div>
         <footer class="footer footer-unloaded">

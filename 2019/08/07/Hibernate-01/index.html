@@ -264,6 +264,12 @@ height:50vh;
             <div class="post-intros">
                 <!-- 文章页标签  -->
                 
+                    <div class= post-intro-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "Hibernate">Hibernate</a>
+    
+</div>
+                
                 
                     <div class="post-intro-read">
                         <span>Word count: <span class="post-count word-count">2.3k</span>Reading time: <span class="post-count reading-time">8 min</span></span>
@@ -271,7 +277,7 @@ height:50vh;
                 
                 <div class="post-intro-meta">
                     <span class="post-intro-calander iconfont-archer">&#xe676;</span>
-                    <span class="post-intro-time">2019/08/12</span>
+                    <span class="post-intro-time">2019/08/07</span>
                     
                     <span id="busuanzi_container_page_pv" class="busuanzi-pv">
                         <span class="iconfont-archer">&#xe602;</span>
@@ -395,43 +401,44 @@ height:50vh;
         <div class="container container-unloaded">
             <main class="main post-page">
     <article class="article-entry">
-        <h3 id="1、问题：Hibernate干啥的？"><a href="#1、问题：Hibernate干啥的？" class="headerlink" title="1、问题：Hibernate干啥的？"></a>1、问题：Hibernate干啥的？</h3><p>答：Hibernate 作为一个 ORM 解决方案，实际上位于 java 应用与关系数据库之间。Hibernate 的设计目标是减少工程中95％的 SQL 与 JDBC 操作。当然还有其它的数据持久化解决方案。但是Hibernate 与其它方案不同在于它不阻断您使用强大的 SQL 与 JDBC，它只是希望您将更多的精力用于关系设计与业务逻辑上。<br>Hibernate 可能不是最好的 data-centric applications（以数据为中心应用程序）的解决方案，它只是用存储过程来实现数据库业务逻辑。但是它是一个java 中间层，用于提供面向对象的建模与业务逻辑。Hibernate 可以帮助您去除与封装数据库提供商特定的 Sql 代码，帮助您完成<strong>将数据结果集从表格形式转换成对象的形式</strong></p>
-<h3 id="2、相关概念"><a href="#2、相关概念" class="headerlink" title="2、相关概念"></a>2、相关概念</h3><h5 id="2-1-SessionFactory（会话工厂）-org-hibernate-SessionFactory-是个啥？"><a href="#2-1-SessionFactory（会话工厂）-org-hibernate-SessionFactory-是个啥？" class="headerlink" title="2.1 SessionFactory（会话工厂）(org.hibernate.SessionFactory) 是个啥？"></a>2.1 SessionFactory（会话工厂）(org.hibernate.SessionFactory) 是个啥？</h5><p>答：它是一个线程安全的，immutable（终态的），它是一个代理，表示应用程序域模型到数据库的映射，作为建立 org.hibernate.Session （会话实例）的工厂。SessionFactory 的建立代价很大（内存、cpu 占用很大），所以一个应用只能有一个 SessionFactory。SessionFactory 维护 Hibernate 的所有Session（会话），二级缓冲，连接池，事务等等。Session（会话）</p>
+        <h2 id="Hibernate干啥的？"><a href="#Hibernate干啥的？" class="headerlink" title="Hibernate干啥的？"></a>Hibernate干啥的？</h2><p>答：Hibernate 作为一个 ORM 解决方案，实际上位于 java 应用与关系数据库之间。Hibernate 的设计目标是减少工程中95％的 SQL 与 JDBC 操作。当然还有其它的数据持久化解决方案。但是Hibernate 与其它方案不同在于它不阻断您使用强大的 SQL 与 JDBC，它只是希望您将更多的精力用于关系设计与业务逻辑上。<br>Hibernate 可能不是最好的 data-centric applications（以数据为中心应用程序）的解决方案，它只是用存储过程来实现数据库业务逻辑。但是它是一个java 中间层，用于提供面向对象的建模与业务逻辑。Hibernate 可以帮助您去除与封装数据库提供商特定的 Sql 代码，帮助您完成<strong>将数据结果集从表格形式转换成对象的形式</strong></p>
+<h2 id="相关概念"><a href="#相关概念" class="headerlink" title="相关概念"></a>相关概念</h2><h3 id="1、SessionFactory（会话工厂）-是个啥？"><a href="#1、SessionFactory（会话工厂）-是个啥？" class="headerlink" title="1、SessionFactory（会话工厂） 是个啥？"></a>1、SessionFactory（会话工厂） 是个啥？</h3><p>答：(org.hibernate.SessionFactory)它是一个线程安全的，immutable（终态的），它是一个代理，表示应用程序域模型到数据库的映射，作为建立 org.hibernate.Session （会话实例）的工厂。SessionFactory 的建立代价很大（内存、cpu 占用很大），所以一个应用只能有一个 SessionFactory。SessionFactory 维护 Hibernate 的所有Session（会话），二级缓冲，连接池，事务等等。Session（会话）</p>
 <hr>
-<h5 id="2-2-Session（会话）-org-hibernate-Session-是个啥？"><a href="#2-2-Session（会话）-org-hibernate-Session-是个啥？" class="headerlink" title="2.2 Session（会话）(org.hibernate.Session) 是个啥？"></a>2.2 Session（会话）(org.hibernate.Session) 是个啥？</h5><p>Session（会话）是一个单线程，短生命周期的对象，是按”Unit of Work（工作单元）”[ PoEAA ]模式的概念构建的。封装了 JBDC 的连接对象 java.sql.Connection。作为一个org.hibernate.Transaction（事务）实例的工厂，维护应用程序 domainmodel（数据模型、域模型）中通用（”repeatable read 可重复读取”）的持久化内容（一级缓冲）。</p>
+<h3 id="2、Session（会话）-是个啥？"><a href="#2、Session（会话）-是个啥？" class="headerlink" title="2、Session（会话） 是个啥？"></a>2、Session（会话） 是个啥？</h3><p>(org.hibernate.Session)（会话）是一个单线程，短生命周期的对象，是按”Unit of Work（工作单元）”[ PoEAA ]模式的概念构建的。封装了 JBDC 的连接对象 java.sql.Connection。作为一个org.hibernate.Transaction（事务）实例的工厂，维护应用程序 domainmodel（数据模型、域模型）中通用（”repeatable read 可重复读取”）的持久化内容（一级缓冲）。</p>
 <hr>
-<h5 id="2-3-Transaction（事务）-org-hibernate-Transaction-是个啥？"><a href="#2-3-Transaction（事务）-org-hibernate-Transaction-是个啥？" class="headerlink" title="2.3 Transaction（事务）(org.hibernate.Transaction)  是个啥？"></a>2.3 Transaction（事务）(org.hibernate.Transaction)  是个啥？</h5><p>Transaction（事务）它是单线程，短生命周期的对象，它用于界定具体物理事务的范围。它作为一个抽象 API 接口用于隔离各种应用与底层的事务系统（JDBC, JTA,CORBA……）。</p>
-<p>2.3.1 补充：事物有啥特性？</p>
-<p>答：事务是恢复和并发控制的基本单位。</p>
+<h3 id="3、Transaction（事务-）是个啥？"><a href="#3、Transaction（事务-）是个啥？" class="headerlink" title="3、Transaction（事务 ）是个啥？"></a>3、Transaction（事务 ）是个啥？</h3><p>(org.hibernate.Transaction) Transaction（事务）它是单线程，短生命周期的对象，它用于界定具体物理事务的范围。它作为一个抽象 API 接口用于隔离各种应用与底层的事务系统（JDBC, JTA,CORBA……）。</p>
+<h4 id="3-1、补充：事物有啥特性？"><a href="#3-1、补充：事物有啥特性？" class="headerlink" title="3.1、补充：事物有啥特性？"></a>3.1、补充：事物有啥特性？</h4><p>答：事务是恢复和并发控制的基本单位。</p>
 <p>事务应该具有4个属性：原子性、一致性、隔离性、持久性。这四个属性通常称为<strong>ACID特性</strong>。</p>
 <p>原子性（atomicity）。一个事务是一个不可分割的工作单位，事务中包括的诸操作要么都做，要么都不做。</p>
 <p>一致性（consistency）。事务必须是使数据库从一个一致性状态变到另一个一致性状态。一致性与原子性是密切相关的。</p>
 <p>隔离性（isolation）。一个事务的执行不能被其他事务干扰。即一个事务内部的操作及使用的数据对并发的其他事务是隔离的，并发执行的各个事务之间不能互相干扰。</p>
 <p>持久性（durability）。持续性也称永久性（permanence），指一个事务一旦提交，它对数据库中数据的改变就应该是永久性的。接下来的其他操作或故障不应该对其有任何影响。</p>
-<hr>
-<h5 id="2-4-Contextual-sessions-session"><a href="#2-4-Contextual-sessions-session" class="headerlink" title="2.4 Contextual sessions (session)"></a>2.4 Contextual sessions (session)</h5><h3 id="3、Domain-Model-（域模型）"><a href="#3、Domain-Model-（域模型）" class="headerlink" title="3、Domain Model （域模型）"></a>3、Domain Model （域模型）</h3><p>术语 domain model（域模型）来自于 data modeling（数据建模）范畴。这个模型最终描述的是你要解决的 problem domain（问题域）。有时你听说过术语”持久化类（persistent classes）”。归根结底，应用程序的 domain model（域模型）是实体关系模型（ORM）中的核心角色。他拼装你想要 map（映射）的类。Hibernate 可以非常好的工作于POJO（Plain Old Java Object）或者 JavaBean 开发模式中。然而，这些规范都不是强制要求。事实上，Hibernate 没在限制持久层对象的特质。你可以用其它方式表示 domain model（域模型）（比如用 java.util.Map 的树状实例）。<br>*注意<br>尽管 Hibernate 没有将这些规范看作是强制要求，但是 JPA 是要求的。因此如果你的应用有向 JPA 移植的可能性，你最好遵守严格的 POJO 模型。我们将指出在哪里涉及到这些问题。本章将阐述 domain model（域模型）的特征，然而，不讨论 domain model（域模型）的全部内容。这是一个巨大的主题，它有自己的专用手册。参考</p>
-<h5 id="3-1-POJO类还有规范？"><a href="#3-1-POJO类还有规范？" class="headerlink" title="3.1 POJO类还有规范？"></a>3.1 POJO类还有规范？</h5><h6 id="1）实现无参构造函数（public-或protected）"><a href="#1）实现无参构造函数（public-或protected）" class="headerlink" title="1）实现无参构造函数（public 或protected）"></a>1）实现无参构造函数（public 或protected）</h6><h6 id="2）提供-identifier（标识）属性"><a href="#2）提供-identifier（标识）属性" class="headerlink" title="2）提供  identifier（标识）属性"></a>2）提供  identifier（标识）属性</h6><p>*注意<br>以前这被认为是可选的。然而在实体上不定义主键将被认为是过时的。在未来的版本中，将强制要求定义标识属性。标识属性不一指要求是物理映射定义的主键列。然而，它一定映射到可以唯一标识一行的列上（译者注：唯一标识列）。我们建议你在持久化类中声明一个统一命名的标识属性，你可以使用 nullable（可空的）类型（即：非 JAVA 基本数据类型）。</p>
-<h6 id="3）使用非-final-类"><a href="#3）使用非-final-类" class="headerlink" title="3）使用非 final 类"></a>3）使用非 final 类</h6><p>*解释</p>
+<h2 id="Domain-Model-（域模型）"><a href="#Domain-Model-（域模型）" class="headerlink" title="Domain Model （域模型）"></a>Domain Model （域模型）</h2><h3 id="1、相关概念"><a href="#1、相关概念" class="headerlink" title="1、相关概念"></a>1、相关概念</h3><p>术语 domain model（域模型）来自于 data modeling（数据建模）范畴。这个模型最终描述的是你要解决的 problem domain（问题域）。有时你听说过术语”持久化类（persistent classes）”。归根结底，应用程序的 domain model（域模型）是实体关系模型（ORM）中的核心角色。他拼装你想要 map（映射）的类。Hibernate 可以非常好的工作于POJO（Plain Old Java Object）或者 JavaBean 开发模式中。然而，这些规范都不是强制要求。事实上，Hibernate 没在限制持久层对象的特质。你可以用其它方式表示 domain model（域模型）（比如用 java.util.Map 的树状实例）。<br>*注意<br>尽管 Hibernate 没有将这些规范看作是强制要求，但是 JPA 是要求的。因此如果你的应用有向 JPA 移植的可能性，你最好遵守严格的 POJO 模型。我们将指出在哪里涉及到这些问题。本章将阐述 domain model（域模型）的特征，然而，不讨论 domain model（域模型）的全部内容。这是一个巨大的主题，它有自己的专用手册。参考</p>
+<h3 id="2、POJO类还有规范？"><a href="#2、POJO类还有规范？" class="headerlink" title="2、POJO类还有规范？"></a>2、POJO类还有规范？</h3><blockquote>
+<p>1）实现无参构造函数（public 或protected）</p>
+<p>2）提供  identifier（标识）属性</p>
+<p>*注意<br>以前这被认为是可选的。然而在实体上不定义主键将被认为是过时的。在未来的版本中，将强制要求定义标识属性。标识属性不一指要求是物理映射定义的主键列。然而，它一定映射到可以唯一标识一行的列上（译者注：唯一标识列）。我们建议你在持久化类中声明一个统一命名的标识属性，你可以使用 nullable（可空的）类型（即：非 JAVA 基本数据类型）。</p>
+<p>3）使用非 final 类</p>
+<p>*解释</p>
 <p>Hibernate 核心功能是通过运行时代理可以懒加载（lazy load）实体数据。这个功能依赖于实体类是非终态类（final）或者 实现一个声明过所有属性 get与 set 方法的接口。你可以坚持用终态类（final）并且不实现接口。但是你将不能使用代理进行懒加载关联抓取，并且这将限制你系统的优化选项。</p>
-<h6 id="4）为持久化属性声明-get-set-方法"><a href="#4）为持久化属性声明-get-set-方法" class="headerlink" title="4）为持久化属性声明 get,set 方法"></a>4）为持久化属性声明 get,set 方法</h6><p>*解释</p>
+<p>4）为持久化属性声明 get,set 方法</p>
+<p>*解释</p>
 <p>虽然不是必须的，我们建议你遵守 JavaBean 规范来声明实体持久化属性的get,set 方法。虽然 Hibernate 是可以直接访问实体的成员变量（field）。这此属性（成员变量，set,get 方法）不一定声明为 public。Hibernate 可以<br>处理各种可见性（public, protected, package（译者注：默认属性）,private）的属性。</p>
-<h6 id="5）实现-equals-与-hashCode-方法-为何麻烦不断？"><a href="#5）实现-equals-与-hashCode-方法-为何麻烦不断？" class="headerlink" title="5）实现 equals() 与 hashCode() 方法 为何麻烦不断？"></a>5）实现 equals() 与 hashCode() 方法 为何麻烦不断？</h6><p>一般作为类中的标识类型，在其 id 值上必须实现 equals/hashCode 方法。有两种情况不一定要实现 equals/hashCode 方法，一是：当用户类使用联合主键时；二是：下面讨论的一些特殊情况。用户定义的类使用了复合键使用这种类用作定义用户类型的复合主键。除了以上这种情况以及下面讨论的很少一些情况下，你不必一定实现 equals/hashCode 方法</p>
-<p>*Hibernate 在一个特定内部会话中保证数据行的 ID 与 JAVA 的 ID 对等的关系。因此如果你在一个会话中请求一个特定对象多次，事实上你将得到同一个 实例 </p>
-<p>*举个栗子1-1【多次请求同一对象】</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Session session = ...;</span><br><span class="line">Person p1 = session.get(Person.class, <span class="number">1</span>);</span><br><span class="line">Person p2 = session.get(Person.class, <span class="number">1</span>);</span><br><span class="line"><span class="comment">//assert p1 == p2; 的结果为 true</span></span><br></pre></td></tr></table></figure>
+<p>5）实现 equals() 与 hashCode() 方法 为何麻烦不断？</p>
+<p>一般作为类中的标识类型，在其 id 值上必须实现 equals/hashCode 方法。有两种情况不一定要实现 equals/hashCode 方法，一是：当用户类使用联合主键时；二是：下面讨论的一些特殊情况。用户定义的类使用了复合键使用这种类用作定义用户类型的复合主键。除了以上这种情况以及下面讨论的很少一些情况下，你不必一定实现 equals/hashCode 方法</p>
+</blockquote>
+<h3 id="3、补充（1）"><a href="#3、补充（1）" class="headerlink" title="3、补充（1）"></a>3、补充（1）</h3><p>Hibernate 在一个特定内部会话中保证数据行的 ID 与 JAVA 的 ID 对等的关系。因此如果你在一个会话中请求一个特定对象多次，事实上你将得到同一个 实例 </p>
+<h4 id="举个栗子1-1【多次请求同一对象】"><a href="#举个栗子1-1【多次请求同一对象】" class="headerlink" title="*举个栗子1-1【多次请求同一对象】"></a>*举个栗子1-1【多次请求同一对象】</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Session session = ...;</span><br><span class="line">Person p1 = session.get(Person.class, <span class="number">1</span>);</span><br><span class="line">Person p2 = session.get(Person.class, <span class="number">1</span>);</span><br><span class="line"><span class="comment">//assert p1 == p2; 的结果为 true</span></span><br></pre></td></tr></table></figure>
 
-<p>*举个栗子1-2 【Set 在会话作用域中的用法】</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Session session = ...;</span><br><span class="line">Club club = session.get(Club.class, <span class="number">1</span>);</span><br><span class="line">Person p1 = session.get(Person.class, <span class="number">1</span>);</span><br><span class="line">Person p2 = session.get(Person.class, <span class="number">1</span>);</span><br><span class="line">club.getMembers().add( p1 );</span><br><span class="line">club.getMembers().add( p2 );</span><br><span class="line"><span class="comment">// 以下计算结果为 true,也就是只加入了一个对象</span></span><br><span class="line"><span class="keyword">assert</span> club.getMembers.size() == <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+<h4 id="举个栗子1-2-【Set-在会话作用域中的用法】"><a href="#举个栗子1-2-【Set-在会话作用域中的用法】" class="headerlink" title="*举个栗子1-2 【Set 在会话作用域中的用法】"></a>*举个栗子1-2 【Set 在会话作用域中的用法】</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Session session = ...;</span><br><span class="line">Club club = session.get(Club.class, <span class="number">1</span>);</span><br><span class="line">Person p1 = session.get(Person.class, <span class="number">1</span>);</span><br><span class="line">Person p2 = session.get(Person.class, <span class="number">1</span>);</span><br><span class="line">club.getMembers().add( p1 );</span><br><span class="line">club.getMembers().add( p2 );</span><br><span class="line"><span class="comment">// 以下计算结果为 true,也就是只加入了一个对象</span></span><br><span class="line"><span class="keyword">assert</span> club.getMembers.size() == <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
 
-<p>*举个栗子1-3【混合会话】</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">Session session1 = ...;</span><br><span class="line">Session session2 = ...;</span><br><span class="line">Person p1 = session1.get(Person.class, <span class="number">1</span>);</span><br><span class="line">Person p2 = session2.get(Person.class, <span class="number">1</span>);</span><br><span class="line"><span class="comment">//计算结果为 false</span></span><br><span class="line"><span class="keyword">assert</span> p1 == p2;</span><br><span class="line">Session session1 = ...;</span><br><span class="line">Session session2 = ...;</span><br><span class="line">Club club = session1.get(Club.class, <span class="number">1</span> );</span><br><span class="line">Person p1 = session1.get(Person.class, <span class="number">1</span>);</span><br><span class="line">Person p2 = session2.get(Person.class, <span class="number">1</span>);</span><br><span class="line">club.getMembers().add(p1);</span><br><span class="line">club.getMembers().add(p2);</span><br><span class="line"><span class="comment">//计算结果取决于我们的equals()以及hashCode() 方法的定义方式</span></span><br><span class="line"><span class="keyword">assert</span> club.getMembers.size() == <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+<h4 id="举个栗子1-3【混合会话】"><a href="#举个栗子1-3【混合会话】" class="headerlink" title="*举个栗子1-3【混合会话】"></a>*举个栗子1-3【混合会话】</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">Session session1 = ...;</span><br><span class="line">Session session2 = ...;</span><br><span class="line">Person p1 = session1.get(Person.class, <span class="number">1</span>);</span><br><span class="line">Person p2 = session2.get(Person.class, <span class="number">1</span>);</span><br><span class="line"><span class="comment">//计算结果为 false</span></span><br><span class="line"><span class="keyword">assert</span> p1 == p2;</span><br><span class="line">Session session1 = ...;</span><br><span class="line">Session session2 = ...;</span><br><span class="line">Club club = session1.get(Club.class, <span class="number">1</span> );</span><br><span class="line">Person p1 = session1.get(Person.class, <span class="number">1</span>);</span><br><span class="line">Person p2 = session2.get(Person.class, <span class="number">1</span>);</span><br><span class="line">club.getMembers().add(p1);</span><br><span class="line">club.getMembers().add(p2);</span><br><span class="line"><span class="comment">//计算结果取决于我们的equals()以及hashCode() 方法的定义方式</span></span><br><span class="line"><span class="keyword">assert</span> club.getMembers.size() == <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
 
-<h6 id="6）实体的三种状态"><a href="#6）实体的三种状态" class="headerlink" title="6）实体的三种状态"></a>6）实体的三种状态</h6><p>Hibernate有三种实体状态，有瞬时态(transiant),持久态(persistent),游离态(detached)。 简单理解就是,瞬时态指的是刚New 新建的一个对象，没有放在Session时，也没有存储在数据库中。 持久态，指这个对象存储在数据库中，并且存在于Session会话中。 而游离态指的是，这个对象存储在数据库中，但已经不存在于Session会话中。</p>
+<h3 id="4、补充（2）实体的三种状态"><a href="#4、补充（2）实体的三种状态" class="headerlink" title="4、补充（2）实体的三种状态"></a>4、补充（2）实体的三种状态</h3><p>Hibernate有三种实体状态，有瞬时态(transiant),持久态(persistent),游离态(detached)。 简单理解就是,瞬时态指的是刚New 新建的一个对象，没有放在Session时，也没有存储在数据库中。 持久态，指这个对象存储在数据库中，并且存在于Session会话中。 而游离态指的是，这个对象存储在数据库中，但已经不存在于Session会话中。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">   <span class="comment">/*</span></span><br><span class="line"><span class="comment"> * 简单举例，三种状态，瞬时态，持久态，游离态的相关说明。</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testA</span><span class="params">()</span></span>&#123;</span><br><span class="line">	Session session=HibernateUtil.getSession();</span><br><span class="line">	Transaction transaction=session.beginTransaction();</span><br><span class="line">	User user=<span class="keyword">new</span> User(); <span class="comment">//是瞬时态</span></span><br><span class="line">	user.setUserName(<span class="string">"两个蝴蝶飞"</span>);<span class="comment">//瞬时态</span></span><br><span class="line">	user.setAge(<span class="number">24</span>);</span><br><span class="line">	user.setSex(<span class="string">"男"</span>);</span><br><span class="line">	user.setDescription(<span class="string">"一个迷途知返的程序员"</span>); <span class="comment">//瞬时态</span></span><br><span class="line">	session.save(user); <span class="comment">//session方法之后,user就是持久态</span></span><br><span class="line">	transaction.commit();</span><br><span class="line">	System.out.println(<span class="string">"持久态描述为:"</span>+user.getDescription());<span class="comment">//持久态</span></span><br><span class="line">	session.close(); <span class="comment">//关闭会话后 user就是游离态</span></span><br><span class="line">	System.out.println(<span class="string">"游离态描述:"</span>+user.getDescription());<span class="comment">//游离态</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h6 id="7-Dynamic-动态-模型"><a href="#7-Dynamic-动态-模型" class="headerlink" title="7)Dynamic( 动态) 模型"></a>7)Dynamic( 动态) 模型</h6><p>*解释<br>持久化实体不一定用 POJO/JavaBean 这一种方式表示。Hibernate 也支持动态模型（用 Map 或者运行时 Map）。用这种方法，你不用改写持久化类，只是用映射文件来搞定。</p>
-<p>*举个栗子1-1【 使用动态域模型】</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">Session s = openSession();</span><br><span class="line">Transaction tx = s.beginTransaction();</span><br><span class="line"><span class="comment">// 建立一个 custormer 实体</span></span><br><span class="line">Map david = <span class="keyword">new</span> HashMap();</span><br><span class="line">david.put(<span class="string">"name"</span>, <span class="string">"David"</span>);</span><br><span class="line"><span class="comment">// 建立一个 organization 实体</span></span><br><span class="line">Map foobar = <span class="keyword">new</span> HashMap();</span><br><span class="line">foobar.put(<span class="string">"name"</span>, <span class="string">"Foobar Inc."</span>);</span><br><span class="line"><span class="comment">// 连接两者</span></span><br><span class="line">david.put(<span class="string">"organization"</span>, foobar);</span><br><span class="line"><span class="comment">// 保存两者</span></span><br><span class="line">s.save(<span class="string">"Customer"</span>, david);</span><br><span class="line">s.save(<span class="string">"Organization"</span>, foobar);</span><br><span class="line">tx.commit();</span><br><span class="line">s.close();</span><br></pre></td></tr></table></figure>
+<h3 id="4、补充（3）Dynamic-动态-模型"><a href="#4、补充（3）Dynamic-动态-模型" class="headerlink" title="4、补充（3）Dynamic( 动态) 模型"></a>4、补充（3）Dynamic( 动态) 模型</h3><p>持久化实体不一定用 POJO/JavaBean 这一种方式表示。Hibernate 也支持动态模型（用 Map 或者运行时 Map）。用这种方法，你不用改写持久化类，只是用映射文件来搞定。</p>
+<h4 id="举个栗子1-1【-使用动态域模型】"><a href="#举个栗子1-1【-使用动态域模型】" class="headerlink" title="*举个栗子1-1【 使用动态域模型】"></a>*举个栗子1-1【 使用动态域模型】</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">Session s = openSession();</span><br><span class="line">Transaction tx = s.beginTransaction();</span><br><span class="line"><span class="comment">// 建立一个 custormer 实体</span></span><br><span class="line">Map david = <span class="keyword">new</span> HashMap();</span><br><span class="line">david.put(<span class="string">"name"</span>, <span class="string">"David"</span>);</span><br><span class="line"><span class="comment">// 建立一个 organization 实体</span></span><br><span class="line">Map foobar = <span class="keyword">new</span> HashMap();</span><br><span class="line">foobar.put(<span class="string">"name"</span>, <span class="string">"Foobar Inc."</span>);</span><br><span class="line"><span class="comment">// 连接两者</span></span><br><span class="line">david.put(<span class="string">"organization"</span>, foobar);</span><br><span class="line"><span class="comment">// 保存两者</span></span><br><span class="line">s.save(<span class="string">"Customer"</span>, david);</span><br><span class="line">s.save(<span class="string">"Organization"</span>, foobar);</span><br><span class="line">tx.commit();</span><br><span class="line">s.close();</span><br></pre></td></tr></table></figure>
 
 <p>进度P22</p>
 
@@ -440,9 +447,9 @@ height:50vh;
     
         <div class="license-wrapper">
             <p>Author：<a href="http://none">wtq</a>
-            <p>原文链接：<a href="http://none/2019/08/12/Hibernate-01/">http://none/2019/08/12/Hibernate-01/</a>
-            <p>发表日期：<a href="http://none/2019/08/12/Hibernate-01/">August 12th 2019, 5:15:16 pm</a>
-            <p>更新日期：<a href="http://none/2019/08/12/Hibernate-01/">August 21st 2019, 5:53:49 pm</a>
+            <p>原文链接：<a href="http://none/2019/08/07/Hibernate-01/">http://none/2019/08/07/Hibernate-01/</a>
+            <p>发表日期：<a href="http://none/2019/08/07/Hibernate-01/">August 7th 2019, 12:00:00 am</a>
+            <p>更新日期：<a href="http://none/2019/08/07/Hibernate-01/">August 26th 2019, 5:09:47 pm</a>
             <p>版权声明：本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
         </div>
     
@@ -451,17 +458,12 @@ height:50vh;
         <li class="next">
             
                 <div class="nextSlogan">Next Post</div>
-                <a href= "/2019/08/12/SpringBoot学习-02/" title= "SpringBoot-02-Web工程">
-                    <div class="nextTitle">SpringBoot-02-Web工程</div>
+                <a href= "/2019/08/07/first/" title= "Hexo常用操作">
+                    <div class="nextTitle">Hexo常用操作</div>
                 </a>
             
         </li>
         <li class="previous">
-            
-                <div class="prevSlogan">Previous Post</div>
-                <a href= "/2019/08/08/SpringBoot学习-01/" title= "SpringBoot-01-Web工程">
-                    <div class="prevTitle">SpringBoot-01-Web工程</div>
-                </a>
             
         </li>
     </ul>
@@ -570,7 +572,7 @@ top:50vh;
         <div class="toc-catalog">
             <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
         </div>
-        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、问题：Hibernate干啥的？"><span class="toc-number">1.</span> <span class="toc-text">1、问题：Hibernate干啥的？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、相关概念"><span class="toc-number">2.</span> <span class="toc-text">2、相关概念</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#2-1-SessionFactory（会话工厂）-org-hibernate-SessionFactory-是个啥？"><span class="toc-number">2.0.1.</span> <span class="toc-text">2.1 SessionFactory（会话工厂）(org.hibernate.SessionFactory) 是个啥？</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-2-Session（会话）-org-hibernate-Session-是个啥？"><span class="toc-number">2.0.2.</span> <span class="toc-text">2.2 Session（会话）(org.hibernate.Session) 是个啥？</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-3-Transaction（事务）-org-hibernate-Transaction-是个啥？"><span class="toc-number">2.0.3.</span> <span class="toc-text">2.3 Transaction（事务）(org.hibernate.Transaction)  是个啥？</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-4-Contextual-sessions-session"><span class="toc-number">2.0.4.</span> <span class="toc-text">2.4 Contextual sessions (session)</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3、Domain-Model-（域模型）"><span class="toc-number">3.</span> <span class="toc-text">3、Domain Model （域模型）</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#3-1-POJO类还有规范？"><span class="toc-number">3.0.1.</span> <span class="toc-text">3.1 POJO类还有规范？</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#1）实现无参构造函数（public-或protected）"><span class="toc-number">3.0.1.1.</span> <span class="toc-text">1）实现无参构造函数（public 或protected）</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#2）提供-identifier（标识）属性"><span class="toc-number">3.0.1.2.</span> <span class="toc-text">2）提供  identifier（标识）属性</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#3）使用非-final-类"><span class="toc-number">3.0.1.3.</span> <span class="toc-text">3）使用非 final 类</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#4）为持久化属性声明-get-set-方法"><span class="toc-number">3.0.1.4.</span> <span class="toc-text">4）为持久化属性声明 get,set 方法</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#5）实现-equals-与-hashCode-方法-为何麻烦不断？"><span class="toc-number">3.0.1.5.</span> <span class="toc-text">5）实现 equals() 与 hashCode() 方法 为何麻烦不断？</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#6）实体的三种状态"><span class="toc-number">3.0.1.6.</span> <span class="toc-text">6）实体的三种状态</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#7-Dynamic-动态-模型"><span class="toc-number">3.0.1.7.</span> <span class="toc-text">7)Dynamic( 动态) 模型</span></a></li></ol></li></ol></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Hibernate干啥的？"><span class="toc-number">1.</span> <span class="toc-text">Hibernate干啥的？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#相关概念"><span class="toc-number">2.</span> <span class="toc-text">相关概念</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、SessionFactory（会话工厂）-是个啥？"><span class="toc-number">2.1.</span> <span class="toc-text">1、SessionFactory（会话工厂） 是个啥？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、Session（会话）-是个啥？"><span class="toc-number">2.2.</span> <span class="toc-text">2、Session（会话） 是个啥？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3、Transaction（事务-）是个啥？"><span class="toc-number">2.3.</span> <span class="toc-text">3、Transaction（事务 ）是个啥？</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1、补充：事物有啥特性？"><span class="toc-number">2.3.1.</span> <span class="toc-text">3.1、补充：事物有啥特性？</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Domain-Model-（域模型）"><span class="toc-number">3.</span> <span class="toc-text">Domain Model （域模型）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、相关概念"><span class="toc-number">3.1.</span> <span class="toc-text">1、相关概念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、POJO类还有规范？"><span class="toc-number">3.2.</span> <span class="toc-text">2、POJO类还有规范？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3、补充（1）"><span class="toc-number">3.3.</span> <span class="toc-text">3、补充（1）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#举个栗子1-1【多次请求同一对象】"><span class="toc-number">3.3.1.</span> <span class="toc-text">*举个栗子1-1【多次请求同一对象】</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#举个栗子1-2-【Set-在会话作用域中的用法】"><span class="toc-number">3.3.2.</span> <span class="toc-text">*举个栗子1-2 【Set 在会话作用域中的用法】</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#举个栗子1-3【混合会话】"><span class="toc-number">3.3.3.</span> <span class="toc-text">*举个栗子1-3【混合会话】</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4、补充（2）实体的三种状态"><span class="toc-number">3.4.</span> <span class="toc-text">4、补充（2）实体的三种状态</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4、补充（3）Dynamic-动态-模型"><span class="toc-number">3.5.</span> <span class="toc-text">4、补充（3）Dynamic( 动态) 模型</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#举个栗子1-1【-使用动态域模型】"><span class="toc-number">3.5.1.</span> <span class="toc-text">*举个栗子1-1【 使用动态域模型】</span></a></li></ol></li></ol></li></ol>
     </div>
     
     <div class="back-top iconfont-archer">&#xe639;</div>
@@ -728,36 +730,9 @@ top:50vh;
     
     
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 12
+        Total : 13
         </div>
         <!-- search  -->
         
@@ -773,31 +748,13 @@ top:50vh;
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">08/16</span><a class="archive-post-title" href= "/2019/08/16/SpringCloud学习-01/" >SpringCloud-01-配置中心</a>
+            <span class="archive-post-date">08/22</span><a class="archive-post-title" href= "/2019/08/22/SpringCloud学习-05/" >SpringCloud-05-Hystrix</a>
         </li>
-    
-    
-    
-    
-    
-        </ul>
-    
-    <div class="archive-year"> Invalid date </div>
-    <ul class="year-list">
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2019/08/19/SpringCloud学习-02/" >SpringCloud-02-Eureka</a>
+            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2019/08/20/SpringCloud学习-04/" >SpringCloud-04-Feign</a>
         </li>
-    
-    
-    
-    
-    
-        </ul>
-    
-    <div class="archive-year"> 2019 </div>
-    <ul class="year-list">
     
     
         <li class="archive-post-item">
@@ -805,99 +762,71 @@ top:50vh;
         </li>
     
     
-    
-    
-    
-        </ul>
-    
-    <div class="archive-year"> Invalid date </div>
-    <ul class="year-list">
-    
-    
         <li class="archive-post-item">
-            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2019/08/20/SpringCloud学习-04/" >SpringCloud-04-Feign</a>
-        </li>
-    
-    
-    
-    
-    
-        </ul>
-    
-    <div class="archive-year"> Invalid date </div>
-    <ul class="year-list">
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2019/08/21/SpringCloud学习-05/" >SpringCloud-05-Hystrix</a>
-        </li>
-    
-    
-    
-    
-    
-        </ul>
-    
-    <div class="archive-year"> 2019 </div>
-    <ul class="year-list">
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2019/08/20/SpringCloud学习-03/" >SpringCloud-03-Ribbon</a>
+            <span class="archive-post-date">08/16</span><a class="archive-post-title" href= "/2019/08/16/SpringCloud学习-03/" >SpringCloud-03-Ribbon</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">08/16</span><a class="archive-post-title" href= "/2019/08/16/SpringBoot学习-04/" >SpringBoot-04-JDBC</a>
+            <span class="archive-post-date">08/14</span><a class="archive-post-title" href= "/2019/08/14/SpringCloud学习-02/" >SpringCloud-02-Eureka</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">08/14</span><a class="archive-post-title" href= "/2019/08/14/SpringBoot学习-03/" >SpringBoot-03-servlet容器</a>
+            <span class="archive-post-date">08/13</span><a class="archive-post-title" href= "/2019/08/13/SpringCloud学习-01/" >SpringCloud-01-配置中心</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">08/12</span><a class="archive-post-title" href= "/2019/08/12/SpringBoot学习-02/" >SpringBoot-02-Web工程</a>
-        </li>
-    
-    
-    
-    
-    
-        </ul>
-    
-    <div class="archive-year"> Invalid date </div>
-    <ul class="year-list">
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2019/08/08/SpringBoot学习-01/" >SpringBoot-01-Web工程</a>
-        </li>
-    
-    
-    
-    
-    
-        </ul>
-    
-    <div class="archive-year"> 2019 </div>
-    <ul class="year-list">
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">08/12</span><a class="archive-post-title" href= "/2019/08/12/Hibernate-01/" >Hibernate-01</a>
+            <span class="archive-post-date">08/13</span><a class="archive-post-title" href= "/2019/08/13/Maven/" >Maven-01</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">08/08</span><a class="archive-post-title" href= "/2019/08/08/first/" >开山篇，hexo常用操作&注意事项</a>
+            <span class="archive-post-date">08/12</span><a class="archive-post-title" href= "/2019/08/12/SpringBoot学习-04/" >SpringBoot-04-JDBC</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/10</span><a class="archive-post-title" href= "/2019/08/10/SpringBoot学习-03/" >SpringBoot-03-servlet容器</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/09</span><a class="archive-post-title" href= "/2019/08/09/SpringBoot学习-02/" >SpringBoot-02-Web工程</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/08</span><a class="archive-post-title" href= "/2019/08/08/SpringBoot学习-01/" >SpringBoot-01-Web工程</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/07</span><a class="archive-post-title" href= "/2019/08/07/Hibernate-01/" >Hibernate-01</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/07</span><a class="archive-post-title" href= "/2019/08/07/first/" >Hexo常用操作</a>
         </li>
     
     </div>
   </div>
         <div class="sidebar-panel-tags">
     <div class="sidebar-tags-name">
+    
+        <span class="sidebar-tag-name" data-tags="Java基础"><span class="iconfont-archer">&#xe606;</span>Java基础</span>
+    
+        <span class="sidebar-tag-name" data-tags="Hexo"><span class="iconfont-archer">&#xe606;</span>Hexo</span>
+    
+        <span class="sidebar-tag-name" data-tags="Hibernate"><span class="iconfont-archer">&#xe606;</span>Hibernate</span>
+    
+        <span class="sidebar-tag-name" data-tags="SpringBoot-WEB"><span class="iconfont-archer">&#xe606;</span>SpringBoot-WEB</span>
+    
+        <span class="sidebar-tag-name" data-tags="SpringCloud"><span class="iconfont-archer">&#xe606;</span>SpringCloud</span>
+    
+        <span class="sidebar-tag-name" data-tags="gitHub"><span class="iconfont-archer">&#xe606;</span>gitHub</span>
     
     </div>
     <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
