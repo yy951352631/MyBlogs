@@ -346,282 +346,23 @@
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2019/08/14/SpringCloud学习-02/" >
+        <a class="abstract-title" href = "/2019/08/28/规范-01/" >
             
-                <span>SpringCloud-02-Eureka</span>
+                <span>Java基础-01-Optional</span>
         </a>
         <div class="abstract-content">
-            SpringCloud-Eureka1、问题：Eureka是个啥？是一个服务发现组件。
-1.1 图解：
-
-1.2 运作流程
-1）当服务提供者启动时，就会将其端口号以及IP地址注册到服务发现组件。
-2） 服务消费者也需要注册到服务发组件中。（服务消费者也会充当服务提供者 ）
-3）服务消费者首先调用我们的服务发现组件，获取到他想要的服务（ip和端口），进而调用我们的服务提供者相应的服务。
-*细节：
-1）服务消费者会将使用过的服务相关信息缓存到本地，因而即便服务发现组件挂掉，我们的服务消费者仍然可以在提供者缓存列表中获取相应服务。
-2） 服务发现组件有多台，保证其可靠性。
-3） 服务提供者如果...
+            规范
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
             <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/14</span>
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/28</span>
             </div>
             <!-- tags  -->
             
             <div class= abstract-tags >
     
-        <a class="post-tag" href="javascript:void(0);" data-tags = "SpringCloud">SpringCloud</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/08/13/Maven/" >
-            
-                <span>Maven-01</span>
-        </a>
-        <div class="abstract-content">
-            使用Maven进行项目开发1、什么是Maven？如今我们构建一个项目需要用到很多第三方的类库，如写一个使用Spring的Web项目就需要引入大量的jar包。一个项目Jar包的数量之多往往让我们瞠目结舌，并且Jar包之间的关系错综复杂，一个Jar包往往又会引用其他Jar包，缺少任何一个Jar包都会导致项目编译失败。
-以往开发项目时，程序员往往需要花较多的精力在引用Jar包搭建项目环境上，而这一项工作尤为艰难，少一个Jar包、多一个Jar包往往会报一些让人摸不着头脑的异常。
-而Maven就是一款帮助程序员构建项目的工具，我们只需要告诉Maven需要哪些Jar 包，它会帮助我们下载所有的Jar...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/13</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "Maven">Maven</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/08/13/SpringCloud学习-01/" >
-            
-                <span>SpringCloud-01-配置中心</span>
-        </a>
-        <div class="abstract-content">
-            SpringCloud配置中心1、问题：SpringCloud配置中心为何物？1.1 背景&amp;概念：微服务意味着要将单体应用中的业务拆分成一个个子服务，每个服务的粒度相对较小，因此系统中会出现大量的服务。由于每个服务都需要必要的配置信息才能运行，所以一套集中式的、动态的配置管理设施是必不可少的。SpringCloud提供了ConfigServer来解决这个问题，我们每一个微服务自己带着一个application.yml，上百个配置文件的管理，使得我们分身乏术，运维工程师心态爆炸。因而SpringCloud Config为微服务架构中的微服务提供集中化的外部配置支持，配置服务器为各个...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/13</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "SpringCloud">SpringCloud</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/08/12/SpringBoot学习-04/" >
-            
-                <span>SpringBoot-04-JDBC</span>
-        </a>
-        <div class="abstract-content">
-            使用SpringBoot进行数据库操作1、问题：如何使用SpringBoot进行JDBC操作1）创建项目，pom文件添加依赖如下
-12345678910111213141516171819202122232425262728&lt;dependencies&gt;    &lt;dependency&gt;        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;        &lt;artifactId&gt;spring-boot-starter-jdbc&lt;/artifactId&gt;    &lt;/de...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/12</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "SpringBoot-WEB">SpringBoot-WEB</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/08/10/SpringBoot学习-03/" >
-            
-                <span>SpringBoot-03-servlet容器</span>
-        </a>
-        <div class="abstract-content">
-            使用SpringBoot开发Web工程1、问题：如何在SpringBoot中注册使用servlet容器三大组件*SpringBoot默认使用Tomcat作为嵌入式的servlet容器，可观察pom文件依赖树
-1spring-boot-starter-web  -&gt;  spring-boot-starter-tomcat
-
-1.如何在SpringBoot使用servlet？1）编写我们的servlet 继承HttpServlet如下
-1234567891011public class MyServlet extends HttpServlet &#123;//处理Get请求@Over...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/10</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "SpringBoot-WEB">SpringBoot-WEB</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/08/09/SpringBoot学习-02/" >
-            
-                <span>SpringBoot-02-Web工程</span>
-        </a>
-        <div class="abstract-content">
-            使用SpringBoot开发Web工程1、问题：如何使用Rest风格修改一个pojo类的信息1.1 构建信息回填页面（声明：一下操作基于SpringBoot以及themleaf模板引擎）1）编写我们的Controller类，将待修改的entity信息以及必要的下拉框信息等传递给修改页面
-12345678910//来到我们的修改员工页面@GetMapping(value = "/emp/&#123;id&#125;")    public String toEditPage(@PathVariable("id") Integer id, Model model) &#123;    //显...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/09</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "SpringBoot-WEB">SpringBoot-WEB</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/08/08/SpringBoot学习-01/" >
-            
-                <span>SpringBoot-01-Web工程</span>
-        </a>
-        <div class="abstract-content">
-            使用SpringBoot开发Web工程1、问题：经过视图解析器转发后，我们的页面样式失效？1.1 成因：css样式以及js引入的路径为相对路径，经过转发后根路径发生变化，导致样式文件找不到从而引发样式失效的问题。
-1.2 解决：
-1.2.1 将我们的外部引入文件路径修改为如下
-12&lt;link href="&lt;%=path %&gt;/source/bookshop.css" rel="stylesheet" type="text/css"&gt;//这里的path即为 request.getContextPath()
-
-1.2.2 将我们的转发改成为redirect（重定向）方...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/08</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "SpringBoot-WEB">SpringBoot-WEB</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/08/07/first/" >
-            
-                <span>Hexo常用操作</span>
-        </a>
-        <div class="abstract-content">
-            1.在GitHub上创建仓库，格式必须为：12你的GitHub账户.github.io如：zhangSan_git.github.io
-
-2.在命令行进入blog安装目录，开始上传三步曲123hexo clean #清除部署缓存hexo g -&gt; hexo generate #生成静态页面至public目录hexo d -&gt; hexo deploy #将.deploy目录部署到GitHub
-
-3.关于主题安装注意事项3.1  –depth=1 命令123451)问题：当项目过大时，git clone时会出现error: RPC failed; HTTP 504 curl 22...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/07</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "Hexo">Hexo</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/08/07/Hibernate-01/" >
-            
-                <span>Hibernate-01</span>
-        </a>
-        <div class="abstract-content">
-            Hibernate干啥的？答：Hibernate 作为一个 ORM 解决方案，实际上位于 java 应用与关系数据库之间。Hibernate 的设计目标是减少工程中95％的 SQL 与 JDBC 操作。当然还有其它的数据持久化解决方案。但是Hibernate 与其它方案不同在于它不阻断您使用强大的 SQL 与 JDBC，它只是希望您将更多的精力用于关系设计与业务逻辑上。Hibernate 可能不是最好的 data-centric applications（以数据为中心应用程序）的解决方案，它只是用存储过程来实现数据库业务逻辑。但是它是一个java 中间层，用于提供面向对象的建模与业务逻辑...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/07</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "Hibernate">Hibernate</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags = "Spring规范">Spring规范</a>
     
 </div>
             
@@ -629,10 +370,6 @@
     </article>
     
     <!-- paginator  -->
-    
-    <nav class="page-nav">
-        <a class="extend prev" rel="prev" href="/archives/2019/">&#60; PREV</a><a class="page-number" href="/archives/2019/">1</a><span class="page-number current">2</span>
-    </nav>
     
 </main>
             <!-- profile -->

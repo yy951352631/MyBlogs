@@ -346,13 +346,120 @@
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2019/08/20/Java基础-01/" >
+        <a class="abstract-title" href = "/2019/08/28/Java基础-01/" >
             
                 <span>Java基础-01-Optional</span>
         </a>
         <div class="abstract-content">
+            Optional的使用引言在文章的开头，先说下NPE问题，NPE问题就是，我们在开发中经常碰到的NullPointerException.假设我们有两个类，他们的UML类图如下图所示在这种情况下，有如下代码
+1user.getAddress().getProvince();
+
+这种写法，在user为null时，是有可能报NullPointerException异常的。为了解决这个问题，于是采用下面的写法
+123456if(user!=null)&#123;    Address address = user.getAddress();    if(address!=null)&#123;...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/28</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "Java基础">Java基础</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2019/08/27/Java基础-02/" >
+            
+                <span>Java基础-01-Predicate</span>
+        </a>
+        <div class="abstract-content">
             //后期整理
-1234567891011121314151617181920@GetMapping(value = "/&#123;cat_id&#125;")//定义我们的服务熔断方法@HystrixCommand(fallbackMethod = "processHystrix_Get")public Optional&lt;Cat&gt; getById(@PathVariable("cat_id") Long cat_id) &#123;    Optional&lt;Cat&gt; cat = serviceImpl.getById(cat_id);    if (!cat.i...
+predicate是java 8中的新特性，java.util.function.Predicate的一个功能接口，可用做lambda表达式的赋值目标。Predicate接口表示采用单个输入并判断返回boolean值的操作；判断的条件可以使用与或非(and,or,negate)等，通过一个断言predicate可以重复利用判断。用例：
+1234567891011121314151617181920212223242526272829303132333435363738394041424344454647package com.demo.pakage;import java....
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/27</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "Java基础">Java基础</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2019/08/20/Java基础-03/" >
+            
+                <span>Java基础-03-JVM</span>
+        </a>
+        <div class="abstract-content">
+            深入理解JVM监控工具JConsole
+jvisualvm
+*类加载1.在Java代码中，类型的加载，连接与初始化和过程都是在程序运行期间完成的（相对于其他语言如c语言，类型是在编译阶段就已经初始化完成了）
+*动态代理：在编辑阶段不存在，在程序运行期间才创建出来的
+加载：将已经存在的字节码文件从磁盘读入到内存当中
+
+查找并加载类的二进制数据
+
+连接：将类与类之间的关系确定好， 对于字节码的一些加载校验操作也是在这一阶段完成的此外，还负责协调类与类之间的调用关系，如：将类与类之间的符号引用转为直接引用
+
+1.验证：确保被加载的类的正确性
+2.准备：为类的静态变量分配内存，并将其初始化为默认...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/20</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "Java基础">Java基础</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2019/08/20/Java基础-04/" >
+            
+                <span>Java基础-03-Lambda</span>
+        </a>
+        <div class="abstract-content">
+            Lambda表达式1，为什么需要Lambda?暂不解释lambda表达式是什么，我们从一个需求一步一步探讨。假如我们目前有一个List，里面的内容是一个Employee类（公司的员工实体类），定义如下：
+12345678public class Employee&#123;    private int id;    private String name;    private int age;    private double salary;    // getter setter toString constructor&#125;
+
+List数据如下
+1234567List&l...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
@@ -605,9 +712,93 @@
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 13
+        Total : 19
         </div>
         <!-- search  -->
         
@@ -623,6 +814,31 @@
     
     
         <li class="archive-post-item">
+            <span class="archive-post-date">08/29</span><a class="archive-post-title" href= "/2019/08/29/Hibernate-02/" >Hibernate-02</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/28</span><a class="archive-post-title" href= "/2019/08/28/规范-01/" >Java基础-01-Optional</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/28</span><a class="archive-post-title" href= "/2019/08/28/Java基础-01/" >Java基础-01-Optional</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/27</span><a class="archive-post-title" href= "/2019/08/27/Java基础-02/" >Java基础-01-Predicate</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/27</span><a class="archive-post-title" href= "/2019/08/27/SpringCloud学习-06/" >SpringCloud-05-Getaway</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
             <span class="archive-post-date">08/22</span><a class="archive-post-title" href= "/2019/08/22/SpringCloud学习-05/" >SpringCloud-05-Hystrix</a>
         </li>
     
@@ -633,7 +849,12 @@
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2019/08/20/Java基础-01/" >Java基础-01-Optional</a>
+            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2019/08/20/Java基础-04/" >Java基础-03-Lambda</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2019/08/20/Java基础-03/" >Java基础-03-JVM</a>
         </li>
     
     
@@ -691,15 +912,17 @@
         <div class="sidebar-panel-tags">
     <div class="sidebar-tags-name">
     
-        <span class="sidebar-tag-name" data-tags="Java基础"><span class="iconfont-archer">&#xe606;</span>Java基础</span>
-    
-        <span class="sidebar-tag-name" data-tags="Hexo"><span class="iconfont-archer">&#xe606;</span>Hexo</span>
-    
         <span class="sidebar-tag-name" data-tags="Hibernate"><span class="iconfont-archer">&#xe606;</span>Hibernate</span>
+    
+        <span class="sidebar-tag-name" data-tags="Java基础"><span class="iconfont-archer">&#xe606;</span>Java基础</span>
     
         <span class="sidebar-tag-name" data-tags="SpringBoot-WEB"><span class="iconfont-archer">&#xe606;</span>SpringBoot-WEB</span>
     
         <span class="sidebar-tag-name" data-tags="SpringCloud"><span class="iconfont-archer">&#xe606;</span>SpringCloud</span>
+    
+        <span class="sidebar-tag-name" data-tags="Hexo"><span class="iconfont-archer">&#xe606;</span>Hexo</span>
+    
+        <span class="sidebar-tag-name" data-tags="Spring规范"><span class="iconfont-archer">&#xe606;</span>Spring规范</span>
     
         <span class="sidebar-tag-name" data-tags="Maven"><span class="iconfont-archer">&#xe606;</span>Maven</span>
     
