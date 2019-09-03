@@ -1,0 +1,1543 @@
+<!DOCTYPE html>
+<html lang="en">
+    <!-- title -->
+
+
+
+
+<!-- keywords -->
+
+
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="author" content="wtq">
+    <meta name="renderer" content="webkit">
+    <meta name="copyright" content="wtq">
+    
+    <meta name="keywords" content="hexo,hexo-theme,hexo-blog">
+    
+    <meta name="description" content>
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Quartz任务调度 · 王某人的博客</title>
+    <style type="text/css">
+    @font-face {
+        font-family: 'Oswald-Regular';
+        src: url("/font/Oswald-Regular.ttf");
+    }
+
+    body {
+        margin: 0;
+    }
+
+    header,
+    footer,
+    .back-top,
+    .sidebar,
+    .container,
+    .site-intro-meta,
+    .toc-wrapper {
+        display: none;
+    }
+
+    .site-intro {
+        position: relative;
+        z-index: 3;
+        width: 100%;
+        /* height: 50vh; */
+        overflow: hidden;
+    }
+
+    .site-intro-placeholder {
+        position: absolute;
+        z-index: -2;
+        top: 0;
+        left: 0;
+        width: calc(100% + 300px);
+        height: 100%;
+        background: repeating-linear-gradient(-45deg, #444 0, #444 80px, #333 80px, #333 160px);
+        background-position: center center;
+        transform: translate3d(-226px, 0, 0);
+        animation: gradient-move 2.5s ease-out 0s infinite;
+    }
+
+    @keyframes gradient-move {
+        0% {
+            transform: translate3d(-226px, 0, 0);
+        }
+        100% {
+            transform: translate3d(0, 0, 0);
+        }
+    }
+
+</style>
+
+    <link rel="preload" href="/css/style.css?v=20180824" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="stylesheet" href="/css/mobile.css?v=20180824" media="(max-width: 980px)">
+    
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    
+    <!-- /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
+/* This file is meant as a standalone workflow for
+- testing support for link[rel=preload]
+- enabling async CSS loading in browsers that do not support rel=preload
+- applying rel preload css once loaded, whether supported or not.
+*/ -->
+<script>
+(function( w ){
+	"use strict";
+	// rel=preload support test
+	if( !w.loadCSS ){
+		w.loadCSS = function(){};
+	}
+	// define on the loadCSS obj
+	var rp = loadCSS.relpreload = {};
+	// rel=preload feature support test
+	// runs once and returns a function for compat purposes
+	rp.support = (function(){
+		var ret;
+		try {
+			ret = w.document.createElement( "link" ).relList.supports( "preload" );
+		} catch (e) {
+			ret = false;
+		}
+		return function(){
+			return ret;
+		};
+	})();
+
+	// if preload isn't supported, get an asynchronous load by using a non-matching media attribute
+	// then change that media back to its intended value on load
+	rp.bindMediaToggle = function( link ){
+		// remember existing media attr for ultimate state, or default to 'all'
+		var finalMedia = link.media || "all";
+
+		function enableStylesheet(){
+			link.media = finalMedia;
+		}
+
+		// bind load handlers to enable media
+		if( link.addEventListener ){
+			link.addEventListener( "load", enableStylesheet );
+		} else if( link.attachEvent ){
+			link.attachEvent( "onload", enableStylesheet );
+		}
+
+		// Set rel and non-applicable media type to start an async request
+		// note: timeout allows this to happen async to let rendering continue in IE
+		setTimeout(function(){
+			link.rel = "stylesheet";
+			link.media = "only x";
+		});
+		// also enable media after 3 seconds,
+		// which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
+		setTimeout( enableStylesheet, 3000 );
+	};
+
+	// loop through link elements in DOM
+	rp.poly = function(){
+		// double check this to prevent external calls from running
+		if( rp.support() ){
+			return;
+		}
+		var links = w.document.getElementsByTagName( "link" );
+		for( var i = 0; i < links.length; i++ ){
+			var link = links[ i ];
+			// qualify links to those with rel=preload and as=style attrs
+			if( link.rel === "preload" && link.getAttribute( "as" ) === "style" && !link.getAttribute( "data-loadcss" ) ){
+				// prevent rerunning on link
+				link.setAttribute( "data-loadcss", true );
+				// bind listeners to toggle media back
+				rp.bindMediaToggle( link );
+			}
+		}
+	};
+
+	// if unsupported, run the polyfill
+	if( !rp.support() ){
+		// run once at least
+		rp.poly();
+
+		// rerun poly on an interval until onload
+		var run = w.setInterval( rp.poly, 500 );
+		if( w.addEventListener ){
+			w.addEventListener( "load", function(){
+				rp.poly();
+				w.clearInterval( run );
+			} );
+		} else if( w.attachEvent ){
+			w.attachEvent( "onload", function(){
+				rp.poly();
+				w.clearInterval( run );
+			} );
+		}
+	}
+
+
+	// commonjs
+	if( typeof exports !== "undefined" ){
+		exports.loadCSS = loadCSS;
+	}
+	else {
+		w.loadCSS = loadCSS;
+	}
+}( typeof global !== "undefined" ? global : this ) );
+</script>
+
+    <link rel="icon" href="/assets/favicon.ico">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js" as="script">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js" as="script">
+    <link rel="preload" href="/scripts/main.js" as="script">
+    <link rel="preload" as="font" href="/font/Oswald-Regular.ttf" crossorigin>
+    <link rel="preload" as="font" href="https://at.alicdn.com/t/font_327081_1dta1rlogw17zaor.woff" crossorigin>
+    
+    <!-- fancybox -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" defer></script>
+    <!-- 百度统计  -->
+    
+    <!-- 谷歌统计  -->
+    
+</head>
+
+    
+        <body class="post-body">
+    
+    
+<header class="header">
+
+    <div class="read-progress"></div>
+    <div class="header-sidebar-menu">&#xe775;</div>
+    <!-- post页的toggle banner  -->
+    
+    <div class="banner">
+            <div class="blog-title">
+                <a href="/" >王某人的个人博客</a>
+            </div>
+            <div class="post-title">
+                <a href="#" class="post-name">Quartz任务调度</a>
+            </div>
+    </div>
+    
+    <a class="home-link" href=/>王某人的个人博客</a>
+</header>
+    <div class="wrapper">
+        <div class="site-intro" style="
+
+
+
+
+
+
+
+height:50vh;
+">
+    
+    <!-- 主页  -->
+    
+    
+    <!-- 404页  -->
+            
+    <div class="site-intro-placeholder"></div>
+    <div class="site-intro-img" style="background-image: url(/intro/post-bg.jpg)"></div>
+    <div class="site-intro-meta">
+        <!-- 标题  -->
+        <h1 class="intro-title">
+            <!-- 主页  -->
+            
+            Quartz任务调度
+            <!-- 404 -->
+            
+        </h1>
+        <!-- 副标题 -->
+        <p class="intro-subtitle">
+            <!-- 主页副标题  -->
+            
+            
+            <!-- 404 -->
+            
+        </p>
+        <!-- 文章页meta -->
+        
+            <div class="post-intros">
+                <!-- 文章页标签  -->
+                
+                    <div class= post-intro-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "Quartz">Quartz</a>
+    
+</div>
+                
+                
+                    <div class="post-intro-read">
+                        <span>Word count: <span class="post-count word-count">7.9k</span>Reading time: <span class="post-count reading-time">34 min</span></span>
+                    </div>
+                
+                <div class="post-intro-meta">
+                    <span class="post-intro-calander iconfont-archer">&#xe676;</span>
+                    <span class="post-intro-time">2019/09/02</span>
+                    
+                    <span id="busuanzi_container_page_pv" class="busuanzi-pv">
+                        <span class="iconfont-archer">&#xe602;</span>
+                        <span id="busuanzi_value_page_pv"></span>
+                    </span>
+                    
+                    <span class="shareWrapper">
+                        <span class="iconfont-archer shareIcon">&#xe71d;</span>
+                        <span class="shareText">Share</span>
+                        <ul class="shareList">
+                            <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                                <div class="share-qrcode"></div>
+                            </li>
+                            <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                            <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                            <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                            <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                        </ul>
+                    </span>
+                </div>
+            </div>
+        
+    </div>
+</div>
+        <script>
+ 
+  // get user agent
+  var browser = {
+    versions: function () {
+      var u = window.navigator.userAgent;
+      return {
+        userAgent: u,
+        trident: u.indexOf('Trident') > -1, //IE内核
+        presto: u.indexOf('Presto') > -1, //opera内核
+        webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+        gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+        mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+        ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+        android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+        iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者安卓QQ浏览器
+        iPad: u.indexOf('iPad') > -1, //是否为iPad
+        webApp: u.indexOf('Safari') == -1, //是否为web应用程序，没有头部与底部
+        weixin: u.indexOf('MicroMessenger') == -1, //是否为微信浏览器
+        uc: u.indexOf('UCBrowser') > -1 //是否为android下的UC浏览器
+      };
+    }()
+  }
+  console.log("userAgent:" + browser.versions.userAgent);
+
+  // callback
+  function fontLoaded() {
+    console.log('font loaded');
+    if (document.getElementsByClassName('site-intro-meta')) {
+      document.getElementsByClassName('intro-title')[0].classList.add('intro-fade-in');
+      document.getElementsByClassName('intro-subtitle')[0].classList.add('intro-fade-in');
+      var postIntros = document.getElementsByClassName('post-intros')[0]
+      if (postIntros) {
+        postIntros.classList.add('post-fade-in');
+      }
+    }
+  }
+
+  // UC不支持跨域，所以直接显示
+  function asyncCb(){
+    if (browser.versions.uc) {
+      console.log("UCBrowser");
+      fontLoaded();
+    } else {
+      WebFont.load({
+        custom: {
+          families: ['Oswald-Regular']
+        },
+        loading: function () {  //所有字体开始加载
+          // console.log('loading');
+        },
+        active: function () {  //所有字体已渲染
+          fontLoaded();
+        },
+        inactive: function () { //字体预加载失败，无效字体或浏览器不支持加载
+          console.log('inactive: timeout');
+          fontLoaded();
+        },
+        timeout: 5000 // Set the timeout to two seconds
+      });
+    }
+  }
+
+  function asyncErr(){
+    console.warn('script load from CDN failed, will load local script')
+  }
+
+  // load webfont-loader async, and add callback function
+  function async(u, cb, err) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (cb) { o.addEventListener('load', function (e) { cb(null, e); }, false); }
+    if (err) { o.addEventListener('error', function (e) { err(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+
+  var asyncLoadWithFallBack = function(arr, success, reject) {
+      var currReject = function(){
+        reject()
+        arr.shift()
+        if(arr.length)
+          async(arr[0], success, currReject)
+        }
+
+      async(arr[0], success, currReject)
+  }
+
+  asyncLoadWithFallBack([
+    "https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js", 
+    "https://cdn.bootcss.com/webfont/1.6.28/webfontloader.js",
+    "/lib/webfontloader.min.js"
+  ], asyncCb, asyncErr)
+</script>        
+        <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
+        <div class="container container-unloaded">
+            <main class="main post-page">
+    <article class="article-entry">
+        <h1 id="Quartz任务调度"><a href="#Quartz任务调度" class="headerlink" title="Quartz任务调度"></a>Quartz任务调度</h1><h2 id="一-Quartz概念"><a href="#一-Quartz概念" class="headerlink" title="一.Quartz概念"></a>一.Quartz概念</h2><p>Quartz是OpenSymphony开源组织在Job scheduling领域又一个开源项目，它可以与J2EE与J2SE应用程序相结合也可以单独使用。</p>
+<p>quartz是开源且具有丰富特性的”任务调度库”，能够集成于任何的java应用，小到独立的应用，大至电子商业系统。quartz能够创建亦简单亦复杂的调度，以执行上十、上百，甚至上万的任务。任务job被定义为标准的java组件，能够执行任何你想要实现的功能。quartz调度框架包含许多企业级的特性，如JTA事务、集群的支持。</p>
+<p>简而言之，quartz就是基于java实现的任务调度框架，用于执行你想要执行的任何任务。</p>
+<p>官网：<br><a href="http://www.quartz-scheduler.org/" target="_blank" rel="noopener">http://www.quartz-scheduler.org/</a> </p>
+<h2 id="二-Quartz运行环境"><a href="#二-Quartz运行环境" class="headerlink" title="二.Quartz运行环境"></a>二.Quartz运行环境</h2><ul>
+<li>Quartz 可以运行嵌入在另一个独立式应用程序</li>
+<li>Quartz 可以在应用程序服务器(或servlet容器)内被实例化，并且参与事务</li>
+<li>Quartz 可以作为一个独立的程序运行(其自己的Java虚拟机内)，可以通过RMI使用</li>
+<li>Quartz 可以被实例化，作为独立的项目集群(负载平衡和故障转移功能)，用于作业的执行</li>
+</ul>
+<h2 id="三-Quartz设计模式"><a href="#三-Quartz设计模式" class="headerlink" title="三.Quartz设计模式"></a>三.Quartz设计模式</h2><ul>
+<li>Builder模式</li>
+<li>Factory模式</li>
+<li>组件模式</li>
+<li>链式编程</li>
+</ul>
+<h2 id="四-Quartz学习的核心概念"><a href="#四-Quartz学习的核心概念" class="headerlink" title="四.Quartz学习的核心概念"></a>四.Quartz学习的核心概念</h2><ul>
+<li>任务Job</li>
+</ul>
+<p>Job就是你想要实现的任务类，每一个Job必须实现org.quartz.job接口，且只需实现接口定义的execute()方法。</p>
+<ul>
+<li>触发器Trigger</li>
+</ul>
+<p>Trigger为你执行任务的触发器，比如你想每天定时3点发送一份统计邮件，Trigger将会设置3点进行执行该任务。Trigger主要包含两种SimpleTrigger和CronTrigger两种。关于二者的区别的使用场景，后续的课程会进行讨论。</p>
+<ul>
+<li>调度器Scheduler</li>
+</ul>
+<p>Scheduler为任务的调度器，它会将任务job及触发器Trigger整合起来，负责基于Trigger设定的时间来执行Job。</p>
+<h2 id="五-Quartz的体系结构"><a href="#五-Quartz的体系结构" class="headerlink" title="五.Quartz的体系结构"></a>五.Quartz的体系结构</h2><p><img src="/2019/09/02/Quartz/1.png" alt="0"></p>
+<h2 id="六-Quartz的几个常用API"><a href="#六-Quartz的几个常用API" class="headerlink" title="六.Quartz的几个常用API"></a>六.Quartz的几个常用API</h2><p>以下是Quartz编程API几个重要接口，也是Quartz的重要组件</p>
+<ul>
+<li>Scheduler 用于与调度程序交互的主程序接口。<br>Scheduler 调度程序-任务执行计划表，只有安排进执行计划的任务Job（通过scheduler.scheduleJob方法安排进执行计划），当它预先定义的执行时间到了的时候（任务触发trigger），该任务才会执行。</li>
+<li>Job 我们预先定义的希望在未来时间能被调度程序执行的任务类，我们可以自定义。</li>
+<li>JobDetail 使用JobDetail来定义定时任务的实例，JobDetail实例是通过JobBuilder类创建的。</li>
+<li>JobDataMap 可以包含不限量的（序列化的）数据对象，在job实例执行的时候，可以使用<br>其中的数据；JobDataMap是Java Map接口的一个实现，额外增加了一些便于存取基本类型的数<br>据的方法。</li>
+<li>Trigger 触发器，Trigger对象是用来触发执行Job的。当调度一个job时，我们实例一个触发器然后调整它的属性来满足job执行的条件。表明任务在什么时候会执行。定义了一个已经被安排的任务将会在什么时候执行的时间条件，比如每2秒就执行一次。</li>
+<li>JobBuilder -用于声明一个任务实例，也可以定义关于该任务的详情比如任务名、组名等，这个声明的实例将会作为一个实际执行的任务。</li>
+<li>TriggerBuilder 触发器创建器，用于创建触发器trigger实例。</li>
+<li>JobListener、TriggerListener、SchedulerListener监听器，用于对组件的监听。</li>
+</ul>
+<h2 id="七-Quartz的使用"><a href="#七-Quartz的使用" class="headerlink" title="七.Quartz的使用"></a>七.Quartz的使用</h2><h3 id="1-准备工作"><a href="#1-准备工作" class="headerlink" title="1.准备工作"></a>1.准备工作</h3><p>建立Maven工程<br><img src="/2019/09/02/Quartz/2.png" alt="1"></p>
+<p>查找：<a href="http://www.mvnrepository.com" target="_blank" rel="noopener">www.mvnrepository.com</a></p>
+<p><img src="/2019/09/02/Quartz/3.png" alt="2"></p>
+<h3 id="2-引入Quartz的jar包"><a href="#2-引入Quartz的jar包" class="headerlink" title="2.引入Quartz的jar包"></a>2.引入Quartz的jar包</h3><pre><code>&lt;dependencies&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.quartz-scheduler&lt;/groupId&gt;
+        &lt;artifactId&gt;quartz&lt;/artifactId&gt;
+        &lt;version&gt;2.3.0&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;junit&lt;/groupId&gt;
+        &lt;artifactId&gt;junit&lt;/artifactId&gt;
+        &lt;version&gt;4.12&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.slf4j&lt;/groupId&gt;
+        &lt;artifactId&gt;slf4j-log4j12&lt;/artifactId&gt;
+        &lt;version&gt;1.7.5&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;log4j&lt;/groupId&gt;
+        &lt;artifactId&gt;log4j&lt;/artifactId&gt;
+        &lt;version&gt;1.2.15&lt;/version&gt;
+    &lt;/dependency&gt;
+&lt;/dependencies&gt;
+
+&lt;build&gt;
+    &lt;plugins&gt;
+        &lt;plugin&gt;
+            &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+            &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+            &lt;version&gt;3.5.1&lt;/version&gt;
+            &lt;configuration&gt;
+                &lt;target&gt;1.8&lt;/target&gt;
+                &lt;source&gt;1.8&lt;/source&gt;
+            &lt;/configuration&gt;
+        &lt;/plugin&gt;
+    &lt;/plugins&gt;
+&lt;/build&gt;</code></pre><p>导入log4j.properties日志文件</p>
+<pre><code>### direct log messages to stdout ###
+log4j.appender.stdout=org.apache.log4j.ConsoleAppender
+log4j.appender.stdout.Target=System.out
+log4j.appender.stdout.layout=org.apache.log4j.PatternLayout
+log4j.appender.stdout.layout.ConversionPattern=%d{ABSOLUTE} %5p %c{1}:%L - %m%n
+
+### direct messages to file mylog.log ###
+log4j.appender.file=org.apache.log4j.FileAppender
+log4j.appender.file.File=c:/mylog.log
+log4j.appender.file.layout=org.apache.log4j.PatternLayout
+log4j.appender.file.layout.ConversionPattern=%d{ABSOLUTE} %5p %c{1}:%L - %m%n
+
+### set log levels - for more verbose logging change &apos;info&apos; to &apos;debug&apos; ###
+
+log4j.rootLogger=info, stdout</code></pre><p>###3.入门案例</p>
+<p>（1）创建HelloJob任务类</p>
+<p><img src="/2019/09/02/Quartz/4.png" alt="2"></p>
+<p>HelloJob.java</p>
+<pre><code>// 定义任务类
+public class HelloJob implements Job {
+
+    @Override
+    public void execute(JobExecutionContext arg0) throws JobExecutionException {
+        // 定义时间
+        Date date = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;);
+        String dateString = dateFormat.format(date);
+        // 定义工作任务内容
+        System.out.println(&quot;进行数据库备份操作。当前任务执行的时间：&quot;+dateString);
+    }
+}</code></pre><p>（2）创建任务调度类HelloSchedulerDemo</p>
+<p>HelloSchedulerDemo.java</p>
+<pre><code>public class HelloSchedulerDemo {
+
+    public static void main(String[] args) throws Exception {
+        // 1：从工厂中获取任务调度的实例
+        Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();
+
+        // 2：定义一个任务调度实例，将该实例与HelloJob绑定，任务类需要实现Job接口
+        JobDetail job = JobBuilder.newJob(HelloJob.class)
+                .withIdentity(&quot;job1&quot;, &quot;group1&quot;) // 定义该实例唯一标识
+                .build();
+
+        // 3：定义触发器 ，马上执行, 然后每5秒重复执行一次
+        Trigger trigger = TriggerBuilder.newTrigger()
+                .withIdentity(&quot;trigger1&quot;, &quot;group1&quot;) // 定义该实例唯一标识
+                .startNow()  // 马上执行
+                .withSchedule(SimpleScheduleBuilder.simpleSchedule()
+        .repeatSecondlyForever(5)) // 每5秒执行一次   
+                .build();
+
+        // 4：使用触发器调度任务的执行
+        scheduler.scheduleJob(job, trigger);
+
+        // 5：开启
+        scheduler.start();
+        // 关闭
+        // scheduler.shutdown();
+    }
+}</code></pre><p>（3）实现效果</p>
+<p><img src="/2019/09/02/Quartz/5.png" alt="2"></p>
+<p>###4.Job和JobDetail介绍</p>
+<ul>
+<li><p>Job：工作任务调度的接口，任务类需要实现该接口。该接口中定义execute方法，类似JDK提供的TimeTask类的run方法。在里面编写任务执行的业务逻辑。</p>
+</li>
+<li><p>Job实例在Quartz中的生命周期：每次调度器执行Job时，它在调用execute方法前会创建一个新的Job实例，当调用完成后，关联的Job对象实例会被释放，释放的实例会被垃圾回收机制回收。</p>
+</li>
+<li><p>JobDetail：JobDetail为Job实例提供了许多设置属性，以及JobDetaMap成员变量属性，它用来存储特定Job实例的状态信息，调度器需要借助JobDetail对象来添加Job实例。</p>
+</li>
+<li><p>JobDetail重要属性：name、group、jobClass、jobDataMap</p>
+<pre><code>JobDetail job = JobBuilder.newJob(HelloJob.class)
+        .withIdentity(&quot;job1&quot;, &quot;group1&quot;) // 定义该实例唯一标识，并指定一个组。
+        .build();
+
+System.out.println(&quot;name:&quot;+job.getKey().getName());
+System.out.println(&quot;group:&quot;+job.getKey().getGroup());
+System.out.println(&quot;jobClass:&quot;+job.getJobClass().getName());</code></pre></li>
+</ul>
+<h3 id="5-JobExecutionContext介绍"><a href="#5-JobExecutionContext介绍" class="headerlink" title="5.JobExecutionContext介绍"></a>5.JobExecutionContext介绍</h3><ul>
+<li>当Scheduler调用一个Job，就会将JobExecutionContext传递给Job的execute()方法；</li>
+<li>Job能通过JobExecutionContext对象访问到Quartz运行时候的环境以及Job本身的明细数据。</li>
+</ul>
+<h3 id="6-JobDataMap介绍"><a href="#6-JobDataMap介绍" class="headerlink" title="6.JobDataMap介绍"></a>6.JobDataMap介绍</h3><p>（1）使用Map获取。</p>
+<ul>
+<li>在进行任务调度时，JobDataMap存储在JobExecutionContext中 ，非常方便获取。</li>
+<li>JobDataMap可以用来装载任何可序列化的数据对象，当job实例对象被执行时这些参数对象会传递给它。</li>
+<li>JobDataMap实现了JDK的Map接口，并且添加了非常方便的方法用来存取基本数据类型。</li>
+</ul>
+<p>HelloSchedulerDemo.java</p>
+<pre><code>// 2：定义一个任务调度实例，将该实例与HelloJob绑定，任务类需要实现Job接口
+JobDetail job = JobBuilder.newJob(HelloJob.class)
+        .withIdentity(&quot;job1&quot;, &quot;group1&quot;) // 定义该实例唯一标识
+        .usingJobData(&quot;message&quot;, &quot;打印日志&quot;)
+        .build();
+
+// 3：定义触发器 ，马上执行, 然后每5秒重复执行一次
+Trigger trigger = TriggerBuilder.newTrigger()
+        .withIdentity(&quot;trigger1&quot;, &quot;group1&quot;) // 定义该实例唯一标识
+        .startNow()  // 马上执行
+        //.startAt(triggerStartTime) // 针对某个时刻执行
+        .withSchedule(SimpleScheduleBuilder.simpleSchedule()
+            .repeatSecondlyForever(5)) // 每5秒执行一次   
+        .usingJobData(&quot;message&quot;, &quot;simple触发器&quot;)
+        .build();</code></pre><p>HelloJob.java</p>
+<pre><code>JobKey jobKey = context.getJobDetail().getKey();
+System.out.println(&quot;工作任务名称：&quot;+jobKey.getName()+&quot;;工作任务组：&quot;+jobKey.getGroup());
+System.out.println(&quot;任务类名称（带包名）：&quot;+context.getJobDetail().getJobClass().getName());
+System.out.println(&quot;任务类名称：&quot;+context.getJobDetail().getJobClass().getSimpleName());
+System.out.println(&quot;当前任务执行时间：&quot;+context.getFireTime());
+System.out.println(&quot;下一任务执行时间：&quot;+context.getNextFireTime());
+
+TriggerKey triggerKey = context.getTrigger().getKey();
+System.out.println(&quot;触发器名称：&quot;+triggerKey.getName()+&quot;;触发器组：&quot;+triggerKey.getGroup());
+
+JobDataMap jobDataMap = context.getJobDetail().getJobDataMap();
+String jobMessage = jobDataMap.getString(&quot;message&quot;);
+System.out.println(&quot;任务参数消息值：&quot;+jobMessage);
+
+JobDataMap triggerDataMap = context.getTrigger().getJobDataMap();
+String triggerMessage = triggerDataMap.getString(&quot;message&quot;);
+System.out.println(&quot;触发器参数消息值：&quot;+triggerMessage);</code></pre><p>（2）Job实现类中添加setter方法对应JobDataMap的键值，Quartz框架默认的JobFactory实现类在初始化job实例对象时会自动地调用这些setter方法。</p>
+<p>HelloJob.java<br>​<br>    private String message;</p>
+<pre><code>public void setMessage(String message) {
+    this.message = message;
+}</code></pre><p>这里注意：如果遇到同名的key，Trigger中的.usingJobData(“message”, “simple触发器”)会覆盖JobDetail中的.usingJobData(“message”, “打印日志”)。</p>
+<p>###7.有状态的Job和无状态的Job</p>
+<p>@PersistJobDataAfterExecution注解的使用</p>
+<p>有状态的Job可以理解为多次Job调用期间可以持有一些状态信息，这些状态信息存储在JobDataMap中，而默认的无状态job每次调用时都会创建一个新的JobDataMap。</p>
+<p>（1）修改HelloSchedulerDemo.java。添加.usingJobData(“count”, 0)，表示计数器。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">JobDetail job = JobBuilder.newJob(HelloJob.class)</span><br><span class="line">    		.withIdentity(&quot;job1&quot;, &quot;group1&quot;) // 定义该实例唯一标识</span><br><span class="line">    		.usingJobData(&quot;message&quot;, &quot;打印日志&quot;)</span><br><span class="line">    		.usingJobData(&quot;count&quot;, 0)</span><br><span class="line">    		.build();</span><br></pre></td></tr></table></figure>
+
+<p>（2）修改HelloJob.java</p>
+<p>添加count的setting和getting方法。</p>
+<pre><code>private Integer count;
+public void setCount(Integer count) {
+    this.count = count;
+}</code></pre><p>在public void execute(JobExecutionContext context) throws JobExecutionException的方法中添加。</p>
+<pre><code>++count;
+System.out.println(&quot;count数量：&quot;+count);
+context.getJobDetail().getJobDataMap().put(&quot;count&quot;, count);</code></pre><p>HelloJob类没有添加@PersistJobDataAfterExecution注解，每次调用时都会创建一个新的JobDataMap。不会累加；</p>
+<p>HelloJob类添加@PersistJobDataAfterExecution注解，多次Job调用期间可以持有一些状态信息，即可以实现count的累加。</p>
+<p>###8.Trigger介绍</p>
+<p><img src="/2019/09/02/Quartz/6.png" alt="2"></p>
+<p>Quartz有一些不同的触发器类型，不过，用得最多的是SimpleTrigger和CronTrigger。</p>
+<p>（1）jobKey</p>
+<p>表示job实例的标识，触发器被触发时，该指定的job实例会被执行。</p>
+<p>（2）startTime</p>
+<p>表示触发器的时间表，第一次开始被触发的时间，它的数据类型是java.util.Date。</p>
+<p>（3）endTime</p>
+<p>指定触发器终止被触发的时间，它的数据类型是java.util.Date。</p>
+<p>案例：</p>
+<p>HelloJobTrigger.java</p>
+<pre><code>// 定义任务类
+public class HelloJobTrigger implements Job {
+
+    @Override
+    public void execute(JobExecutionContext context) throws JobExecutionException {
+        // 定义时间
+        Date date = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;);
+        String dateString = dateFormat.format(date);
+
+        // 定义工作任务内容
+        System.out.println(&quot;进行数据库备份操作。当前任务执行的时间：&quot;+dateString);
+
+        // 获取jobKey、startTime、endTime
+        Trigger trigger = context.getTrigger();
+        System.out.println(&quot;jobKey的标识:&quot;+trigger.getJobKey().getName()+&quot;;jobKey的组名称：&quot;+trigger.getJobKey().getGroup());
+        System.out.println(&quot;任务开始时间:&quot;+dateFormat.format(trigger.getStartTime())+&quot;;任务结束时间：&quot;+dateFormat.format(trigger.getEndTime()));
+    }
+}</code></pre><p>HelloSchedulerDemoTrigger.java</p>
+<pre><code>public class HelloSchedulerDemoTrigger {
+
+    public static void main(String[] args) throws Exception {
+        // 1：从工厂中获取任务调度的实例
+        Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();
+
+        // 定义日期
+        Date startDate = new Date();
+        // 启动任务，任务在当前时间3秒后执行
+        startDate.setTime(startDate.getTime()+3000);
+        // 定义日期
+        Date endDate = new Date();
+        // 结束任务，任务在当前时间10秒后停止
+        endDate.setTime(endDate.getTime()+10000);
+
+        // 2：定义一个任务调度实例，将该实例与HelloJob绑定，任务类需要实现Job接口
+        JobDetail job = JobBuilder.newJob(HelloJobTrigger.class)
+                .withIdentity(&quot;job1&quot;, &quot;group1&quot;) // 定义该实例唯一标识
+                .usingJobData(&quot;message&quot;, &quot;打印日志&quot;)
+                .build();
+
+        // 3：定义触发器 ，马上执行, 然后每5秒重复执行一次
+        Trigger trigger = TriggerBuilder.newTrigger()
+                .withIdentity(&quot;trigger1&quot;, &quot;group1&quot;) // 定义该实例唯一标识
+                .startAt(startDate)
+                .endAt(endDate)
+                .withSchedule(SimpleScheduleBuilder.simpleSchedule()
+                    .repeatSecondlyForever(5)) // 每5秒执行一次   
+                .usingJobData(&quot;message&quot;, &quot;simple触发器&quot;)
+                .build();
+
+        // 4：使用触发器调度任务的执行
+        scheduler.scheduleJob(job, trigger);
+
+        // 5：开启
+        scheduler.start();
+        // 关闭
+        // scheduler.shutdown();
+    }
+}</code></pre><p>###9.SimpleTrigger触发器</p>
+<p>SimpleTrigger对于设置和使用是最为简单的一种 QuartzTrigger。</p>
+<p>它是为那种需要在特定的日期/时间启动，且以一个可能的间隔时间重复执行 n 次的 Job 所设计的。</p>
+<p>案例一：表示在一个指定的时间段内，执行一次作业任务；</p>
+<p>HelloJobSimpleTrigger.java</p>
+<pre><code>// 定义任务类
+public class HelloJobSimpleTrigger implements Job {
+
+
+    @Override
+    public void execute(JobExecutionContext context) throws JobExecutionException {
+        // 定义时间
+        Date date = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;);
+        String dateString = dateFormat.format(date);
+
+        // 定义工作任务内容
+        System.out.println(&quot;进行数据库备份操作。当前任务执行的时间：&quot;+dateString);
+    }
+}</code></pre><p>HelloSchedulerDemoSimpleTrigger.java</p>
+<pre><code>public class HelloSchedulerDemoSimpleTrigger {
+
+    public static void main(String[] args) throws Exception {
+        // 1：从工厂中获取任务调度的实例
+        Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();
+
+        // 定义日期
+        Date startDate = new Date();
+        // 启动任务，任务在当前时间3秒后执行
+        startDate.setTime(startDate.getTime()+3000);
+
+        // 2：定义一个任务调度实例，将该实例与HelloJob绑定，任务类需要实现Job接口
+        JobDetail job = JobBuilder.newJob(HelloJobSimpleTrigger.class)
+                .withIdentity(&quot;job1&quot;, &quot;group1&quot;) // 定义该实例唯一标识
+                .build();
+
+        // 3：定义触发器 ，马上执行, 然后每5秒重复执行一次
+        Trigger trigger = TriggerBuilder.newTrigger()
+                .withIdentity(&quot;trigger1&quot;, &quot;group1&quot;) // 定义该实例唯一标识
+                .startAt(startDate)
+                .build();
+
+        // 4：使用触发器调度任务的执行
+        scheduler.scheduleJob(job, trigger);
+
+        // 5：开启
+        scheduler.start();
+        // 关闭
+        // scheduler.shutdown();
+    }
+}</code></pre><p>案例二：或在指定的时间间隔内多次执行作业任务。</p>
+<p>修改HelloSchedulerDemoSimpleTrigger.java</p>
+<pre><code>// 3：定义触发器 ，马上执行, 然后每5秒重复执行一次
+Trigger trigger = TriggerBuilder.newTrigger()
+        .withIdentity(&quot;trigger1&quot;, &quot;group1&quot;) // 定义该实例唯一标识
+        .startAt(startDate)
+        .withSchedule(SimpleScheduleBuilder.simpleSchedule().repeatSecondlyForever(5)
+                .withRepeatCount(2)) // 每5秒执行一次，连续执行3次后停止，默认值是0
+        .build();</code></pre><p>案例三：指定任务的结束时间。</p>
+<p>修改HelloSchedulerDemoSimpleTrigger.java</p>
+<pre><code>// 定义日期
+Date endDate = new Date();
+// 启动结束，任务在当前时间10秒后停止
+endDate.setTime(endDate.getTime()+10000);
+
+// 2：定义一个任务调度实例，将该实例与HelloJob绑定，任务类需要实现Job接口
+JobDetail job = JobBuilder.newJob(HelloJobSimpleTrigger.class)
+        .withIdentity(&quot;job1&quot;, &quot;group1&quot;) // 定义该实例唯一标识
+        .build();
+
+// 3：定义触发器 ，马上执行, 然后每5秒重复执行一次
+Trigger trigger = TriggerBuilder.newTrigger()
+        .withIdentity(&quot;trigger1&quot;, &quot;group1&quot;) // 定义该实例唯一标识
+        .startAt(startDate)
+        .endAt(endDate)
+        .withSchedule(SimpleScheduleBuilder.simpleSchedule().repeatSecondlyForever(5)
+                .withRepeatCount(3)) // 每5秒执行一次，连续执行3次后停止
+        .build();    </code></pre><p>需要注意的点</p>
+<ul>
+<li>SimpleTrigger的属性有：开始时间、结束时间、重复次数和重复的时间间隔。</li>
+<li>重复次数属性的值可以为0、正整数、或常量 SimpleTrigger.REPEAT_INDEFINITELY。</li>
+<li>重复的时间间隔属性值必须为大于0或长整型的正整数，以毫秒作为时间单位，当重复的时间间隔为0时，意味着与Trigger同时触发执行。</li>
+<li>如果有指定结束时间属性值，则结束时间属性优先于重复次数属性，这样的好处在于：当我们需要创建一个每间隔10秒钟触发一次直到指定的结束时间的 Trigger，而无需去计算从开始到结束的所重复的次数，我们只需简单的指定结束时间和使用REPEAT_INDEFINITELY作为重复次数的属性 值即可。</li>
+</ul>
+<h3 id="10-CronTrigger触发器"><a href="#10-CronTrigger触发器" class="headerlink" title="10.CronTrigger触发器"></a>10.CronTrigger触发器</h3><p>如果你需要像日历那样按日程来触发任务，而不是像SimpleTrigger 那样每隔特定的间隔时间触发，CronTriggers通常比SimpleTrigger更有用,因为它是基于日历的作业调度器。</p>
+<p>使用CronTrigger，你可以指定诸如“每个周五中午”，或者“每个工作日的9:30”或者“从每个周一、周三、周五的上午9：00到上午10：00之间每隔五分钟”这样日程安排来触发。甚至，象SimpleTrigger一样，CronTrigger也有一个startTime以指定日程从什么时候开始，也有一个（可选的）endTime以指定何时日程不再继续。</p>
+<p>（1）Cron Expressions——Cron 表达式</p>
+<p>Cron表达式被用来配置CronTrigger实例。Cron表达式是一个由7个子表达式组成的字符串。每个子表达式都描述了一个单独的日程细节。这些子表达式用空格分隔，分别表示：</p>
+<ol>
+<li>Seconds 秒</li>
+<li>Minutes 分钟</li>
+<li>Hours 小时</li>
+<li>Day-of-Month 月中的天</li>
+<li>Month 月</li>
+<li>Day-of-Week 周中的天</li>
+<li>Year (optional field) 年（可选的域）</li>
+</ol>
+<p>取值：<br><img src="/2019/09/02/Quartz/7.png" alt="2"></p>
+<p>单个子表达式可以包含范围或者列表。例如：前面例子中的周中的天这个域（这里是”WED”）可以被替换为”MON-FRI”, “MON, WED, FRI”或者甚至”MON-WED,SAT”。</p>
+<p>所有的域中的值都有特定的合法范围，这些值的合法范围相当明显，例如：秒和分域的合法值为0到59，小时的合法范围是0到23，Day-of-Month中值得合法凡范围是1到31，但是需要注意不同的月份中的天数不同。月份的合法值是1到12。或者用字符串JAN,FEB MAR, APR, MAY, JUN, JUL, AUG, SEP, OCT, NOV 及DEC来表示。Days-of-Week可以用1到7来表示（1=星期日）或者用字符串SUN, MON, TUE, WED, THU, FRI 和SAT来表示.</p>
+<p><img src="/2019/09/02/Quartz/08.jpg" alt="img"></p>
+<p>练习一下：</p>
+<pre><code>&quot;0 0 10,14,16 * * ?&quot; 每天上午10点，下午2点，4点
+&quot;0 0/30 9-17 * * ?&quot;   朝九晚五工作时间内每半小时，从0分开始每隔30分钟发送一次
+&quot;0 0 12 ? * WED&quot; 表示每个星期三中午12点 
+&quot;0 0 12 * * ?&quot; 每天中午12点触发 
+&quot;0 15 10 ? * *&quot; 每天上午10:15触发 
+&quot;0 15 10 * * ?&quot; 每天上午10:15触发 
+&quot;0 15 10 * * ? *&quot; 每天上午10:15触发 
+&quot;0 15 10 * * ? 2005&quot; 2005年的每天上午10:15触发 
+&quot;0 * 14 * * ?&quot; 在每天下午2点到下午2:59期间的每1分钟触发 
+&quot;0 0/55 14 * * ?&quot; 在每天下午2点到下午2:55期间，从0开始到55分钟触发 
+&quot;0 0/55 14,18 * * ?&quot; 在每天下午2点到2:55期间和下午6点到6:55期间的，从0开始到55分钟触发 
+&quot;0 0-5 14 * * ?&quot; 在每天下午2点到下午2:05期间的每1分钟触发 
+&quot;0 10,44 14 ? 3 WED&quot; 每年三月的星期三的下午2:10和2:44触发 
+&quot;0 15 10 ? * MON-FRI&quot; 周一至周五的上午10:15触发 
+&quot;0 15 10 15 * ?&quot; 每月15日上午10:15触发 
+&quot;0 15 10 L * ?&quot; 每月最后一日的上午10:15触发 
+&quot;0 15 10 ? * 6L&quot; 每月的最后一个星期五上午10:15触发 
+&quot;0 15 10 ? * 6L 2002-2005&quot; 2002年至2005年的每月的最后一个星期五上午10:15触发 
+&quot;0 15 10 ? * 6#3&quot; 每月的第三个星期五上午10:15触发 </code></pre><p>案例：</p>
+<p>HelloJobCronTrigger.java</p>
+<pre><code>// 定义任务类
+public class HelloJobCronTrigger implements Job {
+
+
+    @Override
+    public void execute(JobExecutionContext context) throws JobExecutionException {
+        // 定义时间
+        Date date = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;);
+        String dateString = dateFormat.format(date);
+
+        // 定义工作任务内容
+        System.out.println(&quot;进行数据库备份操作。当前任务执行的时间：&quot;+dateString);
+    }
+}</code></pre><p>HelloSchedulerDemoCronTrigger.java</p>
+<pre><code>public class HelloSchedulerDemoCronTrigger {
+
+    public static void main(String[] args) throws Exception {
+        // 1：从工厂中获取任务调度的实例
+        Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();
+
+        // 2：定义一个任务调度实例，将该实例与HelloJob绑定，任务类需要实现Job接口
+        JobDetail job = JobBuilder.newJob(HelloJobCronTrigger.class)
+                .withIdentity(&quot;job1&quot;, &quot;group1&quot;) // 定义该实例唯一标识
+                .build();
+
+        // 3：定义触发器 ，马上执行, 然后每5秒重复执行一次
+        Trigger trigger = TriggerBuilder.newTrigger()
+                .withIdentity(&quot;trigger1&quot;, &quot;group1&quot;) // 定义该实例唯一标识
+                .withSchedule(CronScheduleBuilder.cronSchedule(&quot;0/5 * * 6 4 ?&quot;))// 定义表达式
+                .build();
+
+        // 4：使用触发器调度任务的执行
+        scheduler.scheduleJob(job, trigger);
+
+        // 5：开启
+        scheduler.start();
+        // 关闭
+        // scheduler.shutdown();
+    }
+}</code></pre><p>小提示：</p>
+<ul>
+<li>‘L’和‘W’可以一起使用。（企业可用在工资计算）</li>
+<li>‘#’可表示月中第几个周几。（企业可用在计算母亲节和父亲节）</li>
+<li>周字段英文字母不区分大小写，例如MON==mon。</li>
+<li>利用工具，在线生成。</li>
+</ul>
+<h2 id="八-Quartz监听器"><a href="#八-Quartz监听器" class="headerlink" title="八.Quartz监听器"></a>八.Quartz监听器</h2><h3 id="1-概念"><a href="#1-概念" class="headerlink" title="1.概念"></a>1.概念</h3><p>Quartz的监听器用于当任务调度中你所关注事件发生时，能够及时获取这一事件的通知。类似于任务执行过程中的邮件、短信类的提醒。Quartz监听器主要有JobListener、TriggerListener、SchedulerListener三种，顾名思义，分别表示任务、触发器、调度器对应的监听器。三者的使用方法类似，在开始介绍三种监听器之前，需要明确两个概念：全局监听器与非全局监听器，二者的区别在于：</p>
+<p>全局监听器能够接收到所有的Job/Trigger的事件通知，</p>
+<p>而非全局监听器只能接收到在其上注册的Job或Trigger的事件，不在其上注册的Job或Trigger则不会进行监听。</p>
+<p>本课程关于全局与非全局的监听器的使用，将一一介绍。</p>
+<p>###2.JobListener</p>
+<p>任务调度过程中，与任务Job相关的事件包括：job开始要执行的提示; job执行完成的提示。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">public interface JobListener &#123;</span><br><span class="line"></span><br><span class="line">  	String getName();</span><br><span class="line">  	void jobToBeExecuted(JobExecutionContext context);</span><br><span class="line">  	void jobExecutionVetoed(JobExecutionContext context);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">    void jobWasExecuted(JobExecutionContext context,</span><br><span class="line">            JobExecutionException jobException);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p> 其中：</p>
+<p>1) getName方法：用于获取该JobListener的名称。</p>
+<p>2) jobToBeExecuted方法：Scheduler在JobDetail将要被执行时调用这个方法。</p>
+<p>3) jobExecutionVetoed方法：Scheduler在JobDetail即将被执行，但又被TriggerListerner否决时会调用该方法</p>
+<p>4) jobWasExecuted方法：Scheduler在JobDetail被执行之后调用这个方法</p>
+<p>示例：</p>
+<p>HelloJobListener.java</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">// 定义任务类</span><br><span class="line">public class HelloJobListener implements Job &#123;</span><br><span class="line">    @Override</span><br><span class="line">    public void execute(JobExecutionContext context) throws JobExecutionException &#123;</span><br><span class="line">        // 定义时间</span><br><span class="line">        Date date = new Date();</span><br><span class="line">        SimpleDateFormat dateFormat = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;);</span><br><span class="line">        String dateString = dateFormat.format(date);</span><br><span class="line"></span><br><span class="line">        // 定义工作任务内容</span><br><span class="line">        System.out.println(&quot;进行数据库备份操作。当前任务执行的时间：&quot;+dateString);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>创建自定义的JobListener</p>
+<p>MyJobListener.java</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">public class MyJobListener implements JobListener&#123;</span><br><span class="line">    @Override</span><br><span class="line">    public String getName() &#123;</span><br><span class="line">        String name = getClass().getSimpleName();</span><br><span class="line">        System.out.println(&quot;监听器的名称是：&quot;+name);</span><br><span class="line">        return name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void jobToBeExecuted(JobExecutionContext context) &#123;</span><br><span class="line">        String jobName = context.getJobDetail().getKey().getName();</span><br><span class="line">        System.out.println(&quot;Job的名称是：&quot;+jobName+&quot;     Scheduler在JobDetail将要被执行时调用这个方法&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void jobExecutionVetoed(JobExecutionContext context) &#123;</span><br><span class="line">        String jobName = context.getJobDetail().getKey().getName();</span><br><span class="line">        System.out.println(&quot;Job的名称是：&quot;+jobName+&quot;     Scheduler在JobDetail即将被执行，但又被TriggerListerner否决时会调用该方法&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void jobWasExecuted(JobExecutionContext context, JobExecutionException jobException) &#123;</span><br><span class="line">        String jobName = context.getJobDetail().getKey().getName();</span><br><span class="line">        System.out.println(&quot;Job的名称是：&quot;+jobName+&quot;     Scheduler在JobDetail被执行之后调用这个方法&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>执行调度器</p>
+<p>HelloSchedulerDemoJobListener.java</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">public class HelloSchedulerDemoJobListener &#123;</span><br><span class="line">	public static void main(String[] args) throws Exception &#123;</span><br><span class="line">	// 1：从工厂中获取任务调度的实例</span><br><span class="line">    Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();</span><br><span class="line"></span><br><span class="line">    // 2：定义一个任务调度实例，将该实例与HelloJob绑定，任务类需要实现Job接口</span><br><span class="line">    JobDetail job = JobBuilder.newJob(HelloJobListener.class)</span><br><span class="line">    		.withIdentity(&quot;job1&quot;, &quot;group1&quot;) // 定义该实例唯一标识</span><br><span class="line">    		.build();</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">      // 3：定义触发器 ，马上执行, 然后每5秒重复执行一次</span><br><span class="line">      Trigger trigger = TriggerBuilder.newTrigger()</span><br><span class="line">              .withIdentity(&quot;trigger1&quot;, &quot;group1&quot;) // 定义该实例唯一标识</span><br><span class="line">              .startNow()  // 马上执行</span><br><span class="line">              //.startAt(triggerStartTime) // 针对某个时刻执行</span><br><span class="line">              .withSchedule(SimpleScheduleBuilder.simpleSchedule()</span><br><span class="line">                  .repeatSecondlyForever(5)) // 每5秒执行一次 </span><br><span class="line">              .build();</span><br><span class="line"></span><br><span class="line">      // 4：使用触发器调度任务的执行</span><br><span class="line">      scheduler.scheduleJob(job, trigger);</span><br><span class="line"></span><br><span class="line">      // 创建并注册一个全局的Job Listener</span><br><span class="line">      scheduler.getListenerManager().addJobListener(new MyJobListener(), EverythingMatcher.allJobs());</span><br><span class="line"></span><br><span class="line">      // 创建并注册一个指定任务的Job Listener</span><br><span class="line">      // scheduler.getListenerManager().addJobListener(new MyJobListener(), 			  KeyMatcher.keyEquals(JobKey.jobKey(&quot;job1&quot;, &quot;group1&quot;)))；</span><br><span class="line">      // 5：开启</span><br><span class="line">      scheduler.start();</span><br><span class="line">      // 关闭</span><br><span class="line">      // scheduler.shutdown();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>###3.TriggerListener</p>
+<p>任务调度过程中，与触发器Trigger相关的事件包括：触发器触发、触发器未正常触发、触发器完成等。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">public interface TriggerListener &#123;</span><br><span class="line"></span><br><span class="line">    public String getName();</span><br><span class="line"></span><br><span class="line">    public void triggerFired(Trigger trigger, JobExecutionContext context);</span><br><span class="line"></span><br><span class="line">    public boolean vetoJobExecution(Trigger trigger, JobExecutionContext context);</span><br><span class="line"></span><br><span class="line">    public void triggerMisfired(Trigger trigger);</span><br><span class="line"></span><br><span class="line">    public void triggerComplete(Trigger trigger, JobExecutionContext context,</span><br><span class="line">            int triggerInstructionCode);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>其中：</p>
+<p>1) getName方法：用于获取触发器的名称</p>
+<p>2) triggerFired方法：当与监听器相关联的Trigger被触发，Job上的execute()方法将被执行时，Scheduler就调用该方法。</p>
+<p>3) vetoJobExecution方法：在 Trigger 触发后，Job 将要被执行时由 Scheduler 调用这个方法。TriggerListener 给了一个选择去否决 Job 的执行。假如这个方法返回 true，这个 Job 将不会为此次 Trigger 触发而得到执行。</p>
+<p>4) triggerMisfired方法：Scheduler 调用这个方法是在 Trigger 错过触发时。你应该关注此方法中持续时间长的逻辑：在出现许多错过触发的 Trigger 时，长逻辑会导致骨牌效应。你应当保持这上方法尽量的小。</p>
+<p>5) triggerComplete方法：Trigger 被触发并且完成了 Job 的执行时，Scheduler 调用这个方法。</p>
+<p> 示例：</p>
+<p>下面的例子简单展示了TriggerListener的使用，其中创建并注册TriggerListener与JobListener几乎类似。</p>
+<p>HelloJobListener.java    </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">// 定义任务类</span><br><span class="line">public class HelloJobListener implements Job &#123;</span><br><span class="line">    @Override</span><br><span class="line">    public void execute(JobExecutionContext context) throws JobExecutionException &#123;</span><br><span class="line">        // 定义时间</span><br><span class="line">        Date date = new Date();</span><br><span class="line">        SimpleDateFormat dateFormat = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;);</span><br><span class="line">        String dateString = dateFormat.format(date);</span><br><span class="line"></span><br><span class="line">        // 定义工作任务内容</span><br><span class="line">        System.out.println(&quot;进行数据库备份操作。当前任务执行的时间：&quot;+dateString);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>MyTriggerListener.java</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">public class MyTriggerListener implements TriggerListener&#123;</span><br><span class="line">	private String name;</span><br><span class="line"></span><br><span class="line">	public MyTriggerListener(String name) &#123;</span><br><span class="line">   		 this.name = name;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public String getName() &#123;</span><br><span class="line">        return name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void triggerFired(Trigger trigger, JobExecutionContext context) &#123;</span><br><span class="line">        String triggerName = trigger.getKey().getName();</span><br><span class="line">        System.out.println(triggerName + &quot; 被触发&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public boolean vetoJobExecution(Trigger trigger, JobExecutionContext context) &#123;</span><br><span class="line">        String triggerName = trigger.getKey().getName();</span><br><span class="line">        System.out.println(triggerName + &quot; 没有被触发&quot;);</span><br><span class="line">        return true; // true：表示不会执行Job的方法</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void triggerMisfired(Trigger trigger) &#123;</span><br><span class="line">        String triggerName = trigger.getKey().getName();</span><br><span class="line">        System.out.println(triggerName + &quot; 错过触发&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void triggerComplete(Trigger trigger, JobExecutionContext context,</span><br><span class="line">            CompletedExecutionInstruction triggerInstructionCode) &#123;</span><br><span class="line">        String triggerName = trigger.getKey().getName();</span><br><span class="line">        System.out.println(triggerName + &quot; 完成之后触发&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>任务调度类HelloSchedulerDemoTriggerListener.java</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">public class HelloSchedulerDemoTriggerListener &#123;</span><br><span class="line">    public static void main(String[] args) throws Exception &#123;</span><br><span class="line">        // 1：从工厂中获取任务调度的实例</span><br><span class="line">        Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();</span><br><span class="line"></span><br><span class="line">        // 2：定义一个任务调度实例，将该实例与HelloJob绑定，任务类需要实现Job接口</span><br><span class="line">        JobDetail job = JobBuilder.newJob(HelloJobListener.class)</span><br><span class="line">                .withIdentity(&quot;job1&quot;, &quot;group1&quot;) // 定义该实例唯一标识</span><br><span class="line">                .build();</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">       // 3：定义触发器 ，马上执行, 然后每5秒重复执行一次</span><br><span class="line">       Trigger trigger = TriggerBuilder.newTrigger()</span><br><span class="line">               .withIdentity(&quot;trigger1&quot;, &quot;group1&quot;) // 定义该实例唯一标识</span><br><span class="line">               .startNow()  // 马上执行</span><br><span class="line">               .withSchedule(SimpleScheduleBuilder.simpleSchedule()</span><br><span class="line">                   .repeatSecondlyForever(5)) // 每5秒执行一次 </span><br><span class="line">               .build();</span><br><span class="line"></span><br><span class="line">       // 4：使用触发器调度任务的执行</span><br><span class="line">       scheduler.scheduleJob(job, trigger);</span><br><span class="line"></span><br><span class="line">       // 创建并注册一个全局的Trigger Listener</span><br><span class="line">       scheduler.getListenerManager().addTriggerListener(new MyTriggerListener(&quot;simpleTrigger&quot;), EverythingMatcher.allTriggers());</span><br><span class="line"></span><br><span class="line">       // 创建并注册一个局部的Trigger Listener</span><br><span class="line">       // scheduler.getListenerManager().addTriggerListener(new MyTriggerListener(&quot;simpleTrigger&quot;), KeyMatcher.keyEquals(TriggerKey.triggerKey(&quot;trigger1&quot;, &quot;group1&quot;)));</span><br><span class="line"></span><br><span class="line">       // 5：开启</span><br><span class="line">       scheduler.start();</span><br><span class="line">       // 关闭</span><br><span class="line">       // scheduler.shutdown();</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>###4.SchedulerListener</p>
+<p>SchedulerListener会在Scheduler的生命周期中关键事件发生时被调用。与Scheduler有关的事件包括：增加一个job/trigger，删除一个job/trigger，scheduler发生严重错误，关闭scheduler等。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">public interface SchedulerListener &#123;</span><br><span class="line"></span><br><span class="line">    public void jobScheduled(Trigger trigger);</span><br><span class="line"></span><br><span class="line">    public void jobUnscheduled(String triggerName, String triggerGroup);</span><br><span class="line"></span><br><span class="line">    public void triggerFinalized(Trigger trigger);</span><br><span class="line"></span><br><span class="line">    public void triggersPaused(String triggerName, String triggerGroup);</span><br><span class="line"></span><br><span class="line">    public void triggersResumed(String triggerName, String triggerGroup);</span><br><span class="line"></span><br><span class="line">    public void jobsPaused(String jobName, String jobGroup);</span><br><span class="line"></span><br><span class="line">    public void jobsResumed(String jobName, String jobGroup);</span><br><span class="line"></span><br><span class="line">    public void schedulerError(String msg, SchedulerException cause);</span><br><span class="line"></span><br><span class="line">    public void schedulerStarted();</span><br><span class="line"></span><br><span class="line">    public void schedulerInStandbyMode();</span><br><span class="line"></span><br><span class="line">    public void schedulerShutdown();</span><br><span class="line"></span><br><span class="line">    public void schedulingDataCleared();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>其中：</p>
+<p>1) jobScheduled方法：用于部署JobDetail时调用</p>
+<p>2) jobUnscheduled方法：用于卸载JobDetail时调用</p>
+<p>3) triggerFinalized方法：当一个 Trigger 来到了再也不会触发的状态时调用这个方法。除非这个 Job 已设置成了持久性，否则它就会从 Scheduler 中移除。</p>
+<p>4) triggersPaused方法：Scheduler 调用这个方法是发生在一个 Trigger 或 Trigger 组被暂停时。假如是 Trigger 组的话，triggerName 参数将为 null。</p>
+<p>5) triggersResumed方法：Scheduler 调用这个方法是发生成一个 Trigger 或 Trigger 组从暂停中恢复时。假如是 Trigger 组的话，假如是 Trigger 组的话，triggerName 参数将为 null。参数将为 null。<br>6) jobsPaused方法：当一个或一组 JobDetail 暂停时调用这个方法。<br>7) jobsResumed方法：当一个或一组 Job 从暂停上恢复时调用这个方法。假如是一个 Job 组，jobName 参数将为 null。<br>8) schedulerError方法：在 Scheduler 的正常运行期间产生一个严重错误时调用这个方法。<br>9) schedulerStarted方法：当Scheduler 开启时，调用该方法<br>10) schedulerInStandbyMode方法： 当Scheduler处于StandBy模式时，调用该方法<br>11) schedulerShutdown方法：当Scheduler停止时，调用该方法<br>12) schedulingDataCleared方法：当Scheduler中的数据被清除时，调用该方法。</p>
+<p> 示例：</p>
+<p>下面的代码简单描述了如何使用SchedulerListener方法：</p>
+<p>HelloJobListener.java</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">public class HelloJobListener implements Job &#123;</span><br><span class="line">    @Override</span><br><span class="line">    public void execute(JobExecutionContext context) throws JobExecutionException &#123;</span><br><span class="line">        // 定义时间</span><br><span class="line">        Date date = new Date();</span><br><span class="line">        SimpleDateFormat dateFormat = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;);</span><br><span class="line">        String dateString = dateFormat.format(date);</span><br><span class="line"></span><br><span class="line">        // 定义工作任务内容</span><br><span class="line">        System.out.println(&quot;进行数据库备份操作。当前任务执行的时间：&quot;+dateString);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>MySchedulerListener.java</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br></pre></td><td class="code"><pre><span class="line">public class MySchedulerListener implements SchedulerListener&#123;</span><br><span class="line">    @Override</span><br><span class="line">    public void jobScheduled(Trigger trigger) &#123;</span><br><span class="line">        String jobName = trigger.getJobKey().getName();</span><br><span class="line">        System.out.println(jobName + &quot; 完成部署&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void jobUnscheduled(TriggerKey triggerKey) &#123;</span><br><span class="line">        System.out.println(triggerKey + &quot; 完成卸载&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void triggerFinalized(Trigger trigger) &#123;</span><br><span class="line">        System.out.println(&quot;触发器被移除 &quot; + trigger.getJobKey().getName());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void triggerPaused(TriggerKey triggerKey) &#123;</span><br><span class="line">        System.out.println(triggerKey + &quot; 正在被暂停&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void triggersPaused(String triggerGroup) &#123;</span><br><span class="line">        System.out.println(&quot;触发器组 &quot;+triggerGroup + &quot; 正在被暂停&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void triggerResumed(TriggerKey triggerKey) &#123;</span><br><span class="line">        System.out.println(triggerKey + &quot; 正在从暂停中恢复&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void triggersResumed(String triggerGroup) &#123;</span><br><span class="line">        System.out.println(&quot;触发器组 &quot;+triggerGroup + &quot; 正在从暂停中恢复&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void jobAdded(JobDetail jobDetail) &#123;</span><br><span class="line">        System.out.println(jobDetail.getKey()+&quot; 添加工作任务&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void jobDeleted(JobKey jobKey) &#123;</span><br><span class="line">        System.out.println(jobKey+&quot; 删除工作任务&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void jobPaused(JobKey jobKey) &#123;</span><br><span class="line">        System.out.println(jobKey+&quot; 工作任务正在被暂停&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void jobsPaused(String jobGroup) &#123;</span><br><span class="line">        System.out.println(&quot;工作任务组 &quot;+jobGroup+&quot; 正在被暂停&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void jobResumed(JobKey jobKey) &#123;</span><br><span class="line">        System.out.println(jobKey+&quot; 正在从暂停中恢复&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void jobsResumed(String jobGroup) &#123;</span><br><span class="line">        System.out.println(&quot;工作任务组 &quot;+jobGroup+&quot; 正在从暂停中恢复&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void schedulerError(String msg, SchedulerException cause) &#123;</span><br><span class="line">        System.out.println(&quot;产生严重错误时调用：   &quot;+msg+&quot;  &quot;+cause.getUnderlyingException());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void schedulerInStandbyMode() &#123;</span><br><span class="line">        System.out.println(&quot;调度器在挂起模式下调用&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void schedulerStarted() &#123;</span><br><span class="line">        System.out.println(&quot;调度器 开启时调用&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void schedulerStarting() &#123;</span><br><span class="line">        System.out.println(&quot;调度器 正在开启时调用&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void schedulerShutdown() &#123;</span><br><span class="line">        System.out.println(&quot;调度器 已经被关闭 时调用&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void schedulerShuttingdown() &#123;</span><br><span class="line">        System.out.println(&quot;调度器 正在被关闭 时调用&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void schedulingDataCleared() &#123;</span><br><span class="line">        System.out.println(&quot;调度器的数据被清除时调用&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>HelloSchedulerDemoSchedulerListener.java</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">public class HelloSchedulerDemoSchedulerListener &#123;</span><br><span class="line">    public static void main(String[] args) throws Exception &#123;</span><br><span class="line">        // 1：从工厂中获取任务调度的实例</span><br><span class="line">        Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();</span><br><span class="line"></span><br><span class="line">        // 2：定义一个任务调度实例，将该实例与HelloJob绑定，任务类需要实现Job接口</span><br><span class="line">        JobDetail job = JobBuilder.newJob(HelloJobListener.class)</span><br><span class="line">                .withIdentity(&quot;job1&quot;, &quot;group1&quot;) // 定义该实例唯一标识</span><br><span class="line">                .build();</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">       // 3：定义触发器 ，马上执行, 然后每5秒重复执行一次</span><br><span class="line">       Trigger trigger = TriggerBuilder.newTrigger()</span><br><span class="line">               .withIdentity(&quot;trigger1&quot;, &quot;group1&quot;) // 定义该实例唯一标识</span><br><span class="line">               .startNow()  // 马上执行</span><br><span class="line">               .withSchedule(SimpleScheduleBuilder.simpleSchedule()</span><br><span class="line">                   .repeatSecondlyForever(5)) // 每5秒执行一次 </span><br><span class="line">               .build();</span><br><span class="line"></span><br><span class="line">       // 4：使用触发器调度任务的执行</span><br><span class="line">       scheduler.scheduleJob(job, trigger);</span><br><span class="line"></span><br><span class="line">       // 创建SchedulerListener</span><br><span class="line">       scheduler.getListenerManager().addSchedulerListener(new MySchedulerListener());</span><br><span class="line"></span><br><span class="line">       // 移除对应的SchedulerListener</span><br><span class="line">       // scheduler.getListenerManager().removeSchedulerListener(new MySchedulerListener());</span><br><span class="line"></span><br><span class="line">       // 5：开启</span><br><span class="line">       scheduler.start();</span><br><span class="line">       // 延迟7秒后关闭</span><br><span class="line">       Thread.sleep(7000);</span><br><span class="line">       // 关闭</span><br><span class="line">       scheduler.shutdown();</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>​                                                  </p>
+<p>（转自黑马程序员）</p>
+
+    </article>
+    <!-- license  -->
+    
+        <div class="license-wrapper">
+            <p>Author：<a href="http://none">wtq</a>
+            <p>原文链接：<a href="http://none/2019/09/02/Quartz/">http://none/2019/09/02/Quartz/</a>
+            <p>发表日期：<a href="http://none/2019/09/02/Quartz/">September 2nd 2019, 12:00:00 am</a>
+            <p>更新日期：<a href="http://none/2019/09/02/Quartz/">September 2nd 2019, 6:23:44 pm</a>
+            <p>版权声明：本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
+        </div>
+    
+    <!-- paginator  -->
+    <ul class="post-paginator">
+        <li class="next">
+            
+        </li>
+        <li class="previous">
+            
+                <div class="prevSlogan">Previous Post</div>
+                <a href= "/2019/08/29/Hibernate-02/" title= "Hibernate-02">
+                    <div class="prevTitle">Hibernate-02</div>
+                </a>
+            
+        </li>
+    </ul>
+    <!-- 评论插件 -->
+    <!-- 来必力City版安装代码 -->
+
+<!-- City版安装代码已完成 -->
+    
+    
+    <!-- partial('_partial/comment/changyan') -->
+    <!--PC版-->
+
+
+    
+    
+
+    <!-- 评论 -->
+</main>
+            <!-- profile -->
+            
+        </div>
+        <footer class="footer footer-unloaded">
+    <!-- social  -->
+    
+    <div class="social">
+        
+    
+        
+            
+                <a href="mailto:951352631@qq.com" class="iconfont-archer email" title=email ></a>
+            
+        
+    
+        
+            
+                <a href="https://github.com/yy951352631" class="iconfont-archer github" target="_blank" title=github></a>
+            
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+    </div>
+    
+    <!-- powered by Hexo  -->
+    <div class="copyright">
+        <span id="hexo-power">Powered by <a href="https://hexo.io/" target="_blank">Hexo</a></span><span class="iconfont-archer power">&#xe635;</span><span id="theme-info">theme <a href="https://github.com/fi3ework/hexo-theme-archer" target="_blank">Archer</a></span>
+    </div>
+    <!-- 不蒜子  -->
+    
+    <div class="busuanzi-container">
+    
+     
+    <span id="busuanzi_container_site_pv">PV: <span id="busuanzi_value_site_pv"></span> :)</span>
+    
+    </div>
+    
+</footer>
+    </div>
+    <!-- toc -->
+    
+    <div class="toc-wrapper" style=
+    
+
+
+
+
+
+
+
+top:50vh;
+
+    >
+        <div class="toc-catalog">
+            <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+        </div>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Quartz任务调度"><span class="toc-number">1.</span> <span class="toc-text">Quartz任务调度</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#一-Quartz概念"><span class="toc-number">1.1.</span> <span class="toc-text">一.Quartz概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二-Quartz运行环境"><span class="toc-number">1.2.</span> <span class="toc-text">二.Quartz运行环境</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三-Quartz设计模式"><span class="toc-number">1.3.</span> <span class="toc-text">三.Quartz设计模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#四-Quartz学习的核心概念"><span class="toc-number">1.4.</span> <span class="toc-text">四.Quartz学习的核心概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#五-Quartz的体系结构"><span class="toc-number">1.5.</span> <span class="toc-text">五.Quartz的体系结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#六-Quartz的几个常用API"><span class="toc-number">1.6.</span> <span class="toc-text">六.Quartz的几个常用API</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#七-Quartz的使用"><span class="toc-number">1.7.</span> <span class="toc-text">七.Quartz的使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-准备工作"><span class="toc-number">1.7.1.</span> <span class="toc-text">1.准备工作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-引入Quartz的jar包"><span class="toc-number">1.7.2.</span> <span class="toc-text">2.引入Quartz的jar包</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-JobExecutionContext介绍"><span class="toc-number">1.7.3.</span> <span class="toc-text">5.JobExecutionContext介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-JobDataMap介绍"><span class="toc-number">1.7.4.</span> <span class="toc-text">6.JobDataMap介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#10-CronTrigger触发器"><span class="toc-number">1.7.5.</span> <span class="toc-text">10.CronTrigger触发器</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#八-Quartz监听器"><span class="toc-number">1.8.</span> <span class="toc-text">八.Quartz监听器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-概念"><span class="toc-number">1.8.1.</span> <span class="toc-text">1.概念</span></a></li></ol></li></ol></li></ol>
+    </div>
+    
+    <div class="back-top iconfont-archer">&#xe639;</div>
+    <div class="sidebar sidebar-hide">
+    <ul class="sidebar-tabs sidebar-tabs-active-0">
+        <li class="sidebar-tab-archives"><span class="iconfont-archer">&#xe67d;</span><span class="tab-name">Archive</span></li>
+        <li class="sidebar-tab-tags"><span class="iconfont-archer">&#xe61b;</span><span class="tab-name">Tag</span></li>
+        <li class="sidebar-tab-categories"><span class="iconfont-archer">&#xe666;</span><span class="tab-name">Cate</span></li>
+    </ul>
+    <div class="sidebar-content sidebar-content-show-archive">
+          <div class="sidebar-panel-archives">
+    <!-- 在ejs中将archive按照时间排序 -->
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div class="total-and-search">
+        <div class="total-archive">
+        Total : 19
+        </div>
+        <!-- search  -->
+        
+    </div>
+    
+    <div class="post-archive">
+    
+    
+    
+    
+    <div class="archive-year"> 2019 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/02</span><a class="archive-post-title" href= "/2019/09/02/Quartz/" >Quartz任务调度</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/29</span><a class="archive-post-title" href= "/2019/08/29/Hibernate-02/" >Hibernate-02</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/28</span><a class="archive-post-title" href= "/2019/08/28/Java基础-01/" >Java基础-01-Optional</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/27</span><a class="archive-post-title" href= "/2019/08/27/Java基础-02/" >Java基础-02-Predicate</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/27</span><a class="archive-post-title" href= "/2019/08/27/SpringCloud学习-06/" >SpringCloud-06-Getaway</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/22</span><a class="archive-post-title" href= "/2019/08/22/SpringCloud学习-05/" >SpringCloud-05-Hystrix</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2019/08/20/SpringCloud学习-04/" >SpringCloud-04-Feign</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2019/08/20/Java基础-03/" >Java基础-03-JVM</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2019/08/20/Java基础-04/" >Java基础-04-Lambda</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/16</span><a class="archive-post-title" href= "/2019/08/16/SpringCloud学习-03/" >SpringCloud-03-Ribbon</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/14</span><a class="archive-post-title" href= "/2019/08/14/SpringCloud学习-02/" >SpringCloud-02-Eureka</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/13</span><a class="archive-post-title" href= "/2019/08/13/SpringCloud学习-01/" >SpringCloud-01-配置中心</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/13</span><a class="archive-post-title" href= "/2019/08/13/Maven/" >Maven-01</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/12</span><a class="archive-post-title" href= "/2019/08/12/SpringBoot学习-04/" >SpringBoot-04-JDBC</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/10</span><a class="archive-post-title" href= "/2019/08/10/SpringBoot学习-03/" >SpringBoot-03-servlet容器</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/09</span><a class="archive-post-title" href= "/2019/08/09/SpringBoot学习-02/" >SpringBoot-02-Web工程</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/08</span><a class="archive-post-title" href= "/2019/08/08/SpringBoot学习-01/" >SpringBoot-01-Web工程</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/07</span><a class="archive-post-title" href= "/2019/08/07/Hibernate-01/" >Hibernate-01</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/07</span><a class="archive-post-title" href= "/2019/08/07/first/" >Hexo常用操作</a>
+        </li>
+    
+    </div>
+  </div>
+        <div class="sidebar-panel-tags">
+    <div class="sidebar-tags-name">
+    
+        <span class="sidebar-tag-name" data-tags="Hibernate"><span class="iconfont-archer">&#xe606;</span>Hibernate</span>
+    
+        <span class="sidebar-tag-name" data-tags="Java基础"><span class="iconfont-archer">&#xe606;</span>Java基础</span>
+    
+        <span class="sidebar-tag-name" data-tags="Hexo"><span class="iconfont-archer">&#xe606;</span>Hexo</span>
+    
+        <span class="sidebar-tag-name" data-tags="SpringBoot-WEB"><span class="iconfont-archer">&#xe606;</span>SpringBoot-WEB</span>
+    
+        <span class="sidebar-tag-name" data-tags="SpringCloud"><span class="iconfont-archer">&#xe606;</span>SpringCloud</span>
+    
+        <span class="sidebar-tag-name" data-tags="Maven"><span class="iconfont-archer">&#xe606;</span>Maven</span>
+    
+        <span class="sidebar-tag-name" data-tags="Quartz"><span class="iconfont-archer">&#xe606;</span>Quartz</span>
+    
+    </div>
+    <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
+    <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
+    缺失模块。<br/>
+    1、请确保node版本大于6.2<br/>
+    2、在博客根目录（注意不是archer根目录）执行以下命令：<br/>
+    <span style="color: #f75357; font-size: 1rem; line-height: 2rem;">npm i hexo-generator-json-content --save</span><br/>
+    3、在根目录_config.yml里添加配置：
+    <pre style="color: #787878; font-size: 0.6rem;">
+jsonContent:
+  meta: false
+  pages: false
+  posts:
+    title: true
+    date: true
+    path: true
+    text: false
+    raw: false
+    content: false
+    slug: false
+    updated: false
+    comments: false
+    link: false
+    permalink: false
+    excerpt: false
+    categories: true
+    tags: true</pre>
+    </div> 
+    <div class="sidebar-tags-list"></div>
+</div>
+        <div class="sidebar-panel-categories">
+    <div class="sidebar-categories-name">
+    
+    </div>
+    <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
+    <div class="sidebar-categories-list"></div>
+</div>
+    </div>
+</div> 
+    <script>
+    var siteMeta = {
+        root: "/",
+        author: "wtq"
+    }
+</script>
+    <!-- CDN failover -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+    <script type="text/javascript">
+        if (typeof window.$ === 'undefined')
+        {
+            console.warn('jquery load from jsdelivr failed, will load local script')
+            document.write('<script src="/lib/jquery.min.js">\x3C/script>')
+        }
+    </script>
+    <script src="/scripts/main.js"></script>
+    <!-- algolia -->
+    
+    <!-- busuanzi  -->
+    
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    <!-- CNZZ  -->
+    
+    </div>
+    <!-- async load share.js -->
+    
+        <script src="/scripts/share.js" async></script>    
+     
+    </body>
+</html>
+
+
