@@ -1,0 +1,1272 @@
+<!DOCTYPE html>
+<html lang="en">
+    <!-- title -->
+
+
+
+
+<!-- keywords -->
+
+
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="author" content="wtq">
+    <meta name="renderer" content="webkit">
+    <meta name="copyright" content="wtq">
+    
+    <meta name="keywords" content="hexo,hexo-theme,hexo-blog">
+    
+    <meta name="description" content>
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>JPA学习-03 · 王某人的博客</title>
+    <style type="text/css">
+    @font-face {
+        font-family: 'Oswald-Regular';
+        src: url("/font/Oswald-Regular.ttf");
+    }
+
+    body {
+        margin: 0;
+    }
+
+    header,
+    footer,
+    .back-top,
+    .sidebar,
+    .container,
+    .site-intro-meta,
+    .toc-wrapper {
+        display: none;
+    }
+
+    .site-intro {
+        position: relative;
+        z-index: 3;
+        width: 100%;
+        /* height: 50vh; */
+        overflow: hidden;
+    }
+
+    .site-intro-placeholder {
+        position: absolute;
+        z-index: -2;
+        top: 0;
+        left: 0;
+        width: calc(100% + 300px);
+        height: 100%;
+        background: repeating-linear-gradient(-45deg, #444 0, #444 80px, #333 80px, #333 160px);
+        background-position: center center;
+        transform: translate3d(-226px, 0, 0);
+        animation: gradient-move 2.5s ease-out 0s infinite;
+    }
+
+    @keyframes gradient-move {
+        0% {
+            transform: translate3d(-226px, 0, 0);
+        }
+        100% {
+            transform: translate3d(0, 0, 0);
+        }
+    }
+
+</style>
+
+    <link rel="preload" href="/css/style.css?v=20180824" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="stylesheet" href="/css/mobile.css?v=20180824" media="(max-width: 980px)">
+    
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    
+    <!-- /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
+/* This file is meant as a standalone workflow for
+- testing support for link[rel=preload]
+- enabling async CSS loading in browsers that do not support rel=preload
+- applying rel preload css once loaded, whether supported or not.
+*/ -->
+<script>
+(function( w ){
+	"use strict";
+	// rel=preload support test
+	if( !w.loadCSS ){
+		w.loadCSS = function(){};
+	}
+	// define on the loadCSS obj
+	var rp = loadCSS.relpreload = {};
+	// rel=preload feature support test
+	// runs once and returns a function for compat purposes
+	rp.support = (function(){
+		var ret;
+		try {
+			ret = w.document.createElement( "link" ).relList.supports( "preload" );
+		} catch (e) {
+			ret = false;
+		}
+		return function(){
+			return ret;
+		};
+	})();
+
+	// if preload isn't supported, get an asynchronous load by using a non-matching media attribute
+	// then change that media back to its intended value on load
+	rp.bindMediaToggle = function( link ){
+		// remember existing media attr for ultimate state, or default to 'all'
+		var finalMedia = link.media || "all";
+
+		function enableStylesheet(){
+			link.media = finalMedia;
+		}
+
+		// bind load handlers to enable media
+		if( link.addEventListener ){
+			link.addEventListener( "load", enableStylesheet );
+		} else if( link.attachEvent ){
+			link.attachEvent( "onload", enableStylesheet );
+		}
+
+		// Set rel and non-applicable media type to start an async request
+		// note: timeout allows this to happen async to let rendering continue in IE
+		setTimeout(function(){
+			link.rel = "stylesheet";
+			link.media = "only x";
+		});
+		// also enable media after 3 seconds,
+		// which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
+		setTimeout( enableStylesheet, 3000 );
+	};
+
+	// loop through link elements in DOM
+	rp.poly = function(){
+		// double check this to prevent external calls from running
+		if( rp.support() ){
+			return;
+		}
+		var links = w.document.getElementsByTagName( "link" );
+		for( var i = 0; i < links.length; i++ ){
+			var link = links[ i ];
+			// qualify links to those with rel=preload and as=style attrs
+			if( link.rel === "preload" && link.getAttribute( "as" ) === "style" && !link.getAttribute( "data-loadcss" ) ){
+				// prevent rerunning on link
+				link.setAttribute( "data-loadcss", true );
+				// bind listeners to toggle media back
+				rp.bindMediaToggle( link );
+			}
+		}
+	};
+
+	// if unsupported, run the polyfill
+	if( !rp.support() ){
+		// run once at least
+		rp.poly();
+
+		// rerun poly on an interval until onload
+		var run = w.setInterval( rp.poly, 500 );
+		if( w.addEventListener ){
+			w.addEventListener( "load", function(){
+				rp.poly();
+				w.clearInterval( run );
+			} );
+		} else if( w.attachEvent ){
+			w.attachEvent( "onload", function(){
+				rp.poly();
+				w.clearInterval( run );
+			} );
+		}
+	}
+
+
+	// commonjs
+	if( typeof exports !== "undefined" ){
+		exports.loadCSS = loadCSS;
+	}
+	else {
+		w.loadCSS = loadCSS;
+	}
+}( typeof global !== "undefined" ? global : this ) );
+</script>
+
+    <link rel="icon" href="/assets/favicon.ico">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js" as="script">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js" as="script">
+    <link rel="preload" href="/scripts/main.js" as="script">
+    <link rel="preload" as="font" href="/font/Oswald-Regular.ttf" crossorigin>
+    <link rel="preload" as="font" href="https://at.alicdn.com/t/font_327081_1dta1rlogw17zaor.woff" crossorigin>
+    
+    <!-- fancybox -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" defer></script>
+    <!-- 百度统计  -->
+    
+    <!-- 谷歌统计  -->
+    
+</head>
+
+    
+        <body class="post-body">
+    
+    
+<header class="header">
+
+    <div class="read-progress"></div>
+    <div class="header-sidebar-menu">&#xe775;</div>
+    <!-- post页的toggle banner  -->
+    
+    <div class="banner">
+            <div class="blog-title">
+                <a href="/" >王某人的个人博客</a>
+            </div>
+            <div class="post-title">
+                <a href="#" class="post-name">JPA学习-03</a>
+            </div>
+    </div>
+    
+    <a class="home-link" href=/>王某人的个人博客</a>
+</header>
+    <div class="wrapper">
+        <div class="site-intro" style="
+
+
+
+
+
+
+
+height:50vh;
+">
+    
+    <!-- 主页  -->
+    
+    
+    <!-- 404页  -->
+            
+    <div class="site-intro-placeholder"></div>
+    <div class="site-intro-img" style="background-image: url(/intro/post-bg.jpg)"></div>
+    <div class="site-intro-meta">
+        <!-- 标题  -->
+        <h1 class="intro-title">
+            <!-- 主页  -->
+            
+            JPA学习-03
+            <!-- 404 -->
+            
+        </h1>
+        <!-- 副标题 -->
+        <p class="intro-subtitle">
+            <!-- 主页副标题  -->
+            
+            
+            <!-- 404 -->
+            
+        </p>
+        <!-- 文章页meta -->
+        
+            <div class="post-intros">
+                <!-- 文章页标签  -->
+                
+                    <div class= post-intro-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "JPA">JPA</a>
+    
+</div>
+                
+                
+                    <div class="post-intro-read">
+                        <span>Word count: <span class="post-count word-count">6.6k</span>Reading time: <span class="post-count reading-time">27 min</span></span>
+                    </div>
+                
+                <div class="post-intro-meta">
+                    <span class="post-intro-calander iconfont-archer">&#xe676;</span>
+                    <span class="post-intro-time">2019/09/12</span>
+                    
+                    <span id="busuanzi_container_page_pv" class="busuanzi-pv">
+                        <span class="iconfont-archer">&#xe602;</span>
+                        <span id="busuanzi_value_page_pv"></span>
+                    </span>
+                    
+                    <span class="shareWrapper">
+                        <span class="iconfont-archer shareIcon">&#xe71d;</span>
+                        <span class="shareText">Share</span>
+                        <ul class="shareList">
+                            <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                                <div class="share-qrcode"></div>
+                            </li>
+                            <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                            <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                            <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                            <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                        </ul>
+                    </span>
+                </div>
+            </div>
+        
+    </div>
+</div>
+        <script>
+ 
+  // get user agent
+  var browser = {
+    versions: function () {
+      var u = window.navigator.userAgent;
+      return {
+        userAgent: u,
+        trident: u.indexOf('Trident') > -1, //IE内核
+        presto: u.indexOf('Presto') > -1, //opera内核
+        webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+        gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+        mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+        ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+        android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+        iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者安卓QQ浏览器
+        iPad: u.indexOf('iPad') > -1, //是否为iPad
+        webApp: u.indexOf('Safari') == -1, //是否为web应用程序，没有头部与底部
+        weixin: u.indexOf('MicroMessenger') == -1, //是否为微信浏览器
+        uc: u.indexOf('UCBrowser') > -1 //是否为android下的UC浏览器
+      };
+    }()
+  }
+  console.log("userAgent:" + browser.versions.userAgent);
+
+  // callback
+  function fontLoaded() {
+    console.log('font loaded');
+    if (document.getElementsByClassName('site-intro-meta')) {
+      document.getElementsByClassName('intro-title')[0].classList.add('intro-fade-in');
+      document.getElementsByClassName('intro-subtitle')[0].classList.add('intro-fade-in');
+      var postIntros = document.getElementsByClassName('post-intros')[0]
+      if (postIntros) {
+        postIntros.classList.add('post-fade-in');
+      }
+    }
+  }
+
+  // UC不支持跨域，所以直接显示
+  function asyncCb(){
+    if (browser.versions.uc) {
+      console.log("UCBrowser");
+      fontLoaded();
+    } else {
+      WebFont.load({
+        custom: {
+          families: ['Oswald-Regular']
+        },
+        loading: function () {  //所有字体开始加载
+          // console.log('loading');
+        },
+        active: function () {  //所有字体已渲染
+          fontLoaded();
+        },
+        inactive: function () { //字体预加载失败，无效字体或浏览器不支持加载
+          console.log('inactive: timeout');
+          fontLoaded();
+        },
+        timeout: 5000 // Set the timeout to two seconds
+      });
+    }
+  }
+
+  function asyncErr(){
+    console.warn('script load from CDN failed, will load local script')
+  }
+
+  // load webfont-loader async, and add callback function
+  function async(u, cb, err) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (cb) { o.addEventListener('load', function (e) { cb(null, e); }, false); }
+    if (err) { o.addEventListener('error', function (e) { err(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+
+  var asyncLoadWithFallBack = function(arr, success, reject) {
+      var currReject = function(){
+        reject()
+        arr.shift()
+        if(arr.length)
+          async(arr[0], success, currReject)
+        }
+
+      async(arr[0], success, currReject)
+  }
+
+  asyncLoadWithFallBack([
+    "https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js", 
+    "https://cdn.bootcss.com/webfont/1.6.28/webfontloader.js",
+    "/lib/webfontloader.min.js"
+  ], asyncCb, asyncErr)
+</script>        
+        <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
+        <div class="container container-unloaded">
+            <main class="main post-page">
+    <article class="article-entry">
+        <h1 id="JPA—Specifications动态查询"><a href="#JPA—Specifications动态查询" class="headerlink" title="JPA—Specifications动态查询"></a>JPA—Specifications动态查询</h1><h1 id="第1章-Specifications动态查询"><a href="#第1章-Specifications动态查询" class="headerlink" title="第1章 Specifications动态查询"></a>第1章 Specifications动态查询</h1><p>有时我们在查询某个实体的时候，给定的条件是不固定的，这时就需要动态构建相应的查询语句，在Spring Data JPA中可以通过JpaSpecificationExecutor接口查询。相比JPQL,其优势是类型安全,更加的面向对象。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">JpaSpecificationExecutor</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function">Optional&lt;T&gt; <span class="title">findOne</span><span class="params">(@Nullable Specification&lt;T&gt; spec)</span></span>;</span><br><span class="line"></span><br><span class="line">	<span class="function">List&lt;T&gt; <span class="title">findAll</span><span class="params">(@Nullable Specification&lt;T&gt; spec)</span></span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="function">Page&lt;T&gt; <span class="title">findAll</span><span class="params">(@Nullable Specification&lt;T&gt; spec, Pageable pageable)</span></span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="function">List&lt;T&gt; <span class="title">findAll</span><span class="params">(@Nullable Specification&lt;T&gt; spec, Sort sort)</span></span>;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">long</span> <span class="title">count</span><span class="params">(@Nullable Specification&lt;T&gt; spec)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>对于JpaSpecificationExecutor，这个接口基本是围绕着Specification接口来定义的。我们可以简单的理解为，Specification构造的就是查询条件。</p>
+<p>Specification接口中只定义了如下一个方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//构造查询条件</span></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">*	root	：Root接口，代表查询的根对象，可以通过root获取实体中的属性</span></span><br><span class="line"><span class="comment">*	query	：代表一个顶层查询对象，用来自定义查询</span></span><br><span class="line"><span class="comment">*	cb		：用来构建查询，此对象里有很多条件方法(如equals，like等)</span></span><br><span class="line"><span class="comment">**/</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Predicate <span class="title">toPredicate</span><span class="params">(Root&lt;T&gt; root, CriteriaQuery&lt;?&gt; query, CriteriaBuilder cb)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<h2 id="1-1-使用Specifications完成条件查询"><a href="#1-1-使用Specifications完成条件查询" class="headerlink" title="1.1 使用Specifications完成条件查询"></a><strong>1.1</strong> 使用Specifications完成条件查询</h2> <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RunWith</span>(SpringRunner.class)</span><br><span class="line"><span class="comment">//指定spring容器的配置信息</span></span><br><span class="line"><span class="meta">@ContextConfiguration</span>(locations = <span class="string">"classpath:applicationContext.xml"</span>) </span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SpecTest</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> CustomerRepository customerRepository;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 根据条件查询单个对象</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testSpec</span><span class="params">()</span> </span>&#123;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* 自定义查询条件</span></span><br><span class="line"><span class="comment">*      1.实现Specification接口需要提供泛型（即我们需要查询对象的类型）</span></span><br><span class="line"><span class="comment">*      2.需要实现一个toPredicate方法（构造查询条件）</span></span><br><span class="line"><span class="comment">*      3.需要借助方法参数中的两个参数</span></span><br><span class="line"><span class="comment">*           root：获取需要查询的对象属性</span></span><br><span class="line"><span class="comment">*           CriteriaBuilder：用来构造查询条件的内部封装了很多查询条件（如模糊匹配，精准匹配，不等于 </span></span><br><span class="line"><span class="comment">*           ..等）</span></span><br><span class="line"><span class="comment">* 案例：根据客户名称精准查询，查询客户名为：“小船” 客户</span></span><br><span class="line"><span class="comment">*      查询条件：</span></span><br><span class="line"><span class="comment">*          1.查询方式</span></span><br><span class="line"><span class="comment">*              存在于CriteriaBuilder对象中</span></span><br><span class="line"><span class="comment">*          2.比较属性名称</span></span><br><span class="line"><span class="comment">*              存在root对象中</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line">        <span class="comment">//匿名内部类</span></span><br><span class="line">        Specification&lt;Customer&gt; spec = <span class="keyword">new</span> Specification&lt;Customer&gt;() &#123;</span><br><span class="line">            <span class="function"><span class="keyword">public</span> Predicate <span class="title">toPredicate</span><span class="params">(Root&lt;Customer&gt; root, CriteriaQuery&lt;?&gt; query, CriteriaBuilder cb)</span> </span>&#123;</span><br><span class="line">                <span class="comment">//1.获取比较的属性</span></span><br><span class="line">                Path&lt;Object&gt; custName = root.get(<span class="string">"custName"</span>);</span><br><span class="line">                <span class="comment">//2.构造查询条件   sql： select * from xxx where name = 'www'</span></span><br><span class="line">                <span class="comment">/**</span></span><br><span class="line"><span class="comment">                 * 第一个属性：需要比较的属性（是一个path对象）</span></span><br><span class="line"><span class="comment">                 * 第二个参数：当前需要比较的取值</span></span><br><span class="line"><span class="comment">                 */</span></span><br><span class="line">                <span class="comment">//进行精准匹配(比较的属性名，比较的属性取值)</span></span><br><span class="line">                Predicate predicate = cb.equal(custName, <span class="string">"小船"</span>);</span><br><span class="line">                <span class="keyword">return</span> predicate;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">        Customer one = customerRepository.findOne(spec);</span><br><span class="line">        System.out.println(<span class="string">"*****-----*****"</span> + one);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 多条件查询</span></span><br><span class="line"><span class="comment">     * 案例：根据客户名和客户所属行业进行查询（Bob，航天）</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testspec1</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">/**</span></span><br><span class="line"><span class="comment">         * root:构造属性</span></span><br><span class="line"><span class="comment">         *      1.客户名称</span></span><br><span class="line"><span class="comment">         *      2.所属行业</span></span><br><span class="line"><span class="comment">         * cb：构造查询</span></span><br><span class="line"><span class="comment">         *      1.构造客户名的精准匹配查询</span></span><br><span class="line"><span class="comment">         *      2.构造所属行业的精准匹配查询</span></span><br><span class="line"><span class="comment">         *      3.将以上两个查询联系起来</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        Specification&lt;Customer&gt; spec = <span class="keyword">new</span> Specification&lt;Customer&gt;() &#123;</span><br><span class="line">            <span class="function"><span class="keyword">public</span> Predicate <span class="title">toPredicate</span><span class="params">(Root&lt;Customer&gt; root, CriteriaQuery&lt;?&gt; query, CriteriaBuilder cb)</span> </span>&#123;</span><br><span class="line">                Path&lt;Object&gt; custName = root.get(<span class="string">"custName"</span>);</span><br><span class="line">                Path&lt;Object&gt; custIndustry = root.get(<span class="string">"custIndustry"</span>);</span><br><span class="line"></span><br><span class="line">                <span class="comment">//构造查询</span></span><br><span class="line">                <span class="comment">//1.构造客户名的精准匹配查询</span></span><br><span class="line">                Predicate p1 = cb.equal(custName, <span class="string">"Bob"</span>);</span><br><span class="line">                <span class="comment">//2.构造所属行业的精准匹配查询</span></span><br><span class="line">                Predicate p2 = cb.equal(custIndustry, <span class="string">"航天"</span>);</span><br><span class="line">                <span class="comment">//3.将多个查询条件组合到一起（根据业务需求进行组合）</span></span><br><span class="line">                <span class="comment">//如：满足条件1并且满足条件2 ---&gt;与关系，满足条件1或者满足条件2 ---&gt;或关系</span></span><br><span class="line">                Predicate and = cb.and(p1, p2);<span class="comment">//以与的形式拼接多个查询条件</span></span><br><span class="line">                <span class="comment">//cb.or()//以或的形式拼接多个查询条件</span></span><br><span class="line">                <span class="keyword">return</span> and;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">        Customer one = customerRepository.findOne(spec);</span><br><span class="line">        System.out.println(<span class="string">"*****-----*****"</span> + one);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 案例：根据客户姓名进行模糊匹配查询并返回客户列表</span></span><br><span class="line"><span class="comment">     * 客户名包含“航天”的客户</span></span><br><span class="line"><span class="comment">     * equals：直接得到path对象（属性），然后进行比较即可</span></span><br><span class="line"><span class="comment">     * </span></span><br><span class="line"><span class="comment">     * gt,lt,le,like : 不能直接用path对象去比较，我们需要得到path对象，</span></span><br><span class="line"><span class="comment">     * 然后根据得到的path对象去指定比较的参数类型然后再去进行比较</span></span><br><span class="line"><span class="comment">     *   *指定参数类型的方式：path.as(类型的字节码对象)</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testSpec2</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">//构造查询条件</span></span><br><span class="line">        Specification&lt;Customer&gt; spec = <span class="keyword">new</span> Specification&lt;Customer&gt;() &#123;</span><br><span class="line">            <span class="function"><span class="keyword">public</span> Predicate <span class="title">toPredicate</span><span class="params">(Root&lt;Customer&gt; root, CriteriaQuery&lt;?&gt; query, CriteriaBuilder cb)</span> </span>&#123;</span><br><span class="line">                <span class="comment">//1)查询属性：属性名</span></span><br><span class="line">                Path&lt;Object&gt; custName = root.get(<span class="string">"custName"</span>);</span><br><span class="line"></span><br><span class="line">                <span class="comment">//2)查询方式：模糊匹配</span></span><br><span class="line">                Predicate like = cb.like(custName.as(String.class), <span class="string">"%宇宙%"</span>);</span><br><span class="line">                <span class="keyword">return</span> like;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">        <span class="comment">//添加排序功能</span></span><br><span class="line">        <span class="comment">/**</span></span><br><span class="line"><span class="comment">         * 创建排序对象,需要调用构造方法实例化sort对象</span></span><br><span class="line"><span class="comment">         * Sort.Direction.DESC : 倒序</span></span><br><span class="line"><span class="comment">         * Sort.Direction.ASC ：升序</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        Sort sort = <span class="keyword">new</span> Sort(Sort.Direction.DESC,<span class="string">"custId"</span>);</span><br><span class="line">        List&lt;Customer&gt; list = customerRepository.findAll(spec,sort);</span><br><span class="line">        <span class="keyword">for</span> (Customer item : list) &#123;</span><br><span class="line">            System.out.println(<span class="string">"*****customer*****"</span> + item);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="1-2-基于Specifications的分页查询"><a href="#1-2-基于Specifications的分页查询" class="headerlink" title="1.2 基于Specifications的分页查询"></a>1.2 基于Specifications的分页查询</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* 分页查询</span></span><br><span class="line"><span class="comment">*      findAll(Specification,Pageable)方法</span></span><br><span class="line"><span class="comment">*          Specification：查询条件</span></span><br><span class="line"><span class="comment">*          Pageable：分页参数</span></span><br><span class="line"><span class="comment">*              分页参数：包含了查询的页面以及每页查询的条数</span></span><br><span class="line"><span class="comment">*      findAll(Pageable) ：没有条件的分页</span></span><br><span class="line"><span class="comment">* 上述两个方法都返回一个Page对象（SpringDataJpa为我们封装好的pageBean，我们可以通过这个方法获取到数据</span></span><br><span class="line"><span class="comment">* 列表，总条数等。。）</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testSpec4</span><span class="params">()</span></span>&#123;</span><br><span class="line">    Specification&lt;Customer&gt; spec = <span class="keyword">new</span> Specification&lt;Customer&gt;() &#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> Predicate <span class="title">toPredicate</span><span class="params">(Root&lt;Customer&gt; root, CriteriaQuery&lt;?&gt; query, CriteriaBuilder cb)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="comment">//PageRequest 是Pageable接口的实现类</span></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 在创建PageRequest的过程中，我们需要调用它的构造方法传入两个参数</span></span><br><span class="line"><span class="comment">     *      1.当前查询的页数（从0开始）</span></span><br><span class="line"><span class="comment">     *      2.没有查询的数量</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    Pageable pageable = <span class="keyword">new</span> PageRequest(<span class="number">0</span>,<span class="number">2</span>);</span><br><span class="line">    Page&lt;Customer&gt; all = customerRepository.findAll(pageable);</span><br><span class="line">    System.out.println(all.getContent());<span class="comment">//得到数据集合列表</span></span><br><span class="line">    System.out.println(all.getTotalElements());<span class="comment">//得到总条数</span></span><br><span class="line">    System.out.println(all.getTotalPages());<span class="comment">//得到总页数</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>对于Spring Data JPA中的分页查询，是其内部自动实现的封装过程，返回的是一个Spring Data JPA提供的pageBean对象。其中的方法说明如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//获取总页数</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">getTotalPages</span><span class="params">()</span></span>;</span><br><span class="line"><span class="comment">//获取总记录数	</span></span><br><span class="line"><span class="function"><span class="keyword">long</span> <span class="title">getTotalElements</span><span class="params">()</span></span>;</span><br><span class="line"><span class="comment">//获取列表数据</span></span><br><span class="line"><span class="function">List&lt;T&gt; <span class="title">getContent</span><span class="params">()</span></span>;</span><br></pre></td></tr></table></figure>
+
+<h2 id="1-3-方法对应关系"><a href="#1-3-方法对应关系" class="headerlink" title="1.3 方法对应关系"></a>1.3 方法对应关系</h2><table>
+<thead>
+<tr>
+<th>方法名称</th>
+<th>Sql对应关系</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>equle</td>
+<td>filed = value</td>
+</tr>
+<tr>
+<td>gt（greaterThan ）</td>
+<td>filed &gt; value</td>
+</tr>
+<tr>
+<td>lt（lessThan ）</td>
+<td>filed &lt; value</td>
+</tr>
+<tr>
+<td>ge（greaterThanOrEqualTo ）</td>
+<td>filed &gt;= value</td>
+</tr>
+<tr>
+<td>le（ lessThanOrEqualTo）</td>
+<td>filed &lt;= value</td>
+</tr>
+<tr>
+<td>notEqule</td>
+<td>filed != value</td>
+</tr>
+<tr>
+<td>like</td>
+<td>filed like value</td>
+</tr>
+<tr>
+<td>notLike</td>
+<td>filed not like value</td>
+</tr>
+</tbody></table>
+<h1 id="第2章-多表设计"><a href="#第2章-多表设计" class="headerlink" title="第2章 多表设计"></a>第2章 多表设计</h1><h2 id="2-1-表之间关系的划分"><a href="#2-1-表之间关系的划分" class="headerlink" title="2.1 表之间关系的划分"></a>2.1 表之间关系的划分</h2><p>数据库中多表之间存在着三种关系，如图所示。</p>
+ <img src="/2019/09/12/JPA学习-03/wps1.jpg">
+
+<blockquote>
+<p>从图可以看出，系统设计的三种实体关系分别为：多对多、一对多和一对一关系。注意：一对多关系可以看为两种：  即一对多，多对一。所以说四种更精确。</p>
+<p>明确：我们今天只涉及实际开发中常用的关联关系，一对多和多对多。而一对一的情况，在实际开发中几乎不用。</p>
+</blockquote>
+<h2 id="2-2-在JPA框架中表关系的分析步骤"><a href="#2-2-在JPA框架中表关系的分析步骤" class="headerlink" title="2.2 在JPA框架中表关系的分析步骤"></a>2.2 在JPA框架中表关系的分析步骤</h2><p>在实际开发中，我们数据库的表难免会有相互的关联关系，在操作表的时候就有可能会涉及到多张表的操作。而在这种实现了ORM思想的框架中（如JPA），可以让我们通过操作实体类就实现对数据库表的操作。所以今天我们的学习重点是：掌握配置实体之间的关联关系。</p>
+<blockquote>
+<p><strong>第一步：首先确定两张表之间的关系。</strong></p>
+<p>​    ——如果关系确定错了，后面做的所有操作就都不可能正确。</p>
+<p><strong>第二步：在数据库中实现两张表的关系</strong></p>
+<p><strong>第三步：在实体类中描述出两个实体的关系</strong></p>
+<p><strong>第四步：配置出实体类和数据库表的关系映射（重点）</strong></p>
+</blockquote>
+<h1 id="第3章-JPA中的一对多"><a href="#第3章-JPA中的一对多" class="headerlink" title="第3章 JPA中的一对多"></a>第3章 JPA中的一对多</h1><h2 id="3-1-示例分析"><a href="#3-1-示例分析" class="headerlink" title="3.1 示例分析"></a>3.1 示例分析</h2><p> 我们采用的示例为客户和联系人。</p>
+<p> 客户：指的是一家公司，我们记为A。</p>
+<p> 联系人：指的是A公司中的员工。</p>
+<p> 在不考虑兼职的情况下，公司和员工的关系即为一对多。</p>
+<h2 id="3-2-表关系建立"><a href="#3-2-表关系建立" class="headerlink" title="3.2 表关系建立"></a>3.2 表关系建立</h2><p>在一对多关系中，我们习惯把一的一方称之为主表，把多的一方称之为从表。在数据库中建立一对多的关系，需要使用数据库的外键约束。</p>
+<p>什么是外键？</p>
+<p>指的是从表中有一列，取值参照主表的主键，这一列就是外键。</p>
+<p>一对多数据库关系的建立，如下图所示 </p>
+<img src="/2019/09/12/JPA学习-03/wps2.jpg">
+
+
+
+<h2 id="3-3-实体类关系建立以及映射配置"><a href="#3-3-实体类关系建立以及映射配置" class="headerlink" title="3.3 实体类关系建立以及映射配置"></a>3.3 实体类关系建立以及映射配置</h2><h3 id="1）编写实体类"><a href="#1）编写实体类" class="headerlink" title="1）编写实体类"></a>1）编写实体类</h3><p>a.在实体类中，由于客户是少的一方，它应该包含多个联系人，所以实体类要体现出客户中有多个联系人的信息，代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.jpa.domain;</span><br><span class="line"><span class="keyword">import</span> javax.persistence.*;</span><br><span class="line"><span class="keyword">import</span> java.io.Serializable;</span><br><span class="line"><span class="keyword">import</span> java.util.HashSet;</span><br><span class="line"><span class="keyword">import</span> java.util.Set;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="meta">@Table</span>(name = <span class="string">"cst_customer"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Customer</span> <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Id</span></span><br><span class="line">    <span class="meta">@GeneratedValue</span>(strategy = GenerationType.IDENTITY)</span><br><span class="line">    <span class="meta">@Column</span>(name = <span class="string">"cust_id"</span>)</span><br><span class="line">    <span class="keyword">private</span> Long custId; <span class="comment">//客户主键</span></span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Column</span>(name = <span class="string">"cust_name"</span>)</span><br><span class="line">    <span class="keyword">private</span> String custName;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Column</span>(name = <span class="string">"cust_source"</span>)</span><br><span class="line">    <span class="keyword">private</span> String custSource;<span class="comment">//客户来源</span></span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Column</span>(name = <span class="string">"cust_industry"</span>)</span><br><span class="line">    <span class="keyword">private</span> String custIndustry;<span class="comment">//客户所属行业</span></span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Column</span>(name = <span class="string">"cust_level"</span>)</span><br><span class="line">    <span class="keyword">private</span> String custLevel;<span class="comment">//客户级别</span></span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Column</span>(name = <span class="string">"cust_address"</span>)</span><br><span class="line">    <span class="keyword">private</span> String custAddress;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Column</span>(name = <span class="string">"cust_phone"</span>)</span><br><span class="line">    <span class="keyword">private</span> String custPhone;</span><br><span class="line">    <span class="comment">//配置客户与联系人之间的关系（一个客户对应多个联系人）</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 使用注解的形式配置多表关系</span></span><br><span class="line"><span class="comment">     * 1.声明关系</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@OneToMany</span>: 配置一对多关系</span></span><br><span class="line"><span class="comment">     * targetEntity：对方的字节码对象</span></span><br><span class="line"><span class="comment">     * 2.配置外键（中间表表）</span></span><br><span class="line"><span class="comment">     *   <span class="doctag">@JoinColumn</span> : 配置外键</span></span><br><span class="line"><span class="comment">     *   name:外键字段的名称</span></span><br><span class="line"><span class="comment">     *   referencedColumnName： 参照的主表的主键字段名称</span></span><br><span class="line"><span class="comment">     *     *在客户实体类上 （一的一方）添加了外键的配置，</span></span><br><span class="line"><span class="comment">     *     *所以对于客户而言，他也具备了维护外键的作用</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line"></span><br><span class="line">    <span class="meta">@OneToMany</span>(targetEntity = LinkMan.class)</span><br><span class="line">    <span class="meta">@JoinColumn</span>(name = <span class="string">"lkm_cust_id"</span>, referencedColumnName = <span class="string">"cust_id"</span>)</span><br><span class="line">    <span class="keyword">private</span> Set&lt;LinkMan&gt; linkMans = <span class="keyword">new</span> HashSet&lt;LinkMan&gt;();</span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">    ....(get,set方法....)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>b.由于联系人是多的一方，在实体类中要体现出，每个联系人只能对应一个客户，代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.jpa.domain;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.persistence.*;</span><br><span class="line"><span class="keyword">import</span> java.io.Serializable;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="meta">@Table</span>(name = <span class="string">"cst_linkman"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LinkMan</span> <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Id</span></span><br><span class="line">    <span class="meta">@GeneratedValue</span>(strategy = GenerationType.IDENTITY)</span><br><span class="line">    <span class="meta">@Column</span>(name = <span class="string">"lkm_id"</span>)</span><br><span class="line">    <span class="keyword">private</span> Long lkmId;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Column</span>(name = <span class="string">"lkm_name"</span>)</span><br><span class="line">    <span class="keyword">private</span> String lkmName;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Column</span>(name = <span class="string">"lkm_gender"</span>)</span><br><span class="line">    <span class="keyword">private</span> String lkmGender;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Column</span>(name = <span class="string">"lkm_phone"</span>)</span><br><span class="line">    <span class="keyword">private</span> String lkmPhone;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Column</span>(name = <span class="string">"lkm_mobile"</span>)</span><br><span class="line">    <span class="keyword">private</span> String lkmMobile;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Column</span>(name = <span class="string">"lkm_email"</span>)</span><br><span class="line">    <span class="keyword">private</span> String lkmEmail;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Column</span>(name = <span class="string">"lkm_position"</span>)</span><br><span class="line">    <span class="keyword">private</span> String lkmPosition;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Column</span>(name = <span class="string">"lkm_memo"</span>)</span><br><span class="line">    <span class="keyword">private</span> String lkmMemo;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 配置联系人到客户的多对一关系</span></span><br><span class="line"><span class="comment">     * 使用注解的形式配置多对一关系</span></span><br><span class="line"><span class="comment">     * 1.配置表关系</span></span><br><span class="line"><span class="comment">     *      <span class="doctag">@ManyToOne</span> : 配置多对一关系</span></span><br><span class="line"><span class="comment">     *      targetEntity ： 对方实体类类型的字节码</span></span><br><span class="line"><span class="comment">     * 2.配置外键（中间表）</span></span><br><span class="line"><span class="comment">     *      <span class="doctag">@JoinColumn</span></span></span><br><span class="line"><span class="comment">     *          name：外键名称</span></span><br><span class="line"><span class="comment">     *          referencedColumnName：当前这个外键参照的主表的主键名称</span></span><br><span class="line"><span class="comment">     *配置外键的过程：配置到了多的一方，---在多的一方也需要维护外键</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@ManyToOne</span>(targetEntity = Customer.class,fetch = FetchType.LAZY)</span><br><span class="line">    <span class="meta">@JoinColumn</span>(name = <span class="string">"lkm_cust_id"</span>,referencedColumnName = <span class="string">"cust_id"</span>)</span><br><span class="line">    <span class="keyword">private</span> Customer customer;</span><br><span class="line"></span><br><span class="line">    ....(get,set方法....)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2）编写符合SpringDataJpa规范的Repository类"><a href="#2）编写符合SpringDataJpa规范的Repository类" class="headerlink" title="2）编写符合SpringDataJpa规范的Repository类"></a>2）编写符合SpringDataJpa规范的Repository类</h3><p>a.编写CustomerRepository类如下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">LinkManRepository</span> <span class="keyword">extends</span> <span class="title">JpaSpecificationExecutor</span>&lt;<span class="title">LinkMan</span>&gt;, <span class="title">JpaRepository</span>&lt;<span class="title">LinkMan</span>, <span class="title">Long</span>&gt; </span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>b.编写LinkManRepository类如下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">LinkManRepository</span> <span class="keyword">extends</span> <span class="title">JpaSpecificationExecutor</span>&lt;<span class="title">LinkMan</span>&gt;, <span class="title">JpaRepository</span>&lt;<span class="title">LinkMan</span>, <span class="title">Long</span>&gt; </span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-4-映射的注解说明"><a href="#3-4-映射的注解说明" class="headerlink" title="3.4 映射的注解说明"></a>3.4 映射的注解说明</h2><h3 id="1）-OneToMany"><a href="#1）-OneToMany" class="headerlink" title="1） @OneToMany:"></a>1） @OneToMany:</h3><pre><code>作用：建立一对多的关系映射</code></pre><p>​    属性：</p>
+<p>​        targetEntityClass：指定多的多方的类的字节码</p>
+<p>​        mappedBy：指定从表实体类中引用主表对象的名称。</p>
+<p>​        cascade：指定要使用的级联操作</p>
+<p>​        fetch：指定是否采用延迟加载</p>
+<p>​        orphanRemoval：是否使用孤儿删除</p>
+<h3 id="2）-ManyToOne"><a href="#2）-ManyToOne" class="headerlink" title="2）@ManyToOne"></a>2）@ManyToOne</h3><p>​    作用：建立多对一的关系</p>
+<p>​    属性：</p>
+<p>​        targetEntityClass：指定一的一方实体类字节码</p>
+<p>​        cascade：指定要使用的级联操作</p>
+<p>​        fetch：指定是否采用延迟加载</p>
+<p>​        optional：关联是否可选。如果设置为false，则必须始终存在非空关系。</p>
+<h3 id="3）-JoinColumn"><a href="#3）-JoinColumn" class="headerlink" title="3）@JoinColumn"></a>3）@JoinColumn</h3><p>​     作用：用于定义主键字段和外键字段的对应关系。</p>
+<p>​     属性：</p>
+<p>​        name：指定外键字段的名称</p>
+<p>​        referencedColumnName：指定引用主表的主键字段名称</p>
+<p>​        unique：是否唯一。默认值不唯一</p>
+<p>​        nullable：是否允许为空。默认值允许。</p>
+<p>​        insertable：是否允许插入。默认值允许。</p>
+<p>​        updatable：是否允许更新。默认值允许。</p>
+<p>​        columnDefinition：列的定义信息。</p>
+<h2 id="3-5-一对多的操作"><a href="#3-5-一对多的操作" class="headerlink" title="3.5 一对多的操作"></a>3.5 一对多的操作</h2><h3 id="3-5-1-添加"><a href="#3-5-1-添加" class="headerlink" title="3.5.1 添加"></a>3.5.1 添加</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line">   <span class="meta">@Transactional</span></span><br><span class="line">   <span class="meta">@Rollback</span>(value = <span class="keyword">false</span>)</span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testAdd</span><span class="params">()</span> </span>&#123;</span><br><span class="line">       LinkMan lm = <span class="keyword">new</span> LinkMan();</span><br><span class="line">       lm.setLkmName(<span class="string">"Jerry鼠"</span>);</span><br><span class="line">       Customer customer = <span class="keyword">new</span> Customer();</span><br><span class="line">       customer.setCustName(<span class="string">"Tom猫"</span>); <span class="comment">//由于配置了一的一方到多的一方的关联关系，这里会发送一条update语句</span></span><br><span class="line">       customer.getLinkMans().add(lm); <span class="comment">//由于配置了多的一方到一的一方的关联关系，所以当保存的时候就会对外键赋值</span></span><br><span class="line">       <span class="comment">/*</span></span><br><span class="line"><span class="comment">       以上两个语句都执行时会有一条多余的update语句</span></span><br><span class="line"><span class="comment">           *由于一的一方可以维护外键，因而会发送update语句</span></span><br><span class="line"><span class="comment">           * 想要解决此问题，只需要在一的一方放弃维护外键即可（放弃维护权）</span></span><br><span class="line"><span class="comment">        */</span></span><br><span class="line">       lm.setCustomer(customer);</span><br><span class="line">       ctRepository.save(customer);</span><br><span class="line">       lmRepository.save(lm);</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+<p>通过保存的案例，我们可以发现在设置了双向关系之后，会发送两条insert语句，一条多余的update语句，那我们的解决是思路很简单，就是一的一方放弃维护权</p>
+<p>具体操作如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//    @OneToMany(targetEntity = LinkMan.class)</span></span><br><span class="line"><span class="comment">//    @JoinColumn(name = "lkm_cust_id", referencedColumnName = "cust_id")</span></span><br><span class="line"><span class="comment">//放弃外键的维护权</span></span><br><span class="line"><span class="comment">//   mappedBy = "customer"：我的一对多映射参照对方（customer）的属性名称来做</span></span><br><span class="line"><span class="meta">@OneToMany</span>(mappedBy = <span class="string">"customer"</span>,cascade = CascadeType.ALL,fetch = FetchType.EAGER) </span><br><span class="line"><span class="keyword">private</span> Set&lt;LinkMan&gt; linkMans = <span class="keyword">new</span> HashSet&lt;LinkMan&gt;();</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-5-2-删除"><a href="#3-5-2-删除" class="headerlink" title="3.5.2 删除"></a>3.5.2 删除</h4> <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* 级联删除：删除一个客户的时候，删除他的所有联系人</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="meta">@Transactional</span></span><br><span class="line"><span class="meta">@Rollback</span>(value = <span class="keyword">false</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testCascadeDelete</span><span class="params">()</span></span>&#123;</span><br><span class="line">    Customer customer = ctRepository.findOne(<span class="number">2L</span>);</span><br><span class="line">    ctRepository.delete(customer);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>删除操作的说明如下：</p>
+<p><strong>删除从表数据：可以随时任意删除。</strong></p>
+<p><strong>删除主表数据：</strong></p>
+<blockquote>
+<p> <strong>1） 有从表数据</strong></p>
+<p>​    1、在默认情况下，它会把外键字段置为null，然后删除主表数据。如果在数据库的表结构上，外键字段有非空约束，默认情况就会报错了。</p>
+<p>​    2、如果配置了放弃维护关联关系的权利，则不能删除（与外键字段是否允许为null，没有关系）因为在删除时，它根本不会去更新从表的外键字段了。</p>
+<p>​    3、如果还想删除，使用级联删除引用</p>
+<p><strong>2）没有从表数据引用：随便删</strong></p>
+<p>*在实际开发中，级联删除请慎用！(在一对多的情况下)</p>
+</blockquote>
+<h3 id="3-5-3-级联操作"><a href="#3-5-3-级联操作" class="headerlink" title="3.5.3 级联操作"></a>3.5.3 级联操作</h3><h4 id="1）概念"><a href="#1）概念" class="headerlink" title="1）概念"></a>1）概念</h4> <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">级联：</span><br><span class="line">操作一个对象的同时操作他的关联对象</span><br><span class="line"></span><br><span class="line">    级联操作：</span><br><span class="line">        1.需要区分操作主体</span><br><span class="line">        2.需要在操作主体的实体类上，添加级联属性（需要添加到多表映射关系的注解上）</span><br><span class="line">        3.cascade（配置级联）</span><br><span class="line"></span><br><span class="line">    级联添加，</span><br><span class="line">        案例：当我保存一个客户的同时保存联系人</span><br><span class="line">    级联删除</span><br><span class="line">        案例：当我删除一个客户的同时删除此客户的所有联系人</span><br><span class="line">cascade关键字：配置级联（可以配置到设置多表的映射关系的注释上）</span><br><span class="line">      取值范围：</span><br><span class="line">          CascadeType.ALL  ： 所有</span><br><span class="line">          CascadeType.MERGE ： 更新</span><br><span class="line">          CascadeType.PERSIST ： 保存</span><br><span class="line">          CascadeType.REMOVE ： 删除</span><br><span class="line"></span><br><span class="line"> fetch : 配置关联对象的加载方式</span><br><span class="line">       EAGER：立即加载  --&gt; 不推荐这样配置</span><br><span class="line">       LAZY ：延迟加载  --&gt; 默认加载方式</span><br></pre></td></tr></table></figure>
+
+<h4 id="2）案例1—级联添加"><a href="#2）案例1—级联添加" class="headerlink" title="2）案例1—级联添加"></a>2）案例1—级联添加</h4><h5 id="A-Customer类级联属性配置如下"><a href="#A-Customer类级联属性配置如下" class="headerlink" title="A.Customer类级联属性配置如下"></a>A.Customer类级联属性配置如下</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@OneToMany</span>(mappedBy = <span class="string">"customer"</span>,cascade = CascadeType.ALL,fetch = FetchType.EAGER) </span><br><span class="line"><span class="comment">//放弃外键的维护权</span></span><br><span class="line"><span class="keyword">private</span> Set&lt;LinkMan&gt; linkMans = <span class="keyword">new</span> HashSet&lt;LinkMan&gt;();</span><br></pre></td></tr></table></figure>
+
+<h5 id="B-LinkMan类级联属性配置如下"><a href="#B-LinkMan类级联属性配置如下" class="headerlink" title="B.LinkMan类级联属性配置如下"></a>B.LinkMan类级联属性配置如下</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@ManyToOne</span>(targetEntity = Customer.class)</span><br><span class="line"><span class="meta">@JoinColumn</span>(name = <span class="string">"lkm_cust_id"</span>,referencedColumnName = <span class="string">"cust_id"</span>)</span><br><span class="line"><span class="keyword">private</span> Customer customer;</span><br></pre></td></tr></table></figure>
+
+<h5 id="C-测试类编写如下"><a href="#C-测试类编写如下" class="headerlink" title="C.测试类编写如下"></a>C.测试类编写如下</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 级联添加：保存一个客户的时候，保存他的所有联系人</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="meta">@Transactional</span></span><br><span class="line"><span class="meta">@Rollback</span>(value = <span class="keyword">false</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testCascadeAdd</span><span class="params">()</span></span>&#123;</span><br><span class="line">    LinkMan lm = <span class="keyword">new</span> LinkMan();</span><br><span class="line">    lm.setLkmName(<span class="string">"Jerry鼠"</span>);</span><br><span class="line">    Customer customer = <span class="keyword">new</span> Customer();</span><br><span class="line">    customer.setCustName(<span class="string">"Tom猫"</span>);</span><br><span class="line">    lm.setCustomer(customer);</span><br><span class="line">    customer.getLinkMans().add(lm);</span><br><span class="line">    ctRepository.save(customer);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="D-运行成功，观察到hibernate生成的sql语句如下"><a href="#D-运行成功，观察到hibernate生成的sql语句如下" class="headerlink" title="D.运行成功，观察到hibernate生成的sql语句如下"></a>D.运行成功，观察到hibernate生成的sql语句如下</h5><figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Hibernate: alter table cst_linkman add constraint FKh9yp1nql5227xxcopuxqx2e7q foreign key (lkm_cust_id) references cst_customer (cust_id)</span><br><span class="line">Hibernate: insert into cst_customer (cust_address, cust_industry, cust_level, cust_name, cust_phone, cust_source) values (?, ?, ?, ?, ?, ?)</span><br><span class="line">Hibernate: insert into cst_linkman (lkm_cust_id, lkm_email, lkm_gender, lkm_memo, lkm_mobile, lkm_name, lkm_phone, lkm_position) values (?, ?, ?, ?, ?, ?, ?, ?)</span><br></pre></td></tr></table></figure>
+
+<h4 id="3）案例2—级联删除"><a href="#3）案例2—级联删除" class="headerlink" title="3）案例2—级联删除"></a>3）案例2—级联删除</h4><p>A.实体类没有改动，编写测试类如下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* 级联删除：删除一个客户的时候，删除他的所有联系人</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="meta">@Transactional</span></span><br><span class="line"><span class="meta">@Rollback</span>(value = <span class="keyword">false</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testCascadeDelete</span><span class="params">()</span></span>&#123;</span><br><span class="line">    Customer customer = ctRepository.findOne(<span class="number">6L</span>);</span><br><span class="line">    ctRepository.delete(customer);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>B.运行成功，观察控制台输出如下</p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Hibernate: alter table cst_linkman add constraint FKh9yp1nql5227xxcopuxqx2e7q foreign key (lkm_cust_id) references cst_customer (cust_id)</span><br><span class="line">Hibernate: select customer0_.cust_id as cust_id1_0_0_, customer0_.cust_address as cust_add2_0_0_, customer0_.cust_industry as cust_ind3_0_0_, customer0_.cust_level as cust_lev4_0_0_, customer0_.cust_name as cust_nam5_0_0_, customer0_.cust_phone as cust_pho6_0_0_, customer0_.cust_source as cust_sou7_0_0_, linkmans1_.lkm_cust_id as lkm_cust9_1_1_, linkmans1_.lkm_id as lkm_id1_1_1_, linkmans1_.lkm_id as lkm_id1_1_2_, linkmans1_.lkm_cust_id as lkm_cust9_1_2_, linkmans1_.lkm_email as lkm_emai2_1_2_, linkmans1_.lkm_gender as lkm_gend3_1_2_, linkmans1_.lkm_memo as lkm_memo4_1_2_, linkmans1_.lkm_mobile as lkm_mobi5_1_2_, linkmans1_.lkm_name as lkm_name6_1_2_, linkmans1_.lkm_phone as lkm_phon7_1_2_, linkmans1_.lkm_position as lkm_posi8_1_2_ from cst_customer customer0_ left outer join cst_linkman linkmans1_ on customer0_.cust_id=linkmans1_.lkm_cust_id where customer0_.cust_id=?</span><br><span class="line">Hibernate: delete from cst_linkman where lkm_id=?</span><br><span class="line">Hibernate: delete from cst_customer where cust_id=?</span><br></pre></td></tr></table></figure>
+
+<h1 id="第4章-JPA中的多对多"><a href="#第4章-JPA中的多对多" class="headerlink" title="第4章 JPA中的多对多"></a><strong>第4章</strong> JPA中的多对多</h1><h2 id="4-1-示例分析"><a href="#4-1-示例分析" class="headerlink" title="4.1 示例分析"></a>4.1 示例分析</h2><p> 我们采用的示例为用户和角色。</p>
+<p> 用户：指的是咱们班的每一个同学。</p>
+<p> 角色：指的是咱们班同学的身份信息。</p>
+<p> 比如A同学，它是我的学生，其中有个身份就是学生，还是家里的孩子，那么他还有个身份是子女。</p>
+<p> 同时B同学，它也具有学生和子女的身份。</p>
+<p> 那么任何一个同学都可能具有多个身份。同时学生这个身份可以被多个同学所具有。</p>
+<p> 所以我们说，用户和角色之间的关系是多对多。</p>
+<h2 id="4-2-表关系建立"><a href="#4-2-表关系建立" class="headerlink" title="4.2 表关系建立"></a>4.2 表关系建立</h2><p>多对多的表关系建立靠的是中间表，其中用户表和中间表的关系是一对多，角色表和中间表的关系也是一对多，如下图所示：</p>
+<img src="/2019/09/12/JPA学习-03/wps3.jpg">
+
+
+
+
+
+<h2 id="4-3-实体类关系建立以及映射配置"><a href="#4-3-实体类关系建立以及映射配置" class="headerlink" title="4.3 实体类关系建立以及映射配置"></a>4.3 实体类关系建立以及映射配置</h2><p>一个用户可以具有多个角色，所以在用户实体类中应该包含多个角色的信息，代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="meta">@Table</span>(name = <span class="string">"sys_user"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">User</span> <span class="keyword">implements</span> <span class="title">Serializable</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Id</span></span><br><span class="line">    <span class="meta">@GeneratedValue</span>(strategy = GenerationType.IDENTITY)</span><br><span class="line">    <span class="meta">@Column</span>(name = <span class="string">"user_id"</span>)</span><br><span class="line">    <span class="keyword">private</span> Long userId;</span><br><span class="line">    <span class="meta">@Column</span>(name = <span class="string">"user_name"</span>)</span><br><span class="line">    <span class="keyword">private</span> String userName;</span><br><span class="line">    <span class="meta">@Column</span>(name = <span class="string">"age"</span>)</span><br><span class="line">    <span class="keyword">private</span> Integer age;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 配置用户到角色的多对多关系</span></span><br><span class="line"><span class="comment">     * 配置多对多的映射关系</span></span><br><span class="line"><span class="comment">     * 1.声明表关系的配置</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@ManyToMany</span>(targetEntity = Role.class)  //多对多</span></span><br><span class="line"><span class="comment">     *     targetEntity：代表对方的实体类字节码</span></span><br><span class="line"><span class="comment">     * 2.配置中间表（包含两个外键）</span></span><br><span class="line"><span class="comment">     *     <span class="doctag">@JoinTable</span> name : 中间表的名称</span></span><br><span class="line"><span class="comment">     *     joinColumns：配置当前对象在中间表的外键</span></span><br><span class="line"><span class="comment">     *        <span class="doctag">@JoinColumn</span>的数组 name：外键名</span></span><br><span class="line"><span class="comment">     *        referencedColumnName：参照的主表的主键名</span></span><br><span class="line"><span class="comment">     *        inverseJoinColumns：配置对方对象在中间表的外键</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line"><span class="meta">@ManyToMany</span>(targetEntity = Role.class, cascade = CascadeType.ALL)</span><br><span class="line"><span class="meta">@JoinTable</span>(name = <span class="string">"sys_user_role"</span>,</span><br><span class="line"><span class="comment">//joinColumn,当前对象在中间表中的外键</span></span><br><span class="line">joinColumns = &#123;<span class="meta">@JoinColumn</span>(name = <span class="string">"sys_user_id"</span>, referencedColumnName = <span class="string">"user_id"</span>)&#125;,</span><br><span class="line"><span class="comment">//inverseJoinColumns，对方对象在中间表的外键</span></span><br><span class="line">inverseJoinColumns = &#123;<span class="meta">@JoinColumn</span>(name = <span class="string">"sys_role_id"</span>, referencedColumnName=<span class="string">"role_id"</span>)&#125;</span><br><span class="line">               )</span><br><span class="line"><span class="keyword">private</span> Set&lt;Role&gt; roles = <span class="keyword">new</span> HashSet&lt;Role&gt;();</span><br><span class="line"></span><br><span class="line">    .....(get,set方法...)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>一个角色可以赋予多个用户，所以在角色实体类中应该包含多个用户的信息，代码如下：</p>
+ <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="meta">@Table</span>(name = <span class="string">"sys_role"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Role</span> <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Id</span></span><br><span class="line">    <span class="meta">@GeneratedValue</span>(strategy = GenerationType.IDENTITY)</span><br><span class="line">    <span class="meta">@Column</span>(name = <span class="string">"role_id"</span>)</span><br><span class="line">    <span class="keyword">private</span> Long roleId;</span><br><span class="line">    <span class="meta">@Column</span>(name = <span class="string">"role_name"</span>)</span><br><span class="line">    <span class="keyword">private</span> String roleName;</span><br><span class="line"></span><br><span class="line"><span class="comment">//配置多对多</span></span><br><span class="line">    </span><br><span class="line"><span class="meta">@ManyToMany</span>(targetEntity = User.class)</span><br><span class="line"><span class="meta">@JoinTable</span>(name=<span class="string">"sys_user_role"</span>,joinColumns = &#123;<span class="meta">@JoinColumn</span>(name = <span class="string">"sys_role_id"</span>, referencedColumnName = <span class="string">"role_id"</span>)&#125;,</span><br><span class="line">inverseJoinColumns = &#123;<span class="meta">@JoinColumn</span>(name=<span class="string">"sys_user_id"</span>,referencedColumnName = <span class="string">"user_id"</span>)&#125;</span><br><span class="line">)</span><br><span class="line"><span class="comment">//@ManyToMany(mappedBy = "roles")  //放弃外键的维护权</span></span><br><span class="line"><span class="keyword">private</span> Set&lt;User&gt; users = <span class="keyword">new</span> HashSet&lt;User&gt;();</span><br><span class="line"></span><br><span class="line">    .....(get,set方法...)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="4-4-映射的注解说明"><a href="#4-4-映射的注解说明" class="headerlink" title="4.4 映射的注解说明"></a>4.4 映射的注解说明</h2><h3 id="1）-ManyToMany"><a href="#1）-ManyToMany" class="headerlink" title="1）@ManyToMany"></a>1）@ManyToMany</h3><p>​    作用：用于映射多对多关系</p>
+<p>​    属性：</p>
+<p>​        cascade：配置级联操作。</p>
+<p>​        fetch：配置是否采用延迟加载。</p>
+<p>​        targetEntity：配置目标的实体类。映射多对多的时候不用写。</p>
+<h3 id="2）-JoinTable"><a href="#2）-JoinTable" class="headerlink" title="2）@JoinTable"></a>2）@JoinTable</h3><p>​    作用：针对中间表的配置</p>
+<p>​    属性：</p>
+<p>​        nam：配置中间表的名称</p>
+<p>​        joinColumns：中间表的外键字段关联当前实体类所对应表的主键字段                          </p>
+<p>​        inverseJoinColumn：中间表的外键字段关联对方表的主键字段</p>
+<p>​        </p>
+<h3 id="3）-JoinColumn-1"><a href="#3）-JoinColumn-1" class="headerlink" title="3）@JoinColumn"></a>3）@JoinColumn</h3><p>​    作用：用于定义主键字段和外键字段的对应关系。</p>
+<p>​    属性：</p>
+<p>​        name：指定外键字段的名称</p>
+<p>​        referencedColumnName：指定引用主表的主键字段名称</p>
+<p>​        unique：是否唯一。默认值不唯一</p>
+<p>​        nullable：是否允许为空。默认值允许。</p>
+<p>​        insertable：是否允许插入。默认值允许。</p>
+<p>​        updatable：是否允许更新。默认值允许。</p>
+<p>​        columnDefinition：列的定义信息。</p>
+<h2 id="4-5-多对多的操作"><a href="#4-5-多对多的操作" class="headerlink" title="4.5 多对多的操作"></a>4.5 多对多的操作</h2><h3 id="4-5-1-保存"><a href="#4-5-1-保存" class="headerlink" title="4.5.1 保存"></a>4.5.1 保存</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RunWith</span>(SpringRunner.class)</span><br><span class="line"><span class="comment">//指定spring容器的配置信息</span></span><br><span class="line"><span class="meta">@ContextConfiguration</span>(locations = <span class="string">"classpath:applicationContext.xml"</span>) </span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ManyToManyTest</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> UserRepository userRepository;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> RoleRepository roleRepository;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="meta">@Transactional</span></span><br><span class="line">    <span class="meta">@Rollback</span>(value = <span class="keyword">false</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testAdd</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        User user = <span class="keyword">new</span> User();</span><br><span class="line">        user.setUserName(<span class="string">"阿狸"</span>);</span><br><span class="line"></span><br><span class="line">        Role role = <span class="keyword">new</span> Role();</span><br><span class="line">        role.setRoleName(<span class="string">"法师"</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//配置用户到角色关系，可以对中间表的数据进行维护</span></span><br><span class="line">        <span class="comment">/**</span></span><br><span class="line"><span class="comment">         * 如果设置双向的关系，第二次插入时两个键值所构成的联合属性会导致报错（键值冲突）</span></span><br><span class="line"><span class="comment">         * 因而我们需要一方放弃外键的维护权</span></span><br><span class="line"><span class="comment">         *  * 放弃原则：被动的一方放弃  如在本案例中： 角色被选择，则放弃角色的外键维护权</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        user.getRoles().add(role);</span><br><span class="line">        role.getUsers().add(user);</span><br><span class="line"></span><br><span class="line">        userRepository.save(user);</span><br><span class="line">        roleRepository.save(role);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在多对多（保存）中，如果双向都设置关系，意味着双方都维护中间表，都会往中间表插入数据，中间表的2个字段又作为联合主键，所以报错，主键重复，解决保存失败的问题：只需要在任意一方放弃对中间表的维护权即可，推荐在被动的一方放弃，配置如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@ManyToMany</span>(mappedBy = <span class="string">"roles"</span>)  <span class="comment">//放弃外键的维护权</span></span><br><span class="line"><span class="keyword">private</span> Set&lt;User&gt; users = <span class="keyword">new</span> HashSet&lt;User&gt;();</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-5-2-删除操作"><a href="#4-5-2-删除操作" class="headerlink" title="4.5.2 删除操作"></a>4.5.2 删除操作</h3> <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="meta">@Transactional</span></span><br><span class="line"><span class="meta">@Rollback</span>(value = <span class="keyword">false</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testRemove</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    User user = userRepository.findOne(<span class="number">1L</span>);</span><br><span class="line">    userRepository.delete(user);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="第5章-Spring-Data-JPA中的多表查询"><a href="#第5章-Spring-Data-JPA中的多表查询" class="headerlink" title="第5章 Spring Data JPA中的多表查询"></a>第5章 Spring Data JPA中的多表查询</h1><h2 id="5-1-对象导航查询"><a href="#5-1-对象导航查询" class="headerlink" title="5.1 对象导航查询"></a>5.1 对象导航查询</h2><blockquote>
+<p>对象图导航检索方式是<strong>根据已经加载的对象，导航到他的关联对象</strong>。它利用类与类之间的关系来检索对象。例如：我们通过ID查询方式查出一个客户，可以调用Customer类中的getLinkMans()方法来获取该客户的所有联系人。对象导航查询的使用要求是：两个对象之间必须存在关联关系。</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RunWith</span>(SpringRunner.class)</span><br><span class="line"><span class="comment">//指定spring容器的配置信息</span></span><br><span class="line"><span class="meta">@ContextConfiguration</span>(locations = <span class="string">"classpath:applicationContext.xml"</span>) </span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ObjectQueryTest</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> CustomerRepository ctRepository;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> LinkManRepository lmRepository;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 测试对象导航查询：</span></span><br><span class="line"><span class="comment">     * 查询一个对象时，通过这个对象查询出所有的关联对象</span></span><br><span class="line"><span class="comment">     * 由于我们是在junit单元测试中执行这段代码，所有的事物并不能在一个事物中完成会报错如下</span></span><br><span class="line"><span class="comment">     * org.hibernate.LazyInitializationException: could not initialize proxy [com.jpa.domain.Customer#1] - no Session</span></span><br><span class="line"><span class="comment">     * 解决：在测试方法上添加注解<span class="doctag">@Transactional</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Transactional</span> <span class="comment">//解决在java代码中的nosession问题</span></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testQuery1</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        Customer one = ctRepository.getOne(<span class="number">1L</span>);</span><br><span class="line">        <span class="keyword">for</span> (LinkMan linkMan : one.getLinkMans()) &#123;</span><br><span class="line">            System.out.println(linkMan);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 对象导航查询默认是使用延迟加载形式进行查询的</span></span><br><span class="line"><span class="comment">     *      也就是说：调用findOne方法并不会立即查询,而是我们在使用关联属性的时候发送sql语句查询（延迟加载）</span></span><br><span class="line"><span class="comment">     *      *如果我们不希望在导航查询中使用延迟加载：</span></span><br><span class="line"><span class="comment">     *          修改配置：将延迟加载改为立即加载即可</span></span><br><span class="line"><span class="comment">     *              fetch：需要配置到多表映射关系的注解上</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Transactional</span> <span class="comment">//解决在java代码中的nosession问题</span></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testQuery2</span><span class="params">()</span> </span>&#123;</span><br><span class="line"><span class="comment">//        Customer customer = ctRepository.getOne(1L);</span></span><br><span class="line"><span class="comment">//        LinkMan linkMan  = new LinkMan();</span></span><br><span class="line"><span class="comment">//        linkMan.setLkmName("盖伦");</span></span><br><span class="line"><span class="comment">//        linkMan.setCustomer(customer);</span></span><br><span class="line"><span class="comment">//        lmRepository.save(linkMan);</span></span><br><span class="line"></span><br><span class="line">        Customer one = ctRepository.findOne(<span class="number">1L</span>);</span><br><span class="line">        Set&lt;LinkMan&gt; list = one.getLinkMans();</span><br><span class="line">        System.out.println(list.size());</span><br><span class="line">    &#125;</span><br><span class="line">   </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="1）查询一个客户，获取该客户下的所有联系人"><a href="#1）查询一个客户，获取该客户下的所有联系人" class="headerlink" title="1）查询一个客户，获取该客户下的所有联系人"></a>1）查询一个客户，获取该客户下的所有联系人</h3> <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="meta">@Transactional</span></span><br><span class="line"><span class="meta">@Rollback</span>(value = <span class="keyword">false</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testCascade</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    User user = <span class="keyword">new</span> User();</span><br><span class="line">    user.setUserName(<span class="string">"阿狸"</span>);</span><br><span class="line"></span><br><span class="line">    Role role = <span class="keyword">new</span> Role();</span><br><span class="line">    role.setRoleName(<span class="string">"法师"</span>);</span><br><span class="line"></span><br><span class="line">    user.getRoles().add(role);</span><br><span class="line">    role.getUsers().add(user);</span><br><span class="line">    <span class="comment">//级联保存，通过保存用户保存角色</span></span><br><span class="line">    userRepository.save(user);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2）查询一个联系人，获取该联系人的所有客户"><a href="#2）查询一个联系人，获取该联系人的所有客户" class="headerlink" title="2）查询一个联系人，获取该联系人的所有客户"></a>2）查询一个联系人，获取该联系人的所有客户</h3> <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* 从多的一方（联系人）查询他所属的客户（多的一方）</span></span><br><span class="line"><span class="comment">*      *从多的一方查询一的一方，默认使用立即加载的方式</span></span><br><span class="line"><span class="comment">* 改为延迟加载：</span></span><br><span class="line"><span class="comment">*    在多的一方（LinkMan）</span></span><br><span class="line"><span class="comment">*      添加属性 fetch = FetchType.LAZY</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">@Transactional</span></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testQuery3</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    LinkMan lm = lmRepository.findOne(<span class="number">1L</span>);</span><br><span class="line">    Customer customer = lm.getCustomer();</span><br><span class="line">    System.out.println(<span class="string">"***"</span>+customer);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3）对象导航查询的问题分析"><a href="#3）对象导航查询的问题分析" class="headerlink" title="3）对象导航查询的问题分析"></a>3）对象导航查询的问题分析</h3><h4 id="问题1：我们查询客户时，要不要把联系人查询出来？"><a href="#问题1：我们查询客户时，要不要把联系人查询出来？" class="headerlink" title="问题1：我们查询客户时，要不要把联系人查询出来？"></a>问题1：我们查询客户时，要不要把联系人查询出来？</h4><blockquote>
+<p>分析：如果我们不查的话，在用的时候还要自己写代码，调用方法去查询。如果我们查出来的，不使用时又会白白的浪费了服务器内存。</p>
+<p>解决：采用延迟加载的思想。通过配置的方式来设定当我们在需要使用时，发起真正的查询。</p>
+<p>配置方式：在@ManyToOne注解中添加属性 ： fetch = FetchType.LAZY</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@ManyToOne</span>(targetEntity = Customer.class,fetch = FetchType.LAZY)</span><br><span class="line"><span class="meta">@JoinColumn</span>(name = <span class="string">"lkm_cust_id"</span>,referencedColumnName = <span class="string">"cust_id"</span>)</span><br><span class="line"><span class="keyword">private</span> Customer customer;</span><br></pre></td></tr></table></figure>
+
+<h4 id="问题2：我们查询联系人时，要不要把客户查询出来？"><a href="#问题2：我们查询联系人时，要不要把客户查询出来？" class="headerlink" title="问题2：我们查询联系人时，要不要把客户查询出来？"></a>问题2：我们查询联系人时，要不要把客户查询出来？</h4><blockquote>
+<p>分析：例如：查询联系人详情时，肯定会看看该联系人的所属客户。如果我们不查的话，在用的时候还要自己写代码，调用方法去查询。如果我们查出来的话，一个对象不会消耗太多的内存。而且多数情况下我们都是要使用的。</p>
+<p>解决： 采用立即加载的思想。通过配置的方式来设定，只要查询从表实体，就把主表实体对象同时查出来</p>
+<p>配置方式：在@OneToMany注解中添加属性fetch = FetchType.EAGER</p>
+</blockquote>
+ <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//@OneToMany(targetEntity = LinkMan.class)</span></span><br><span class="line"><span class="comment">//@JoinColumn(name = "lkm_cust_id", referencedColumnName = "cust_id")</span></span><br><span class="line"><span class="meta">@OneToMany</span>(mappedBy = <span class="string">"customer"</span>,cascade = CascadeType.ALL,fetch = FetchType.EAGER) </span><br><span class="line"><span class="keyword">private</span> Set&lt;LinkMan&gt; linkMans = <span class="keyword">new</span> HashSet&lt;LinkMan&gt;();</span><br></pre></td></tr></table></figure>
+
+<p>*小结 ：在多对一关系中，如果采用级联查询，在一的一方设置为立即加载，即在多的一方进行导航查询时直接查询一一方的数据并注入多的一方的对象中，而在多的一方设置为延迟加载，即在一的一方进行查询时不会直接查询多的一方的数据，而是当要使用的时候再进行查询操作。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">FetchType.EAGER	：立即加载</span><br><span class="line">FetchType.LAZY	：延迟加载</span><br></pre></td></tr></table></figure>
+
+<h2 id="5-2-多表连接中使用Specification查询"><a href="#5-2-多表连接中使用Specification查询" class="headerlink" title="5.2 多表连接中使用Specification查询"></a>5.2 多表连接中使用Specification查询</h2> <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* Specification的多表查询</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testFind</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Specification&lt;LinkMan&gt; spec = <span class="keyword">new</span> Specification&lt;LinkMan&gt;() &#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> Predicate <span class="title">toPredicate</span><span class="params">(Root&lt;LinkMan&gt; root, CriteriaQuery&lt;?&gt; query, CriteriaBuilder cb)</span> </span>&#123;</span><br><span class="line">            <span class="comment">//Join代表链接查询，通过root对象获取</span></span><br><span class="line">            <span class="comment">//创建的过程中，第一个参数为关联对象的属性名称，第二个参数为连接查询的方式（left，inner，right）</span></span><br><span class="line">            <span class="comment">//JoinType.LEFT : 左外连接,JoinType.INNER：内连接,JoinType.RIGHT：右外连接</span></span><br><span class="line">            Join&lt;LinkMan, Customer&gt; join = root.join(<span class="string">"customer"</span>,JoinType.INNER);</span><br><span class="line">            <span class="keyword">return</span> cb.like(join.get(<span class="string">"custName"</span>).as(String.class),<span class="string">"宇航员"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">    List&lt;LinkMan&gt; list = linkManDao.findAll(spec);</span><br><span class="line">    <span class="keyword">for</span> (LinkMan linkMan : list) &#123;</span><br><span class="line">        System.out.println(linkMan);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+    </article>
+    <!-- license  -->
+    
+        <div class="license-wrapper">
+            <p>Author：<a href="http://none">wtq</a>
+            <p>原文链接：<a href="http://none/2019/09/12/JPA学习-03/">http://none/2019/09/12/JPA学习-03/</a>
+            <p>发表日期：<a href="http://none/2019/09/12/JPA学习-03/">September 12th 2019, 12:00:00 am</a>
+            <p>更新日期：<a href="http://none/2019/09/12/JPA学习-03/">September 10th 2019, 6:40:59 pm</a>
+            <p>版权声明：本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
+        </div>
+    
+    <!-- paginator  -->
+    <ul class="post-paginator">
+        <li class="next">
+            
+        </li>
+        <li class="previous">
+            
+                <div class="prevSlogan">Previous Post</div>
+                <a href= "/2019/09/11/JPA学习-02/" title= "JPA学习-02">
+                    <div class="prevTitle">JPA学习-02</div>
+                </a>
+            
+        </li>
+    </ul>
+    <!-- 评论插件 -->
+    <!-- 来必力City版安装代码 -->
+
+<!-- City版安装代码已完成 -->
+    
+    
+    <!-- partial('_partial/comment/changyan') -->
+    <!--PC版-->
+
+
+    
+    
+
+    <!-- 评论 -->
+</main>
+            <!-- profile -->
+            
+        </div>
+        <footer class="footer footer-unloaded">
+    <!-- social  -->
+    
+    <div class="social">
+        
+    
+        
+            
+                <a href="mailto:951352631@qq.com" class="iconfont-archer email" title=email ></a>
+            
+        
+    
+        
+            
+                <a href="https://github.com/yy951352631" class="iconfont-archer github" target="_blank" title=github></a>
+            
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+    </div>
+    
+    <!-- powered by Hexo  -->
+    <div class="copyright">
+        <span id="hexo-power">Powered by <a href="https://hexo.io/" target="_blank">Hexo</a></span><span class="iconfont-archer power">&#xe635;</span><span id="theme-info">theme <a href="https://github.com/fi3ework/hexo-theme-archer" target="_blank">Archer</a></span>
+    </div>
+    <!-- 不蒜子  -->
+    
+    <div class="busuanzi-container">
+    
+     
+    <span id="busuanzi_container_site_pv">PV: <span id="busuanzi_value_site_pv"></span> :)</span>
+    
+    </div>
+    
+</footer>
+    </div>
+    <!-- toc -->
+    
+    <div class="toc-wrapper" style=
+    
+
+
+
+
+
+
+
+top:50vh;
+
+    >
+        <div class="toc-catalog">
+            <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+        </div>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#JPA—Specifications动态查询"><span class="toc-number">1.</span> <span class="toc-text">JPA—Specifications动态查询</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#第1章-Specifications动态查询"><span class="toc-number">2.</span> <span class="toc-text">第1章 Specifications动态查询</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-使用Specifications完成条件查询"><span class="toc-number">2.1.</span> <span class="toc-text">1.1 使用Specifications完成条件查询</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-基于Specifications的分页查询"><span class="toc-number">2.2.</span> <span class="toc-text">1.2 基于Specifications的分页查询</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-3-方法对应关系"><span class="toc-number">2.3.</span> <span class="toc-text">1.3 方法对应关系</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#第2章-多表设计"><span class="toc-number">3.</span> <span class="toc-text">第2章 多表设计</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-表之间关系的划分"><span class="toc-number">3.1.</span> <span class="toc-text">2.1 表之间关系的划分</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-在JPA框架中表关系的分析步骤"><span class="toc-number">3.2.</span> <span class="toc-text">2.2 在JPA框架中表关系的分析步骤</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#第3章-JPA中的一对多"><span class="toc-number">4.</span> <span class="toc-text">第3章 JPA中的一对多</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-示例分析"><span class="toc-number">4.1.</span> <span class="toc-text">3.1 示例分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-表关系建立"><span class="toc-number">4.2.</span> <span class="toc-text">3.2 表关系建立</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-3-实体类关系建立以及映射配置"><span class="toc-number">4.3.</span> <span class="toc-text">3.3 实体类关系建立以及映射配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1）编写实体类"><span class="toc-number">4.3.1.</span> <span class="toc-text">1）编写实体类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2）编写符合SpringDataJpa规范的Repository类"><span class="toc-number">4.3.2.</span> <span class="toc-text">2）编写符合SpringDataJpa规范的Repository类</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-4-映射的注解说明"><span class="toc-number">4.4.</span> <span class="toc-text">3.4 映射的注解说明</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1）-OneToMany"><span class="toc-number">4.4.1.</span> <span class="toc-text">1） @OneToMany:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2）-ManyToOne"><span class="toc-number">4.4.2.</span> <span class="toc-text">2）@ManyToOne</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3）-JoinColumn"><span class="toc-number">4.4.3.</span> <span class="toc-text">3）@JoinColumn</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-5-一对多的操作"><span class="toc-number">4.5.</span> <span class="toc-text">3.5 一对多的操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-5-1-添加"><span class="toc-number">4.5.1.</span> <span class="toc-text">3.5.1 添加</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-5-2-删除"><span class="toc-number">4.5.1.1.</span> <span class="toc-text">3.5.2 删除</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-5-3-级联操作"><span class="toc-number">4.5.2.</span> <span class="toc-text">3.5.3 级联操作</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1）概念"><span class="toc-number">4.5.2.1.</span> <span class="toc-text">1）概念</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2）案例1—级联添加"><span class="toc-number">4.5.2.2.</span> <span class="toc-text">2）案例1—级联添加</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#A-Customer类级联属性配置如下"><span class="toc-number">4.5.2.2.1.</span> <span class="toc-text">A.Customer类级联属性配置如下</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#B-LinkMan类级联属性配置如下"><span class="toc-number">4.5.2.2.2.</span> <span class="toc-text">B.LinkMan类级联属性配置如下</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#C-测试类编写如下"><span class="toc-number">4.5.2.2.3.</span> <span class="toc-text">C.测试类编写如下</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#D-运行成功，观察到hibernate生成的sql语句如下"><span class="toc-number">4.5.2.2.4.</span> <span class="toc-text">D.运行成功，观察到hibernate生成的sql语句如下</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3）案例2—级联删除"><span class="toc-number">4.5.2.3.</span> <span class="toc-text">3）案例2—级联删除</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#第4章-JPA中的多对多"><span class="toc-number">5.</span> <span class="toc-text">第4章 JPA中的多对多</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#4-1-示例分析"><span class="toc-number">5.1.</span> <span class="toc-text">4.1 示例分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-2-表关系建立"><span class="toc-number">5.2.</span> <span class="toc-text">4.2 表关系建立</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-3-实体类关系建立以及映射配置"><span class="toc-number">5.3.</span> <span class="toc-text">4.3 实体类关系建立以及映射配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-4-映射的注解说明"><span class="toc-number">5.4.</span> <span class="toc-text">4.4 映射的注解说明</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1）-ManyToMany"><span class="toc-number">5.4.1.</span> <span class="toc-text">1）@ManyToMany</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2）-JoinTable"><span class="toc-number">5.4.2.</span> <span class="toc-text">2）@JoinTable</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3）-JoinColumn-1"><span class="toc-number">5.4.3.</span> <span class="toc-text">3）@JoinColumn</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-5-多对多的操作"><span class="toc-number">5.5.</span> <span class="toc-text">4.5 多对多的操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-5-1-保存"><span class="toc-number">5.5.1.</span> <span class="toc-text">4.5.1 保存</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-5-2-删除操作"><span class="toc-number">5.5.2.</span> <span class="toc-text">4.5.2 删除操作</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#第5章-Spring-Data-JPA中的多表查询"><span class="toc-number">6.</span> <span class="toc-text">第5章 Spring Data JPA中的多表查询</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#5-1-对象导航查询"><span class="toc-number">6.1.</span> <span class="toc-text">5.1 对象导航查询</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1）查询一个客户，获取该客户下的所有联系人"><span class="toc-number">6.1.1.</span> <span class="toc-text">1）查询一个客户，获取该客户下的所有联系人</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2）查询一个联系人，获取该联系人的所有客户"><span class="toc-number">6.1.2.</span> <span class="toc-text">2）查询一个联系人，获取该联系人的所有客户</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3）对象导航查询的问题分析"><span class="toc-number">6.1.3.</span> <span class="toc-text">3）对象导航查询的问题分析</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#问题1：我们查询客户时，要不要把联系人查询出来？"><span class="toc-number">6.1.3.1.</span> <span class="toc-text">问题1：我们查询客户时，要不要把联系人查询出来？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#问题2：我们查询联系人时，要不要把客户查询出来？"><span class="toc-number">6.1.3.2.</span> <span class="toc-text">问题2：我们查询联系人时，要不要把客户查询出来？</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-2-多表连接中使用Specification查询"><span class="toc-number">6.2.</span> <span class="toc-text">5.2 多表连接中使用Specification查询</span></a></li></ol></li></ol>
+    </div>
+    
+    <div class="back-top iconfont-archer">&#xe639;</div>
+    <div class="sidebar sidebar-hide">
+    <ul class="sidebar-tabs sidebar-tabs-active-0">
+        <li class="sidebar-tab-archives"><span class="iconfont-archer">&#xe67d;</span><span class="tab-name">Archive</span></li>
+        <li class="sidebar-tab-tags"><span class="iconfont-archer">&#xe61b;</span><span class="tab-name">Tag</span></li>
+        <li class="sidebar-tab-categories"><span class="iconfont-archer">&#xe666;</span><span class="tab-name">Cate</span></li>
+    </ul>
+    <div class="sidebar-content sidebar-content-show-archive">
+          <div class="sidebar-panel-archives">
+    <!-- 在ejs中将archive按照时间排序 -->
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div class="total-and-search">
+        <div class="total-archive">
+        Total : 22
+        </div>
+        <!-- search  -->
+        
+    </div>
+    
+    <div class="post-archive">
+    
+    
+    
+    
+    <div class="archive-year"> 2019 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/12</span><a class="archive-post-title" href= "/2019/09/12/JPA学习-03/" >JPA学习-03</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/11</span><a class="archive-post-title" href= "/2019/09/11/JPA学习-02/" >JPA学习-02</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/10</span><a class="archive-post-title" href= "/2019/09/10/JPA学习-01/" >JPA学习-01</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/02</span><a class="archive-post-title" href= "/2019/09/02/Quartz/" >Quartz任务调度</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/29</span><a class="archive-post-title" href= "/2019/08/29/Hibernate-02/" >Hibernate-02</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/28</span><a class="archive-post-title" href= "/2019/08/28/Java基础-01/" >Java基础-01-Optional</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/27</span><a class="archive-post-title" href= "/2019/08/27/Java基础-02/" >Java基础-02-Predicate</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/27</span><a class="archive-post-title" href= "/2019/08/27/SpringCloud学习-06/" >SpringCloud-06-Getaway</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/22</span><a class="archive-post-title" href= "/2019/08/22/SpringCloud学习-05/" >SpringCloud-05-Hystrix</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2019/08/20/SpringCloud学习-04/" >SpringCloud-04-Feign</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2019/08/20/Java基础-04/" >Java基础-04-Lambda</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2019/08/20/Java基础-03/" >Java基础-03-JVM</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/16</span><a class="archive-post-title" href= "/2019/08/16/SpringCloud学习-03/" >SpringCloud-03-Ribbon</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/14</span><a class="archive-post-title" href= "/2019/08/14/SpringCloud学习-02/" >SpringCloud-02-Eureka</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/13</span><a class="archive-post-title" href= "/2019/08/13/SpringCloud学习-01/" >SpringCloud-01-配置中心</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/13</span><a class="archive-post-title" href= "/2019/08/13/Maven/" >Maven-01</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/12</span><a class="archive-post-title" href= "/2019/08/12/SpringBoot学习-04/" >SpringBoot-04-JDBC</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/10</span><a class="archive-post-title" href= "/2019/08/10/SpringBoot学习-03/" >SpringBoot-03-servlet容器</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/09</span><a class="archive-post-title" href= "/2019/08/09/SpringBoot学习-02/" >SpringBoot-02-Web工程</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/08</span><a class="archive-post-title" href= "/2019/08/08/SpringBoot学习-01/" >SpringBoot-01-Web工程</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/07</span><a class="archive-post-title" href= "/2019/08/07/hexo-常用操作/" >Hexo常用操作</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/07</span><a class="archive-post-title" href= "/2019/08/07/Hibernate-01/" >Hibernate-01</a>
+        </li>
+    
+    </div>
+  </div>
+        <div class="sidebar-panel-tags">
+    <div class="sidebar-tags-name">
+    
+        <span class="sidebar-tag-name" data-tags="Hibernate"><span class="iconfont-archer">&#xe606;</span>Hibernate</span>
+    
+        <span class="sidebar-tag-name" data-tags="Java基础"><span class="iconfont-archer">&#xe606;</span>Java基础</span>
+    
+        <span class="sidebar-tag-name" data-tags="Hexo"><span class="iconfont-archer">&#xe606;</span>Hexo</span>
+    
+        <span class="sidebar-tag-name" data-tags="SpringBoot-WEB"><span class="iconfont-archer">&#xe606;</span>SpringBoot-WEB</span>
+    
+        <span class="sidebar-tag-name" data-tags="SpringCloud"><span class="iconfont-archer">&#xe606;</span>SpringCloud</span>
+    
+        <span class="sidebar-tag-name" data-tags="JPA"><span class="iconfont-archer">&#xe606;</span>JPA</span>
+    
+        <span class="sidebar-tag-name" data-tags="Maven"><span class="iconfont-archer">&#xe606;</span>Maven</span>
+    
+        <span class="sidebar-tag-name" data-tags="Quartz"><span class="iconfont-archer">&#xe606;</span>Quartz</span>
+    
+    </div>
+    <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
+    <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
+    缺失模块。<br/>
+    1、请确保node版本大于6.2<br/>
+    2、在博客根目录（注意不是archer根目录）执行以下命令：<br/>
+    <span style="color: #f75357; font-size: 1rem; line-height: 2rem;">npm i hexo-generator-json-content --save</span><br/>
+    3、在根目录_config.yml里添加配置：
+    <pre style="color: #787878; font-size: 0.6rem;">
+jsonContent:
+  meta: false
+  pages: false
+  posts:
+    title: true
+    date: true
+    path: true
+    text: false
+    raw: false
+    content: false
+    slug: false
+    updated: false
+    comments: false
+    link: false
+    permalink: false
+    excerpt: false
+    categories: true
+    tags: true</pre>
+    </div> 
+    <div class="sidebar-tags-list"></div>
+</div>
+        <div class="sidebar-panel-categories">
+    <div class="sidebar-categories-name">
+    
+    </div>
+    <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
+    <div class="sidebar-categories-list"></div>
+</div>
+    </div>
+</div> 
+    <script>
+    var siteMeta = {
+        root: "/",
+        author: "wtq"
+    }
+</script>
+    <!-- CDN failover -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+    <script type="text/javascript">
+        if (typeof window.$ === 'undefined')
+        {
+            console.warn('jquery load from jsdelivr failed, will load local script')
+            document.write('<script src="/lib/jquery.min.js">\x3C/script>')
+        }
+    </script>
+    <script src="/scripts/main.js"></script>
+    <!-- algolia -->
+    
+    <!-- busuanzi  -->
+    
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    <!-- CNZZ  -->
+    
+    </div>
+    <!-- async load share.js -->
+    
+        <script src="/scripts/share.js" async></script>    
+     
+    </body>
+</html>
+
+
