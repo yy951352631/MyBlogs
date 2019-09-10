@@ -346,6 +346,70 @@
     
     
     <article class="index-post">
+        <a class="abstract-title" href = "/2019/08/20/SpringCloud学习-04/" >
+            
+                <span>SpringCloud-04-Feign</span>
+        </a>
+        <div class="abstract-content">
+            SpringCloud-Feign1、问题：Feign-是个啥？1.1 官网解释
+Feign是一个声明式WebService客户端。使用Feign能让编写Web Service客户端更加简单, 它的使用方法是定义一个接口，然后在上面添加注解，同时也支持JAX-RS标准的注解。Feign也支持可拔插式的编码器和解码器。Spring Cloud对Feign进行了封装，使其支持了Spring MVC标准注解和HttpMessageConverters。Feign可以与Eureka和Ribbon组合使用以支持负载均衡。
+
+Feign是一个声明式的Web服务客户端，使得编写Web服务客户端变得非常...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/20</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "SpringCloud">SpringCloud</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2019/08/16/SpringCloud学习-03/" >
+            
+                <span>SpringCloud-03-Ribbon</span>
+        </a>
+        <div class="abstract-content">
+            SpringCloud-Ribbon（负载平衡工具）1、问题：Ribbon-是个啥？Ribbon是一套负载均衡工具，作用于客户端。
+1.1 解释：
+a）正常来讲，当我们的消费者需要某种服务时，会在eureka寻找该服务，并进行调用，但是这种调用会具有不确定性，可能会导致某一个服务被长期调用，或被多个消费者调用，而其他的服务却处于相对空闲的状态，这就导致了我们所谓的“短板效应”，使得整个系统的响应时间变长，运算效率降低，为了应对这种状况，我们需要Ribbon这个工具来帮助我们将这些服务采用一定的策略“相对平均的”分配给那些需要的消费者，以此来提高系统的运作效率。
+b）ribbon是在客户端...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/16</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "SpringCloud">SpringCloud</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
         <a class="abstract-title" href = "/2019/08/14/SpringCloud学习-02/" >
             
                 <span>SpringCloud-02-Eureka</span>
@@ -385,6 +449,35 @@
     
     
     <article class="index-post">
+        <a class="abstract-title" href = "/2019/08/13/SpringCloud学习-01/" >
+            
+                <span>SpringCloud-01-配置中心</span>
+        </a>
+        <div class="abstract-content">
+            SpringCloud配置中心1、问题：SpringCloud配置中心为何物？1.1 背景&amp;概念：微服务意味着要将单体应用中的业务拆分成一个个子服务，每个服务的粒度相对较小，因此系统中会出现大量的服务。由于每个服务都需要必要的配置信息才能运行，所以一套集中式的、动态的配置管理设施是必不可少的。SpringCloud提供了ConfigServer来解决这个问题，我们每一个微服务自己带着一个application.yml，上百个配置文件的管理，使得我们分身乏术，运维工程师心态爆炸。因而SpringCloud Config为微服务架构中的微服务提供集中化的外部配置支持，配置服务器为各个...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/13</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "SpringCloud">SpringCloud</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
         <a class="abstract-title" href = "/2019/08/13/Maven/" >
             
                 <span>Maven-01</span>
@@ -404,35 +497,6 @@
             <div class= abstract-tags >
     
         <a class="post-tag" href="javascript:void(0);" data-tags = "Maven">Maven</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/08/13/SpringCloud学习-01/" >
-            
-                <span>SpringCloud-01-配置中心</span>
-        </a>
-        <div class="abstract-content">
-            SpringCloud配置中心1、问题：SpringCloud配置中心为何物？1.1 背景&amp;概念：微服务意味着要将单体应用中的业务拆分成一个个子服务，每个服务的粒度相对较小，因此系统中会出现大量的服务。由于每个服务都需要必要的配置信息才能运行，所以一套集中式的、动态的配置管理设施是必不可少的。SpringCloud提供了ConfigServer来解决这个问题，我们每一个微服务自己带着一个application.yml，上百个配置文件的管理，使得我们分身乏术，运维工程师心态爆炸。因而SpringCloud Config为微服务架构中的微服务提供集中化的外部配置支持，配置服务器为各个...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/13</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "SpringCloud">SpringCloud</a>
     
 </div>
             
@@ -572,39 +636,6 @@
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2019/08/07/first/" >
-            
-                <span>Hexo常用操作</span>
-        </a>
-        <div class="abstract-content">
-            1.在GitHub上创建仓库，格式必须为：12你的GitHub账户.github.io如：zhangSan_git.github.io
-
-2.在命令行进入blog安装目录，开始上传三步曲123hexo clean #清除部署缓存hexo g -&gt; hexo generate #生成静态页面至public目录hexo d -&gt; hexo deploy #将.deploy目录部署到GitHub
-
-3.关于主题安装注意事项3.1  –depth=1 命令123451)问题：当项目过大时，git clone时会出现error: RPC failed; HTTP 504 curl 22...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/07</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "Hexo">Hexo</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
         <a class="abstract-title" href = "/2019/08/07/Hibernate-01/" >
             
                 <span>Hibernate-01</span>
@@ -631,7 +662,7 @@
     <!-- paginator  -->
     
     <nav class="page-nav">
-        <a class="extend prev" rel="prev" href="/archives/">&#60; PREV</a><a class="page-number" href="/archives/">1</a><span class="page-number current">2</span>
+        <a class="extend prev" rel="prev" href="/archives/">&#60; PREV</a><a class="page-number" href="/archives/">1</a><span class="page-number current">2</span><a class="page-number" href="/archives/page/3/">3</a><a class="extend next" rel="next" href="/archives/page/3/">NEXT &#62;</a>
     </nav>
     
 </main>
@@ -979,9 +1010,25 @@
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 19
+        Total : 21
         </div>
         <!-- search  -->
         
@@ -994,6 +1041,16 @@
     
     <div class="archive-year"> 2019 </div>
     <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/11</span><a class="archive-post-title" href= "/2019/09/11/JPA学习-02/" >JPA学习-02</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/10</span><a class="archive-post-title" href= "/2019/09/10/JPA学习-01/" >JPA学习-01</a>
+        </li>
     
     
         <li class="archive-post-item">
@@ -1052,12 +1109,12 @@
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">08/13</span><a class="archive-post-title" href= "/2019/08/13/SpringCloud学习-01/" >SpringCloud-01-配置中心</a>
+            <span class="archive-post-date">08/13</span><a class="archive-post-title" href= "/2019/08/13/Maven/" >Maven-01</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">08/13</span><a class="archive-post-title" href= "/2019/08/13/Maven/" >Maven-01</a>
+            <span class="archive-post-date">08/13</span><a class="archive-post-title" href= "/2019/08/13/SpringCloud学习-01/" >SpringCloud-01-配置中心</a>
         </li>
     
     
@@ -1082,12 +1139,12 @@
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">08/07</span><a class="archive-post-title" href= "/2019/08/07/Hibernate-01/" >Hibernate-01</a>
+            <span class="archive-post-date">08/07</span><a class="archive-post-title" href= "/2019/08/07/hexo-常用操作/" >Hexo常用操作</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">08/07</span><a class="archive-post-title" href= "/2019/08/07/first/" >Hexo常用操作</a>
+            <span class="archive-post-date">08/07</span><a class="archive-post-title" href= "/2019/08/07/Hibernate-01/" >Hibernate-01</a>
         </li>
     
     </div>
@@ -1104,6 +1161,8 @@
         <span class="sidebar-tag-name" data-tags="SpringBoot-WEB"><span class="iconfont-archer">&#xe606;</span>SpringBoot-WEB</span>
     
         <span class="sidebar-tag-name" data-tags="SpringCloud"><span class="iconfont-archer">&#xe606;</span>SpringCloud</span>
+    
+        <span class="sidebar-tag-name" data-tags="JPA"><span class="iconfont-archer">&#xe606;</span>JPA</span>
     
         <span class="sidebar-tag-name" data-tags="Maven"><span class="iconfont-archer">&#xe606;</span>Maven</span>
     
