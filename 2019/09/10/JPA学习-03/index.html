@@ -277,7 +277,7 @@ height:50vh;
                 
                 <div class="post-intro-meta">
                     <span class="post-intro-calander iconfont-archer">&#xe676;</span>
-                    <span class="post-intro-time">2019/09/12</span>
+                    <span class="post-intro-time">2019/09/10</span>
                     
                     <span id="busuanzi_container_page_pv" class="busuanzi-pv">
                         <span class="iconfont-archer">&#xe602;</span>
@@ -401,7 +401,7 @@ height:50vh;
         <div class="container container-unloaded">
             <main class="main post-page">
     <article class="article-entry">
-        <h1 id="JPA—Specifications动态查询"><a href="#JPA—Specifications动态查询" class="headerlink" title="JPA—Specifications动态查询"></a>JPA—Specifications动态查询</h1><h1 id="第1章-Specifications动态查询"><a href="#第1章-Specifications动态查询" class="headerlink" title="第1章 Specifications动态查询"></a>第1章 Specifications动态查询</h1><p>有时我们在查询某个实体的时候，给定的条件是不固定的，这时就需要动态构建相应的查询语句，在Spring Data JPA中可以通过JpaSpecificationExecutor接口查询。相比JPQL,其优势是类型安全,更加的面向对象。</p>
+        <h1 id="第1章-Specifications动态查询"><a href="#第1章-Specifications动态查询" class="headerlink" title="第1章 Specifications动态查询"></a>第1章 Specifications动态查询</h1><p>有时我们在查询某个实体的时候，给定的条件是不固定的，这时就需要动态构建相应的查询语句，在Spring Data JPA中可以通过JpaSpecificationExecutor接口查询。相比JPQL,其优势是类型安全,更加的面向对象。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">JpaSpecificationExecutor</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function">Optional&lt;T&gt; <span class="title">findOne</span><span class="params">(@Nullable Specification&lt;T&gt; spec)</span></span>;</span><br><span class="line"></span><br><span class="line">	<span class="function">List&lt;T&gt; <span class="title">findAll</span><span class="params">(@Nullable Specification&lt;T&gt; spec)</span></span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="function">Page&lt;T&gt; <span class="title">findAll</span><span class="params">(@Nullable Specification&lt;T&gt; spec, Pageable pageable)</span></span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="function">List&lt;T&gt; <span class="title">findAll</span><span class="params">(@Nullable Specification&lt;T&gt; spec, Sort sort)</span></span>;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">long</span> <span class="title">count</span><span class="params">(@Nullable Specification&lt;T&gt; spec)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>对于JpaSpecificationExecutor，这个接口基本是围绕着Specification接口来定义的。我们可以简单的理解为，Specification构造的就是查询条件。</p>
@@ -456,7 +456,7 @@ height:50vh;
 </tr>
 </tbody></table>
 <h1 id="第2章-多表设计"><a href="#第2章-多表设计" class="headerlink" title="第2章 多表设计"></a>第2章 多表设计</h1><h2 id="2-1-表之间关系的划分"><a href="#2-1-表之间关系的划分" class="headerlink" title="2.1 表之间关系的划分"></a>2.1 表之间关系的划分</h2><p>数据库中多表之间存在着三种关系，如图所示。</p>
- <img src="/2019/09/12/JPA学习-03/wps1.jpg">
+ <img src="/2019/09/10/JPA学习-03/wps1.jpg">
 
 <blockquote>
 <p>从图可以看出，系统设计的三种实体关系分别为：多对多、一对多和一对一关系。注意：一对多关系可以看为两种：  即一对多，多对一。所以说四种更精确。</p>
@@ -478,7 +478,7 @@ height:50vh;
 <p>什么是外键？</p>
 <p>指的是从表中有一列，取值参照主表的主键，这一列就是外键。</p>
 <p>一对多数据库关系的建立，如下图所示 </p>
-<img src="/2019/09/12/JPA学习-03/wps2.jpg">
+<img src="/2019/09/10/JPA学习-03/wps2.jpg">
 
 
 
@@ -558,7 +558,7 @@ height:50vh;
 <p> 那么任何一个同学都可能具有多个身份。同时学生这个身份可以被多个同学所具有。</p>
 <p> 所以我们说，用户和角色之间的关系是多对多。</p>
 <h2 id="4-2-表关系建立"><a href="#4-2-表关系建立" class="headerlink" title="4.2 表关系建立"></a>4.2 表关系建立</h2><p>多对多的表关系建立靠的是中间表，其中用户表和中间表的关系是一对多，角色表和中间表的关系也是一对多，如下图所示：</p>
-<img src="/2019/09/12/JPA学习-03/wps3.jpg">
+<img src="/2019/09/10/JPA学习-03/wps3.jpg">
 
 
 
@@ -631,9 +631,9 @@ height:50vh;
     
         <div class="license-wrapper">
             <p>Author：<a href="http://none">wtq</a>
-            <p>原文链接：<a href="http://none/2019/09/12/JPA学习-03/">http://none/2019/09/12/JPA学习-03/</a>
-            <p>发表日期：<a href="http://none/2019/09/12/JPA学习-03/">September 12th 2019, 12:00:00 am</a>
-            <p>更新日期：<a href="http://none/2019/09/12/JPA学习-03/">September 10th 2019, 6:40:59 pm</a>
+            <p>原文链接：<a href="http://none/2019/09/10/JPA学习-03/">http://none/2019/09/10/JPA学习-03/</a>
+            <p>发表日期：<a href="http://none/2019/09/10/JPA学习-03/">September 10th 2019, 12:00:00 am</a>
+            <p>更新日期：<a href="http://none/2019/09/10/JPA学习-03/">September 10th 2019, 6:44:47 pm</a>
             <p>版权声明：本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
         </div>
     
@@ -645,8 +645,8 @@ height:50vh;
         <li class="previous">
             
                 <div class="prevSlogan">Previous Post</div>
-                <a href= "/2019/09/11/JPA学习-02/" title= "JPA学习-02">
-                    <div class="prevTitle">JPA学习-02</div>
+                <a href= "/2019/09/10/JPA学习-01/" title= "JPA学习-01">
+                    <div class="prevTitle">JPA学习-01</div>
                 </a>
             
         </li>
@@ -756,7 +756,7 @@ top:50vh;
         <div class="toc-catalog">
             <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
         </div>
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#JPA—Specifications动态查询"><span class="toc-number">1.</span> <span class="toc-text">JPA—Specifications动态查询</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#第1章-Specifications动态查询"><span class="toc-number">2.</span> <span class="toc-text">第1章 Specifications动态查询</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-使用Specifications完成条件查询"><span class="toc-number">2.1.</span> <span class="toc-text">1.1 使用Specifications完成条件查询</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-基于Specifications的分页查询"><span class="toc-number">2.2.</span> <span class="toc-text">1.2 基于Specifications的分页查询</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-3-方法对应关系"><span class="toc-number">2.3.</span> <span class="toc-text">1.3 方法对应关系</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#第2章-多表设计"><span class="toc-number">3.</span> <span class="toc-text">第2章 多表设计</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-表之间关系的划分"><span class="toc-number">3.1.</span> <span class="toc-text">2.1 表之间关系的划分</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-在JPA框架中表关系的分析步骤"><span class="toc-number">3.2.</span> <span class="toc-text">2.2 在JPA框架中表关系的分析步骤</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#第3章-JPA中的一对多"><span class="toc-number">4.</span> <span class="toc-text">第3章 JPA中的一对多</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-示例分析"><span class="toc-number">4.1.</span> <span class="toc-text">3.1 示例分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-表关系建立"><span class="toc-number">4.2.</span> <span class="toc-text">3.2 表关系建立</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-3-实体类关系建立以及映射配置"><span class="toc-number">4.3.</span> <span class="toc-text">3.3 实体类关系建立以及映射配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1）编写实体类"><span class="toc-number">4.3.1.</span> <span class="toc-text">1）编写实体类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2）编写符合SpringDataJpa规范的Repository类"><span class="toc-number">4.3.2.</span> <span class="toc-text">2）编写符合SpringDataJpa规范的Repository类</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-4-映射的注解说明"><span class="toc-number">4.4.</span> <span class="toc-text">3.4 映射的注解说明</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1）-OneToMany"><span class="toc-number">4.4.1.</span> <span class="toc-text">1） @OneToMany:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2）-ManyToOne"><span class="toc-number">4.4.2.</span> <span class="toc-text">2）@ManyToOne</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3）-JoinColumn"><span class="toc-number">4.4.3.</span> <span class="toc-text">3）@JoinColumn</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-5-一对多的操作"><span class="toc-number">4.5.</span> <span class="toc-text">3.5 一对多的操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-5-1-添加"><span class="toc-number">4.5.1.</span> <span class="toc-text">3.5.1 添加</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-5-2-删除"><span class="toc-number">4.5.1.1.</span> <span class="toc-text">3.5.2 删除</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-5-3-级联操作"><span class="toc-number">4.5.2.</span> <span class="toc-text">3.5.3 级联操作</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1）概念"><span class="toc-number">4.5.2.1.</span> <span class="toc-text">1）概念</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2）案例1—级联添加"><span class="toc-number">4.5.2.2.</span> <span class="toc-text">2）案例1—级联添加</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#A-Customer类级联属性配置如下"><span class="toc-number">4.5.2.2.1.</span> <span class="toc-text">A.Customer类级联属性配置如下</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#B-LinkMan类级联属性配置如下"><span class="toc-number">4.5.2.2.2.</span> <span class="toc-text">B.LinkMan类级联属性配置如下</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#C-测试类编写如下"><span class="toc-number">4.5.2.2.3.</span> <span class="toc-text">C.测试类编写如下</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#D-运行成功，观察到hibernate生成的sql语句如下"><span class="toc-number">4.5.2.2.4.</span> <span class="toc-text">D.运行成功，观察到hibernate生成的sql语句如下</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3）案例2—级联删除"><span class="toc-number">4.5.2.3.</span> <span class="toc-text">3）案例2—级联删除</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#第4章-JPA中的多对多"><span class="toc-number">5.</span> <span class="toc-text">第4章 JPA中的多对多</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#4-1-示例分析"><span class="toc-number">5.1.</span> <span class="toc-text">4.1 示例分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-2-表关系建立"><span class="toc-number">5.2.</span> <span class="toc-text">4.2 表关系建立</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-3-实体类关系建立以及映射配置"><span class="toc-number">5.3.</span> <span class="toc-text">4.3 实体类关系建立以及映射配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-4-映射的注解说明"><span class="toc-number">5.4.</span> <span class="toc-text">4.4 映射的注解说明</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1）-ManyToMany"><span class="toc-number">5.4.1.</span> <span class="toc-text">1）@ManyToMany</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2）-JoinTable"><span class="toc-number">5.4.2.</span> <span class="toc-text">2）@JoinTable</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3）-JoinColumn-1"><span class="toc-number">5.4.3.</span> <span class="toc-text">3）@JoinColumn</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-5-多对多的操作"><span class="toc-number">5.5.</span> <span class="toc-text">4.5 多对多的操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-5-1-保存"><span class="toc-number">5.5.1.</span> <span class="toc-text">4.5.1 保存</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-5-2-删除操作"><span class="toc-number">5.5.2.</span> <span class="toc-text">4.5.2 删除操作</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#第5章-Spring-Data-JPA中的多表查询"><span class="toc-number">6.</span> <span class="toc-text">第5章 Spring Data JPA中的多表查询</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#5-1-对象导航查询"><span class="toc-number">6.1.</span> <span class="toc-text">5.1 对象导航查询</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1）查询一个客户，获取该客户下的所有联系人"><span class="toc-number">6.1.1.</span> <span class="toc-text">1）查询一个客户，获取该客户下的所有联系人</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2）查询一个联系人，获取该联系人的所有客户"><span class="toc-number">6.1.2.</span> <span class="toc-text">2）查询一个联系人，获取该联系人的所有客户</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3）对象导航查询的问题分析"><span class="toc-number">6.1.3.</span> <span class="toc-text">3）对象导航查询的问题分析</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#问题1：我们查询客户时，要不要把联系人查询出来？"><span class="toc-number">6.1.3.1.</span> <span class="toc-text">问题1：我们查询客户时，要不要把联系人查询出来？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#问题2：我们查询联系人时，要不要把客户查询出来？"><span class="toc-number">6.1.3.2.</span> <span class="toc-text">问题2：我们查询联系人时，要不要把客户查询出来？</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-2-多表连接中使用Specification查询"><span class="toc-number">6.2.</span> <span class="toc-text">5.2 多表连接中使用Specification查询</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#第1章-Specifications动态查询"><span class="toc-number">1.</span> <span class="toc-text">第1章 Specifications动态查询</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-使用Specifications完成条件查询"><span class="toc-number">1.1.</span> <span class="toc-text">1.1 使用Specifications完成条件查询</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-基于Specifications的分页查询"><span class="toc-number">1.2.</span> <span class="toc-text">1.2 基于Specifications的分页查询</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-3-方法对应关系"><span class="toc-number">1.3.</span> <span class="toc-text">1.3 方法对应关系</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#第2章-多表设计"><span class="toc-number">2.</span> <span class="toc-text">第2章 多表设计</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-表之间关系的划分"><span class="toc-number">2.1.</span> <span class="toc-text">2.1 表之间关系的划分</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-在JPA框架中表关系的分析步骤"><span class="toc-number">2.2.</span> <span class="toc-text">2.2 在JPA框架中表关系的分析步骤</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#第3章-JPA中的一对多"><span class="toc-number">3.</span> <span class="toc-text">第3章 JPA中的一对多</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-示例分析"><span class="toc-number">3.1.</span> <span class="toc-text">3.1 示例分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-表关系建立"><span class="toc-number">3.2.</span> <span class="toc-text">3.2 表关系建立</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-3-实体类关系建立以及映射配置"><span class="toc-number">3.3.</span> <span class="toc-text">3.3 实体类关系建立以及映射配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1）编写实体类"><span class="toc-number">3.3.1.</span> <span class="toc-text">1）编写实体类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2）编写符合SpringDataJpa规范的Repository类"><span class="toc-number">3.3.2.</span> <span class="toc-text">2）编写符合SpringDataJpa规范的Repository类</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-4-映射的注解说明"><span class="toc-number">3.4.</span> <span class="toc-text">3.4 映射的注解说明</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1）-OneToMany"><span class="toc-number">3.4.1.</span> <span class="toc-text">1） @OneToMany:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2）-ManyToOne"><span class="toc-number">3.4.2.</span> <span class="toc-text">2）@ManyToOne</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3）-JoinColumn"><span class="toc-number">3.4.3.</span> <span class="toc-text">3）@JoinColumn</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-5-一对多的操作"><span class="toc-number">3.5.</span> <span class="toc-text">3.5 一对多的操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-5-1-添加"><span class="toc-number">3.5.1.</span> <span class="toc-text">3.5.1 添加</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-5-2-删除"><span class="toc-number">3.5.1.1.</span> <span class="toc-text">3.5.2 删除</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-5-3-级联操作"><span class="toc-number">3.5.2.</span> <span class="toc-text">3.5.3 级联操作</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1）概念"><span class="toc-number">3.5.2.1.</span> <span class="toc-text">1）概念</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2）案例1—级联添加"><span class="toc-number">3.5.2.2.</span> <span class="toc-text">2）案例1—级联添加</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#A-Customer类级联属性配置如下"><span class="toc-number">3.5.2.2.1.</span> <span class="toc-text">A.Customer类级联属性配置如下</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#B-LinkMan类级联属性配置如下"><span class="toc-number">3.5.2.2.2.</span> <span class="toc-text">B.LinkMan类级联属性配置如下</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#C-测试类编写如下"><span class="toc-number">3.5.2.2.3.</span> <span class="toc-text">C.测试类编写如下</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#D-运行成功，观察到hibernate生成的sql语句如下"><span class="toc-number">3.5.2.2.4.</span> <span class="toc-text">D.运行成功，观察到hibernate生成的sql语句如下</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3）案例2—级联删除"><span class="toc-number">3.5.2.3.</span> <span class="toc-text">3）案例2—级联删除</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#第4章-JPA中的多对多"><span class="toc-number">4.</span> <span class="toc-text">第4章 JPA中的多对多</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#4-1-示例分析"><span class="toc-number">4.1.</span> <span class="toc-text">4.1 示例分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-2-表关系建立"><span class="toc-number">4.2.</span> <span class="toc-text">4.2 表关系建立</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-3-实体类关系建立以及映射配置"><span class="toc-number">4.3.</span> <span class="toc-text">4.3 实体类关系建立以及映射配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-4-映射的注解说明"><span class="toc-number">4.4.</span> <span class="toc-text">4.4 映射的注解说明</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1）-ManyToMany"><span class="toc-number">4.4.1.</span> <span class="toc-text">1）@ManyToMany</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2）-JoinTable"><span class="toc-number">4.4.2.</span> <span class="toc-text">2）@JoinTable</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3）-JoinColumn-1"><span class="toc-number">4.4.3.</span> <span class="toc-text">3）@JoinColumn</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-5-多对多的操作"><span class="toc-number">4.5.</span> <span class="toc-text">4.5 多对多的操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-5-1-保存"><span class="toc-number">4.5.1.</span> <span class="toc-text">4.5.1 保存</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-5-2-删除操作"><span class="toc-number">4.5.2.</span> <span class="toc-text">4.5.2 删除操作</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#第5章-Spring-Data-JPA中的多表查询"><span class="toc-number">5.</span> <span class="toc-text">第5章 Spring Data JPA中的多表查询</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#5-1-对象导航查询"><span class="toc-number">5.1.</span> <span class="toc-text">5.1 对象导航查询</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1）查询一个客户，获取该客户下的所有联系人"><span class="toc-number">5.1.1.</span> <span class="toc-text">1）查询一个客户，获取该客户下的所有联系人</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2）查询一个联系人，获取该联系人的所有客户"><span class="toc-number">5.1.2.</span> <span class="toc-text">2）查询一个联系人，获取该联系人的所有客户</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3）对象导航查询的问题分析"><span class="toc-number">5.1.3.</span> <span class="toc-text">3）对象导航查询的问题分析</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#问题1：我们查询客户时，要不要把联系人查询出来？"><span class="toc-number">5.1.3.1.</span> <span class="toc-text">问题1：我们查询客户时，要不要把联系人查询出来？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#问题2：我们查询联系人时，要不要把客户查询出来？"><span class="toc-number">5.1.3.2.</span> <span class="toc-text">问题2：我们查询联系人时，要不要把客户查询出来？</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-2-多表连接中使用Specification查询"><span class="toc-number">5.2.</span> <span class="toc-text">5.2 多表连接中使用Specification查询</span></a></li></ol></li></ol>
     </div>
     
     <div class="back-top iconfont-archer">&#xe639;</div>
@@ -769,6 +769,10 @@ top:50vh;
     <div class="sidebar-content sidebar-content-show-archive">
           <div class="sidebar-panel-archives">
     <!-- 在ejs中将archive按照时间排序 -->
+    
+    
+    
+    
     
     
     
@@ -1069,17 +1073,17 @@ top:50vh;
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">09/12</span><a class="archive-post-title" href= "/2019/09/12/JPA学习-03/" >JPA学习-03</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">09/11</span><a class="archive-post-title" href= "/2019/09/11/JPA学习-02/" >JPA学习-02</a>
+            <span class="archive-post-date">09/10</span><a class="archive-post-title" href= "/2019/09/10/JPA学习-02/" >JPA学习-02</a>
         </li>
     
     
         <li class="archive-post-item">
             <span class="archive-post-date">09/10</span><a class="archive-post-title" href= "/2019/09/10/JPA学习-01/" >JPA学习-01</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/10</span><a class="archive-post-title" href= "/2019/09/10/JPA学习-03/" >JPA学习-03</a>
         </li>
     
     
@@ -1114,7 +1118,7 @@ top:50vh;
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2019/08/20/SpringCloud学习-04/" >SpringCloud-04-Feign</a>
+            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2019/08/20/Java基础-03/" >Java基础-03-JVM</a>
         </li>
     
     
@@ -1124,7 +1128,7 @@ top:50vh;
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2019/08/20/Java基础-03/" >Java基础-03-JVM</a>
+            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2019/08/20/SpringCloud学习-04/" >SpringCloud-04-Feign</a>
         </li>
     
     

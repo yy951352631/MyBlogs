@@ -346,50 +346,18 @@
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2019/09/12/JPA学习-03/" >
+        <a class="abstract-title" href = "/2019/09/10/JPA学习-03/" >
             
                 <span>JPA学习-03</span>
         </a>
         <div class="abstract-content">
-            JPA—Specifications动态查询第1章 Specifications动态查询有时我们在查询某个实体的时候，给定的条件是不固定的，这时就需要动态构建相应的查询语句，在Spring Data JPA中可以通过JpaSpecificationExecutor接口查询。相比JPQL,其优势是类型安全,更加的面向对象。
-1234567891011121314public interface JpaSpecificationExecutor&lt;T&gt; &#123;	Optional&lt;T&gt; findOne(@Nullable Specification&lt;T&gt;...
+            第1章 Specifications动态查询有时我们在查询某个实体的时候，给定的条件是不固定的，这时就需要动态构建相应的查询语句，在Spring Data JPA中可以通过JpaSpecificationExecutor接口查询。相比JPQL,其优势是类型安全,更加的面向对象。
+1234567891011121314public interface JpaSpecificationExecutor&lt;T&gt; &#123;	Optional&lt;T&gt; findOne(@Nullable Specification&lt;T&gt; spec);	List&lt;T&gt; ...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
             <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/09/12</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "JPA">JPA</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/09/11/JPA学习-02/" >
-            
-                <span>JPA学习-02</span>
-        </a>
-        <div class="abstract-content">
-            第1章 Spring Data JPA的概述1.1 Spring Data JPA概述
-
-Spring Data JPA 是 Spring 基于 ORM 框架、JPA 规范的基础上封装的一套JPA应用框架，可使开发者用极简的代码即可实现对数据库的访问和操作。它提供了包括增删改查等在内的常用功能，且易于扩展！学习并使用 Spring Data JPA 可以极大提高开发效率！
-Spring Data JPA 让我们解脱了DAO层的操作，基本上所有CRUD都可以依赖于它来实现,在实际的工作工程中，推荐使用Spring Data JPA + ORM（如：hibernate）完成操作，这样在切换不...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/09/11</span>
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/09/10</span>
             </div>
             <!-- tags  -->
             
@@ -413,9 +381,41 @@ Spring Data JPA 让我们解脱了DAO层的操作，基本上所有CRUD都可以
                 <span>JPA学习-01</span>
         </a>
         <div class="abstract-content">
-            JPA—概述，原生方法操作第1章ORM概述ORM（Object-Relational Mapping） 表示对象关系映射。在面向对象的软件开发中，通过ORM，就可以把对象映射到关系型数据库中。只要有一套程序能够做到建立对象与数据库的关联，操作对象就可以直接操作数据库数据，就可以说这套程序实现了ORM对象关系映射
+            第1章ORM概述ORM（Object-Relational Mapping） 表示对象关系映射。在面向对象的软件开发中，通过ORM，就可以把对象映射到关系型数据库中。只要有一套程序能够做到建立对象与数据库的关联，操作对象就可以直接操作数据库数据，就可以说这套程序实现了ORM对象关系映射
 简单的说：ORM就是建立实体类和数据库表之间的关系，从而达到操作实体类就相当于操作数据库表的目的。
-1.1 为什么使用ORM当实现一个应用程序时（不使用O/R Mapping），我们可能会写特别多数据访问层的代码，从数据库保存数据、修改数据、删除数据，而这些代码都是重复的。而使用...
+1.1 为什么使用ORM当实现一个应用程序时（不使用O/R Mapping），我们可能会写特别多数据访问层的代码，从数据库保存数据、修改数据、删除数据，而这些代码都是重复的。而使用ORM则会大大减少重复性代...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/09/10</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "JPA">JPA</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2019/09/10/JPA学习-02/" >
+            
+                <span>JPA学习-02</span>
+        </a>
+        <div class="abstract-content">
+            第1章 Spring Data JPA的概述1.1 Spring Data JPA概述
+
+Spring Data JPA 是 Spring 基于 ORM 框架、JPA 规范的基础上封装的一套JPA应用框架，可使开发者用极简的代码即可实现对数据库的访问和操作。它提供了包括增删改查等在内的常用功能，且易于扩展！学习并使用 Spring Data JPA 可以极大提高开发效率！
+Spring Data JPA 让我们解脱了DAO层的操作，基本上所有CRUD都可以依赖于它来实现,在实际的工作工程中，推荐使用Spring Data JPA + ORM（如：hibernate）完成操作，这样在切换不...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
@@ -834,6 +834,10 @@ quartz是开源且具有丰富特性的”任务调度库”，能够集成于�
     
     
     
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
         Total : 22
@@ -852,17 +856,17 @@ quartz是开源且具有丰富特性的”任务调度库”，能够集成于�
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">09/12</span><a class="archive-post-title" href= "/2019/09/12/JPA学习-03/" >JPA学习-03</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">09/11</span><a class="archive-post-title" href= "/2019/09/11/JPA学习-02/" >JPA学习-02</a>
+            <span class="archive-post-date">09/10</span><a class="archive-post-title" href= "/2019/09/10/JPA学习-02/" >JPA学习-02</a>
         </li>
     
     
         <li class="archive-post-item">
             <span class="archive-post-date">09/10</span><a class="archive-post-title" href= "/2019/09/10/JPA学习-01/" >JPA学习-01</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/10</span><a class="archive-post-title" href= "/2019/09/10/JPA学习-03/" >JPA学习-03</a>
         </li>
     
     
@@ -897,7 +901,7 @@ quartz是开源且具有丰富特性的”任务调度库”，能够集成于�
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2019/08/20/SpringCloud学习-04/" >SpringCloud-04-Feign</a>
+            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2019/08/20/Java基础-03/" >Java基础-03-JVM</a>
         </li>
     
     
@@ -907,7 +911,7 @@ quartz是开源且具有丰富特性的”任务调度库”，能够集成于�
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2019/08/20/Java基础-03/" >Java基础-03-JVM</a>
+            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2019/08/20/SpringCloud学习-04/" >SpringCloud-04-Feign</a>
         </li>
     
     

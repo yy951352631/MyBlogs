@@ -277,7 +277,7 @@ height:50vh;
                 
                 <div class="post-intro-meta">
                     <span class="post-intro-calander iconfont-archer">&#xe676;</span>
-                    <span class="post-intro-time">2019/09/11</span>
+                    <span class="post-intro-time">2019/09/10</span>
                     
                     <span id="busuanzi_container_page_pv" class="busuanzi-pv">
                         <span class="iconfont-archer">&#xe602;</span>
@@ -401,11 +401,11 @@ height:50vh;
         <div class="container container-unloaded">
             <main class="main post-page">
     <article class="article-entry">
-        <h1 id="第1章-Spring-Data-JPA的概述"><a href="#第1章-Spring-Data-JPA的概述" class="headerlink" title="第1章 Spring Data JPA的概述"></a>第1章 Spring Data JPA的概述</h1><h2 id="1-1-Spring-Data-JPA概述"><a href="#1-1-Spring-Data-JPA概述" class="headerlink" title="1.1 Spring Data JPA概述"></a>1.1 Spring Data JPA概述</h2><img src="/2019/09/11/JPA学习-02/wps1.jpg">
+        <h1 id="第1章-Spring-Data-JPA的概述"><a href="#第1章-Spring-Data-JPA的概述" class="headerlink" title="第1章 Spring Data JPA的概述"></a>第1章 Spring Data JPA的概述</h1><h2 id="1-1-Spring-Data-JPA概述"><a href="#1-1-Spring-Data-JPA概述" class="headerlink" title="1.1 Spring Data JPA概述"></a>1.1 Spring Data JPA概述</h2><img src="/2019/09/10/JPA学习-02/wps1.jpg">
 
 <p>Spring Data JPA 是 Spring 基于 ORM 框架、JPA 规范的基础上封装的一套JPA应用框架，可使开发者用极简的代码即可实现对数据库的访问和操作。它提供了包括增删改查等在内的常用功能，且易于扩展！学习并使用 Spring Data JPA 可以极大提高开发效率！</p>
 <p>Spring Data JPA 让我们解脱了DAO层的操作，基本上所有CRUD都可以依赖于它来实现,在实际的工作工程中，推荐使用Spring Data JPA + ORM（如：hibernate）完成操作，这样在切换不同的ORM框架时提供了极大的方便，同时也使数据库层操作更加简单，方便解耦</p>
-<h2 id="1-2-Spring-Data-JPA的特性"><a href="#1-2-Spring-Data-JPA的特性" class="headerlink" title="1.2 Spring Data JPA的特性"></a>1.2 Spring Data JPA的特性</h2><img src="/2019/09/11/JPA学习-02/wps2.jpg">
+<h2 id="1-2-Spring-Data-JPA的特性"><a href="#1-2-Spring-Data-JPA的特性" class="headerlink" title="1.2 Spring Data JPA的特性"></a>1.2 Spring Data JPA的特性</h2><img src="/2019/09/10/JPA学习-02/wps2.jpg">
 
 <p>SpringData Jpa 极大简化了数据库访问层代码。 如何简化的呢？—&gt; 使用了SpringDataJpa，我们的dao层中只需要写接口，就自动具有了增删改查、分页查询等方法。</p>
 <h2 id="1-3-Spring-Data-JPA-与-JPA和hibernate之间的关系"><a href="#1-3-Spring-Data-JPA-与-JPA和hibernate之间的关系" class="headerlink" title="1.3 Spring Data JPA 与 JPA和hibernate之间的关系"></a>1.3 Spring Data JPA 与 JPA和hibernate之间的关系</h2><p>JPA是一套<strong>规范</strong>，内部是有接口和抽象类组成的。hibernate是一套成熟的<strong>ORM框架</strong>，<strong>而且Hibernate实现了JPA规范，所以也可以称hibernate为JPA的一种实现方式</strong>，我们使用JPA的API编程，意味着站在更高的角度上看待问题（面向接口编程）</p>
@@ -435,7 +435,7 @@ height:50vh;
 
 <h3 id="2-3-3-阶段性完结撒花-❀"><a href="#2-3-3-阶段性完结撒花-❀" class="headerlink" title="2.3.3 阶段性完结撒花 ❀"></a>2.3.3 阶段性完结撒花 ❀</h3><hr>
 <h1 id="第3章-Spring-Data-JPA的内部原理剖析"><a href="#第3章-Spring-Data-JPA的内部原理剖析" class="headerlink" title="第3章 Spring Data JPA的内部原理剖析"></a>第3章 Spring Data JPA的内部原理剖析</h1><h2 id="3-1-Spring-Data-JPA的常用接口分析"><a href="#3-1-Spring-Data-JPA的常用接口分析" class="headerlink" title="3.1 Spring Data JPA的常用接口分析"></a>3.1 Spring Data JPA的常用接口分析</h2><p>在客户的案例中，我们发现在自定义的customerRepository中，并没有提供任何方法就可以使用其中的很多方法，那么这些方法究竟是怎么来的呢？答案很简单，对于我们自定义的Dao层接口，由于继承了JpaRepository和JpaSpecificationExecutor，所以我们可以使用这两个接口的所有方法。</p>
-<img src="/2019/09/11/JPA学习-02/1568102723179.png">
+<img src="/2019/09/10/JPA学习-02/1568102723179.png">
 
 <blockquote>
 <p>在使用Spring Data JPA时，一般实现JpaRepository和JpaSpecificationExecutor接口，这样就可以使用这些接口中定义的方法，但是这些方法都只是一些声明，没有具体的实现方式，那么在 Spring Data JPA中它又是怎么实现的呢？</p>
@@ -444,26 +444,26 @@ height:50vh;
 <p>通过对客户案例，以debug断点调试的方式，通过分析Spring Data JPA的原来来分析程序的执行过程</p>
 <p>我们以findById方法为例进行分析</p>
 </blockquote>
-<h3 id="3-2-1-代理子类的实现过程"><a href="#3-2-1-代理子类的实现过程" class="headerlink" title="3.2.1 代理子类的实现过程"></a>3.2.1 代理子类的实现过程</h3><img src="/2019/09/11/JPA学习-02/1568099381681.png">
+<h3 id="3-2-1-代理子类的实现过程"><a href="#3-2-1-代理子类的实现过程" class="headerlink" title="3.2.1 代理子类的实现过程"></a>3.2.1 代理子类的实现过程</h3><img src="/2019/09/10/JPA学习-02/1568099381681.png">
 
 
 
 <p>断点执行到方法上时，我们可以发现注入的customerRepository对象，本质上是通过JdkDynamicAopProxy生成的一个代理对象(SimpleRepository)</p>
 <h3 id="3-2-2-代理对象中方法调用的分析"><a href="#3-2-2-代理对象中方法调用的分析" class="headerlink" title="3.2.2 代理对象中方法调用的分析"></a>3.2.2 代理对象中方法调用的分析</h3><p>当程序执行的时候，会通过JdkDynamicAopProxy的invoke方法，对customerRepository对象生成动态代理对象。根据对Spring Data JPA介绍而知，要想进行findOne查询方法，最终还是会出现JPA规范的API完成操作，那么这些底层代码存在于何处呢？答案很简单，都隐藏在通过JdkDynamicAopProxy生成的动态代理对象当中，而这个动态代理对象就是SimpleJpaRepository</p>
-<img src="/2019/09/11/JPA学习-02/156810003358.png">
+<img src="/2019/09/10/JPA学习-02/156810003358.png">
 
 <p>通过SimpleJpaRepository的源码分析，定位到了findById方法，在此方法中，返回em.find()的返回结果，那么em又是什么呢？ </p>
-<img src="/2019/09/11/JPA学习-02/1568100184659.png">
+<img src="/2019/09/10/JPA学习-02/1568100184659.png">
 
 <blockquote>
 <p>带着问题继续查找em对象，我们发现em就是EntityManager对象，而他是JPA原生的实现方式，所以我们得到结论Spring Data JPA只是对标准JPA操作进行了进一步封装，简化了Dao层代码的开发</p>
 </blockquote>
-<h2 id="3-3-Spring-Data-JPA完整的调用过程分析"><a href="#3-3-Spring-Data-JPA完整的调用过程分析" class="headerlink" title="3.3 Spring Data JPA完整的调用过程分析"></a>3.3 Spring Data JPA完整的调用过程分析</h2><img src="/2019/09/11/JPA学习-02/wps7.jpg">
+<h2 id="3-3-Spring-Data-JPA完整的调用过程分析"><a href="#3-3-Spring-Data-JPA完整的调用过程分析" class="headerlink" title="3.3 Spring Data JPA完整的调用过程分析"></a>3.3 Spring Data JPA完整的调用过程分析</h2><img src="/2019/09/10/JPA学习-02/wps7.jpg">
 
 <h1 id="第4章-Spring-Data-JPA的查询方式"><a href="#第4章-Spring-Data-JPA的查询方式" class="headerlink" title="第4章 Spring Data JPA的查询方式"></a>第4章 Spring Data JPA的查询方式</h1><h2 id="4-1-使用Spring-Data-JPA中接口定义的方法进行查询"><a href="#4-1-使用Spring-Data-JPA中接口定义的方法进行查询" class="headerlink" title="4.1 使用Spring Data JPA中接口定义的方法进行查询"></a>4.1 使用Spring Data JPA中接口定义的方法进行查询</h2><p>在继承JpaRepository，和JpaRepository接口后,我们就可以使用接口中定义的方法进行查询</p>
-<h3 id="1）继承JpaRepository后的方法列表"><a href="#1）继承JpaRepository后的方法列表" class="headerlink" title="1）继承JpaRepository后的方法列表"></a>1）继承JpaRepository后的方法列表</h3><img src="/2019/09/11/JPA学习-02/1568100393636.png">
+<h3 id="1）继承JpaRepository后的方法列表"><a href="#1）继承JpaRepository后的方法列表" class="headerlink" title="1）继承JpaRepository后的方法列表"></a>1）继承JpaRepository后的方法列表</h3><img src="/2019/09/10/JPA学习-02/1568100393636.png">
 
-<h3 id="2）继承JpaSpecificationExecutor的方法列表"><a href="#2）继承JpaSpecificationExecutor的方法列表" class="headerlink" title="2）继承JpaSpecificationExecutor的方法列表"></a>2）继承JpaSpecificationExecutor的方法列表</h3><img src="/2019/09/11/JPA学习-02/1568100447576.png">
+<h3 id="2）继承JpaSpecificationExecutor的方法列表"><a href="#2）继承JpaSpecificationExecutor的方法列表" class="headerlink" title="2）继承JpaSpecificationExecutor的方法列表"></a>2）继承JpaSpecificationExecutor的方法列表</h3><img src="/2019/09/10/JPA学习-02/1568100447576.png">
 
 <h2 id="4-2-使用JPQL的方式查询"><a href="#4-2-使用JPQL的方式查询" class="headerlink" title="4.2 使用JPQL的方式查询"></a>4.2 使用JPQL的方式查询</h2><p>使用Spring Data JPA提供的查询方法已经可以解决大部分的应用场景，但是对于某些业务来说，我们还需要灵活的构造查询条件，这时就可以使用@Query注解，结合JPQL的语句方式完成查询</p>
 <p>@Query 注解的使用非常简单，只需在方法上面标注该注解，同时提供一个JPQL查询语句即可</p>
@@ -679,9 +679,9 @@ height:50vh;
     
         <div class="license-wrapper">
             <p>Author：<a href="http://none">wtq</a>
-            <p>原文链接：<a href="http://none/2019/09/11/JPA学习-02/">http://none/2019/09/11/JPA学习-02/</a>
-            <p>发表日期：<a href="http://none/2019/09/11/JPA学习-02/">September 11th 2019, 12:00:00 am</a>
-            <p>更新日期：<a href="http://none/2019/09/11/JPA学习-02/">September 10th 2019, 6:39:02 pm</a>
+            <p>原文链接：<a href="http://none/2019/09/10/JPA学习-02/">http://none/2019/09/10/JPA学习-02/</a>
+            <p>发表日期：<a href="http://none/2019/09/10/JPA学习-02/">September 10th 2019, 12:00:00 am</a>
+            <p>更新日期：<a href="http://none/2019/09/10/JPA学习-02/">September 10th 2019, 6:44:45 pm</a>
             <p>版权声明：本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
         </div>
     
@@ -690,16 +690,16 @@ height:50vh;
         <li class="next">
             
                 <div class="nextSlogan">Next Post</div>
-                <a href= "/2019/09/12/JPA学习-03/" title= "JPA学习-03">
-                    <div class="nextTitle">JPA学习-03</div>
+                <a href= "/2019/09/10/JPA学习-01/" title= "JPA学习-01">
+                    <div class="nextTitle">JPA学习-01</div>
                 </a>
             
         </li>
         <li class="previous">
             
                 <div class="prevSlogan">Previous Post</div>
-                <a href= "/2019/09/10/JPA学习-01/" title= "JPA学习-01">
-                    <div class="prevTitle">JPA学习-01</div>
+                <a href= "/2019/09/02/Quartz/" title= "Quartz任务调度">
+                    <div class="prevTitle">Quartz任务调度</div>
                 </a>
             
         </li>
@@ -1104,6 +1104,10 @@ top:50vh;
     
     
     
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
         Total : 22
@@ -1122,17 +1126,17 @@ top:50vh;
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">09/12</span><a class="archive-post-title" href= "/2019/09/12/JPA学习-03/" >JPA学习-03</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">09/11</span><a class="archive-post-title" href= "/2019/09/11/JPA学习-02/" >JPA学习-02</a>
+            <span class="archive-post-date">09/10</span><a class="archive-post-title" href= "/2019/09/10/JPA学习-02/" >JPA学习-02</a>
         </li>
     
     
         <li class="archive-post-item">
             <span class="archive-post-date">09/10</span><a class="archive-post-title" href= "/2019/09/10/JPA学习-01/" >JPA学习-01</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/10</span><a class="archive-post-title" href= "/2019/09/10/JPA学习-03/" >JPA学习-03</a>
         </li>
     
     
@@ -1167,7 +1171,7 @@ top:50vh;
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2019/08/20/SpringCloud学习-04/" >SpringCloud-04-Feign</a>
+            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2019/08/20/Java基础-03/" >Java基础-03-JVM</a>
         </li>
     
     
@@ -1177,7 +1181,7 @@ top:50vh;
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2019/08/20/Java基础-03/" >Java基础-03-JVM</a>
+            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2019/08/20/SpringCloud学习-04/" >SpringCloud-04-Feign</a>
         </li>
     
     
