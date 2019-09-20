@@ -1,0 +1,1200 @@
+<!DOCTYPE html>
+<html lang="en">
+    <!-- title -->
+
+
+
+
+<!-- keywords -->
+
+
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="author" content="wtq">
+    <meta name="renderer" content="webkit">
+    <meta name="copyright" content="wtq">
+    
+    <meta name="keywords" content="hexo,hexo-theme,hexo-blog">
+    
+    <meta name="description" content>
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>分布式事务-seata · 王某人的博客</title>
+    <style type="text/css">
+    @font-face {
+        font-family: 'Oswald-Regular';
+        src: url("/font/Oswald-Regular.ttf");
+    }
+
+    body {
+        margin: 0;
+    }
+
+    header,
+    footer,
+    .back-top,
+    .sidebar,
+    .container,
+    .site-intro-meta,
+    .toc-wrapper {
+        display: none;
+    }
+
+    .site-intro {
+        position: relative;
+        z-index: 3;
+        width: 100%;
+        /* height: 50vh; */
+        overflow: hidden;
+    }
+
+    .site-intro-placeholder {
+        position: absolute;
+        z-index: -2;
+        top: 0;
+        left: 0;
+        width: calc(100% + 300px);
+        height: 100%;
+        background: repeating-linear-gradient(-45deg, #444 0, #444 80px, #333 80px, #333 160px);
+        background-position: center center;
+        transform: translate3d(-226px, 0, 0);
+        animation: gradient-move 2.5s ease-out 0s infinite;
+    }
+
+    @keyframes gradient-move {
+        0% {
+            transform: translate3d(-226px, 0, 0);
+        }
+        100% {
+            transform: translate3d(0, 0, 0);
+        }
+    }
+
+</style>
+
+    <link rel="preload" href="/css/style.css?v=20180824" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="stylesheet" href="/css/mobile.css?v=20180824" media="(max-width: 980px)">
+    
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    
+    <!-- /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
+/* This file is meant as a standalone workflow for
+- testing support for link[rel=preload]
+- enabling async CSS loading in browsers that do not support rel=preload
+- applying rel preload css once loaded, whether supported or not.
+*/ -->
+<script>
+(function( w ){
+	"use strict";
+	// rel=preload support test
+	if( !w.loadCSS ){
+		w.loadCSS = function(){};
+	}
+	// define on the loadCSS obj
+	var rp = loadCSS.relpreload = {};
+	// rel=preload feature support test
+	// runs once and returns a function for compat purposes
+	rp.support = (function(){
+		var ret;
+		try {
+			ret = w.document.createElement( "link" ).relList.supports( "preload" );
+		} catch (e) {
+			ret = false;
+		}
+		return function(){
+			return ret;
+		};
+	})();
+
+	// if preload isn't supported, get an asynchronous load by using a non-matching media attribute
+	// then change that media back to its intended value on load
+	rp.bindMediaToggle = function( link ){
+		// remember existing media attr for ultimate state, or default to 'all'
+		var finalMedia = link.media || "all";
+
+		function enableStylesheet(){
+			link.media = finalMedia;
+		}
+
+		// bind load handlers to enable media
+		if( link.addEventListener ){
+			link.addEventListener( "load", enableStylesheet );
+		} else if( link.attachEvent ){
+			link.attachEvent( "onload", enableStylesheet );
+		}
+
+		// Set rel and non-applicable media type to start an async request
+		// note: timeout allows this to happen async to let rendering continue in IE
+		setTimeout(function(){
+			link.rel = "stylesheet";
+			link.media = "only x";
+		});
+		// also enable media after 3 seconds,
+		// which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
+		setTimeout( enableStylesheet, 3000 );
+	};
+
+	// loop through link elements in DOM
+	rp.poly = function(){
+		// double check this to prevent external calls from running
+		if( rp.support() ){
+			return;
+		}
+		var links = w.document.getElementsByTagName( "link" );
+		for( var i = 0; i < links.length; i++ ){
+			var link = links[ i ];
+			// qualify links to those with rel=preload and as=style attrs
+			if( link.rel === "preload" && link.getAttribute( "as" ) === "style" && !link.getAttribute( "data-loadcss" ) ){
+				// prevent rerunning on link
+				link.setAttribute( "data-loadcss", true );
+				// bind listeners to toggle media back
+				rp.bindMediaToggle( link );
+			}
+		}
+	};
+
+	// if unsupported, run the polyfill
+	if( !rp.support() ){
+		// run once at least
+		rp.poly();
+
+		// rerun poly on an interval until onload
+		var run = w.setInterval( rp.poly, 500 );
+		if( w.addEventListener ){
+			w.addEventListener( "load", function(){
+				rp.poly();
+				w.clearInterval( run );
+			} );
+		} else if( w.attachEvent ){
+			w.attachEvent( "onload", function(){
+				rp.poly();
+				w.clearInterval( run );
+			} );
+		}
+	}
+
+
+	// commonjs
+	if( typeof exports !== "undefined" ){
+		exports.loadCSS = loadCSS;
+	}
+	else {
+		w.loadCSS = loadCSS;
+	}
+}( typeof global !== "undefined" ? global : this ) );
+</script>
+
+    <link rel="icon" href="/assets/favicon.ico">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js" as="script">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js" as="script">
+    <link rel="preload" href="/scripts/main.js" as="script">
+    <link rel="preload" as="font" href="/font/Oswald-Regular.ttf" crossorigin>
+    <link rel="preload" as="font" href="https://at.alicdn.com/t/font_327081_1dta1rlogw17zaor.woff" crossorigin>
+    
+    <!-- fancybox -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" defer></script>
+    <!-- 百度统计  -->
+    
+    <!-- 谷歌统计  -->
+    
+</head>
+
+    
+        <body class="post-body">
+    
+    
+<header class="header">
+
+    <div class="read-progress"></div>
+    <div class="header-sidebar-menu">&#xe775;</div>
+    <!-- post页的toggle banner  -->
+    
+    <div class="banner">
+            <div class="blog-title">
+                <a href="/" >王某人的个人博客</a>
+            </div>
+            <div class="post-title">
+                <a href="#" class="post-name">分布式事务-seata</a>
+            </div>
+    </div>
+    
+    <a class="home-link" href=/>王某人的个人博客</a>
+</header>
+    <div class="wrapper">
+        <div class="site-intro" style="
+
+
+
+
+
+
+
+height:50vh;
+">
+    
+    <!-- 主页  -->
+    
+    
+    <!-- 404页  -->
+            
+    <div class="site-intro-placeholder"></div>
+    <div class="site-intro-img" style="background-image: url(/intro/post-bg.jpg)"></div>
+    <div class="site-intro-meta">
+        <!-- 标题  -->
+        <h1 class="intro-title">
+            <!-- 主页  -->
+            
+            分布式事务-seata
+            <!-- 404 -->
+            
+        </h1>
+        <!-- 副标题 -->
+        <p class="intro-subtitle">
+            <!-- 主页副标题  -->
+            
+            
+            <!-- 404 -->
+            
+        </p>
+        <!-- 文章页meta -->
+        
+            <div class="post-intros">
+                <!-- 文章页标签  -->
+                
+                    <div class= post-intro-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "分布式事务">分布式事务</a>
+    
+</div>
+                
+                
+                    <div class="post-intro-read">
+                        <span>Word count: <span class="post-count word-count">3.3k</span>Reading time: <span class="post-count reading-time">11 min</span></span>
+                    </div>
+                
+                <div class="post-intro-meta">
+                    <span class="post-intro-calander iconfont-archer">&#xe676;</span>
+                    <span class="post-intro-time">2019/08/20</span>
+                    
+                    <span id="busuanzi_container_page_pv" class="busuanzi-pv">
+                        <span class="iconfont-archer">&#xe602;</span>
+                        <span id="busuanzi_value_page_pv"></span>
+                    </span>
+                    
+                    <span class="shareWrapper">
+                        <span class="iconfont-archer shareIcon">&#xe71d;</span>
+                        <span class="shareText">Share</span>
+                        <ul class="shareList">
+                            <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                                <div class="share-qrcode"></div>
+                            </li>
+                            <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                            <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                            <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                            <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                        </ul>
+                    </span>
+                </div>
+            </div>
+        
+    </div>
+</div>
+        <script>
+ 
+  // get user agent
+  var browser = {
+    versions: function () {
+      var u = window.navigator.userAgent;
+      return {
+        userAgent: u,
+        trident: u.indexOf('Trident') > -1, //IE内核
+        presto: u.indexOf('Presto') > -1, //opera内核
+        webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+        gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+        mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+        ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+        android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+        iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者安卓QQ浏览器
+        iPad: u.indexOf('iPad') > -1, //是否为iPad
+        webApp: u.indexOf('Safari') == -1, //是否为web应用程序，没有头部与底部
+        weixin: u.indexOf('MicroMessenger') == -1, //是否为微信浏览器
+        uc: u.indexOf('UCBrowser') > -1 //是否为android下的UC浏览器
+      };
+    }()
+  }
+  console.log("userAgent:" + browser.versions.userAgent);
+
+  // callback
+  function fontLoaded() {
+    console.log('font loaded');
+    if (document.getElementsByClassName('site-intro-meta')) {
+      document.getElementsByClassName('intro-title')[0].classList.add('intro-fade-in');
+      document.getElementsByClassName('intro-subtitle')[0].classList.add('intro-fade-in');
+      var postIntros = document.getElementsByClassName('post-intros')[0]
+      if (postIntros) {
+        postIntros.classList.add('post-fade-in');
+      }
+    }
+  }
+
+  // UC不支持跨域，所以直接显示
+  function asyncCb(){
+    if (browser.versions.uc) {
+      console.log("UCBrowser");
+      fontLoaded();
+    } else {
+      WebFont.load({
+        custom: {
+          families: ['Oswald-Regular']
+        },
+        loading: function () {  //所有字体开始加载
+          // console.log('loading');
+        },
+        active: function () {  //所有字体已渲染
+          fontLoaded();
+        },
+        inactive: function () { //字体预加载失败，无效字体或浏览器不支持加载
+          console.log('inactive: timeout');
+          fontLoaded();
+        },
+        timeout: 5000 // Set the timeout to two seconds
+      });
+    }
+  }
+
+  function asyncErr(){
+    console.warn('script load from CDN failed, will load local script')
+  }
+
+  // load webfont-loader async, and add callback function
+  function async(u, cb, err) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (cb) { o.addEventListener('load', function (e) { cb(null, e); }, false); }
+    if (err) { o.addEventListener('error', function (e) { err(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+
+  var asyncLoadWithFallBack = function(arr, success, reject) {
+      var currReject = function(){
+        reject()
+        arr.shift()
+        if(arr.length)
+          async(arr[0], success, currReject)
+        }
+
+      async(arr[0], success, currReject)
+  }
+
+  asyncLoadWithFallBack([
+    "https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js", 
+    "https://cdn.bootcss.com/webfont/1.6.28/webfontloader.js",
+    "/lib/webfontloader.min.js"
+  ], asyncCb, asyncErr)
+</script>        
+        <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
+        <div class="container container-unloaded">
+            <main class="main post-page">
+    <article class="article-entry">
+        <h1 id="使用seata完成分布式事务控制"><a href="#使用seata完成分布式事务控制" class="headerlink" title="使用seata完成分布式事务控制"></a>使用seata完成分布式事务控制</h1><h1 id="总览"><a href="#总览" class="headerlink" title="总览"></a>总览</h1><blockquote>
+<p> 本系列针对分布式事务提出三种解决方案：可靠消息最终一致性、最大努力通知、TCC。 每种方案分为上下两篇，上篇为原理概述，下篇为具体实现。</p>
+</blockquote>
+<h2 id="一、事务概念"><a href="#一、事务概念" class="headerlink" title="一、事务概念"></a>一、事务概念</h2><p>原子性是指事务是一个不可再分割的工作单元，事务中的操作要么都发生，要么都不发生。<br>一致性是指在事务开始之前和事务结束以后，数据库的完整性约束没有被破坏。这是说数据库事务不能破坏关系数据的完整性以及业务逻辑上的一致性。如A给B转账，不论转账的事务操作是否成功，其两者的存款总额不变<br>隔离性是多个事务并发访问时，事务之间是隔离的，一个事务不应该影响其它事务运行效果。<br>持久性是在事务完成以后，该事务所对数据库所作的更改便持久的保存在数据库之中，并不会被回滚。</p>
+<h3 id="1-本地事务"><a href="#1-本地事务" class="headerlink" title="1 本地事务"></a>1 本地事务</h3><blockquote>
+<p>1.1）在单个数据库的本地并且限制在单 个进程内的事务<br>1.2）本地事务不涉及多个数据来源</p>
+</blockquote>
+<h3 id="2-分布式事务场景"><a href="#2-分布式事务场景" class="headerlink" title="2 分布式事务场景"></a>2 分布式事务场景</h3><h4 id="2-1-全局事务（DTP）"><a href="#2-1-全局事务（DTP）" class="headerlink" title="2.1 全局事务（DTP）"></a>2.1 全局事务（DTP）</h4><p>1）XA是由X/Open组织提出的分布式事务的规范。 XA规范主要定义了<strong>(全局)事务管理器(TM)</strong>和<strong>(局 部)资源管理器(RM)</strong>之间的接口。主流的关系型 数据库产品都是实现了XA接口的。</p>
+<p>2）XA接口是双向的系统接口，在事务管理器 （TM）以及一个或多个资源管理器（RM）之 间形成通信桥梁。</p>
+<p>3）XA之所以需要引入事务管理器是因为，在分布 式系统中，从理论上讲两台机器理论上无法达 到一致的状态，需要引入一个单点进行协调。</p>
+<p>4）由全局事务管理器管理和协调的事务，可以跨 越多个资源（如数据库或JMS队列）和进程。 全局事务管理器一般使用 XA 二阶段提交协议 与数据库进行交互。</p>
+<h4 id="2-2-两阶段提交-Two-Phase-Commit"><a href="#2-2-两阶段提交-Two-Phase-Commit" class="headerlink" title="2.2 两阶段提交(Two Phase Commit)"></a>2.2 两阶段提交(Two Phase Commit)</h4><p>1）两阶段提交协议（Two-phase commit protocol） 是XA用于在全局事务中协调多个资源的机制。<br>2）TM和RM间采取两阶段提交(Two Phase Commit) 的方案来解决一致性问题。<br>3）两阶段提交需要一个协调者（TM）来掌控所有参与 者节点（RM）的操作结果并且指引这些节点是否需 要最终提交。</p>
+<p>4）JTA（Java Transaction API）：面向应用、应用服务器与资 源管理器的高层事务接口。<br>5）JTS（Java Transaction Service）：JTA事务管理器的实现标 准，向上支持JTA，向下通过CORBA OTS实现跨事务域的互 操作性。<br>6）EJB：基于组件的应用编程模型，通过声明式事务管理进一步 简化事务应用的编程。<br>7）优点 • 简单一致的编程模型 • 跨域分布处理的ACID保证<br>8）局限 • DTP模型本身的局限</p>
+<h4 id="2-3-标准分布式事务解决方案的利弊"><a href="#2-3-标准分布式事务解决方案的利弊" class="headerlink" title="2.3 标准分布式事务解决方案的利弊"></a>2.3 标准分布式事务解决方案的利弊</h4><p>1）优点：严格的ACID<br>2）缺点：效率非常低（微服务架构下已不太适用）</p>
+<blockquote>
+<p>• 全局事务方式下，全局事务管理器（TM）通过XA接口使用二阶段提交协议（ 2PC ）与资源层（如数据 库）进行交互。使用全局事务，数据被Lock的时间跨整个事务，直到全局事务结束。<br>• 2PC 是反可伸缩模式，在事务处理过程中，参与者需要一直持有资源直到整个分布式事务结束。这样， 当业务规模越来越大的情况下，2PC 的局限性就越来越明显，系统可伸缩性会变得很差。<br>• 与本地事务相比，XA 协议的系统开销相当大，因而应当慎重考虑是否确实需要分布式事务。而且只有 支持 XA 协议的资源才能参与分布式事务。</p>
+</blockquote>
+<h4 id="2-4-BASE理论"><a href="#2-4-BASE理论" class="headerlink" title="2.4 BASE理论"></a>2.4 BASE理论</h4><blockquote>
+<p>1）BASE<br>• BA: Basic Availability 基本业务可用性（支持分区失败）<br>• S: Soft state 柔性状态（状态允许有短时间不同步，异步）<br>• E: Eventual consistency 最终一致性（最终数据是一致的，但不是实时一致）<br>2）原子性（A）与持久性（D）必须根本保障<br>3）为了可用性、性能与降级服务的需要，只有降低一致性( C ) 与 隔离性( I ) 的要求<br>4）酸碱平衡(ACID-BASE Balance)</p>
+</blockquote>
+<h4 id="2-5-CAP定理"><a href="#2-5-CAP定理" class="headerlink" title="2.5 CAP定理"></a>2.5 CAP定理</h4><blockquote>
+<p>1）定理: 对于共享数据系统，最多只能同时拥有CAP其中 的两个，没法三者兼顾。<br>• 任两者的组合都有其适用场景<br>• 真实系统应当是ACID与BASE的混合体<br>• 不同类型的业务可以也应当区别对待<br>2）结论：分布式系统中，最重要的是满足业务需求，而 不是追求抽象、绝对的系统特性。</p>
+</blockquote>
+<h3 id="3-柔性事务"><a href="#3-柔性事务" class="headerlink" title="3 柔性事务"></a>3 柔性事务</h3><blockquote>
+<p>1）两阶段型<br>2）补偿型<br>3）异步确保型<br>4）最大努力通知型</p>
+</blockquote>
+<h3 id="4-服务模式"><a href="#4-服务模式" class="headerlink" title="4 服务模式"></a>4 服务模式</h3><p> 可查询操作<br> 服务操作的可标识性<br>• 服务操作具有全局唯一标识 – 可以使用业务单据号（如订单号） – 或者使用系统分配的操作流水号（如支付记录流水号） – 或者使用操作资源的组合组合标识（如商户号+商户订单号）<br>• 操作有唯一的、确定的时间(约定以谁的时间为准)<br> 单笔查询<br>• 使用全局唯一的服务操作标识，查询操作执行结果<br>• 注意状态判断，小心“处理中”的状态<br> 批量查询<br>• 使用时间区段与(或)一组服务操作的标识，查询一批操作执行结果</p>
+<p> 幂等操作<br> 幂等性（Idempotenty）<br>f(f(x)) = f(x)<br> 幂等操作<br>• 重复调用多次产生的业务结果与调用一次产生的业务结果相同<br> 实现方式一<br>• 通过业务操作本身实现幂等性<br> 实现方式二<br>• 系统缓存所有请求与处理结果 • 检测到重复请求之后，自动返回之前的处理结果</p>
+<p> TCC操作<br> Try: 尝试执行业务<br>• 完成所有业务检查(一致性)<br>• 预留必须业务资源(准隔离性)<br> Confirm:确认执行业务<br>• 真正执行业务 • 不作任何业务检查<br>• 只使用Try阶段预留的业务资源<br>• Confirm操作要满足幂等性<br> Cancel: 取消执行业务<br>• 释放Try阶段预留的业务资源<br>• Cancel操作要满足幂等性<br> 与2PC协议比较<br>• 位于业务服务层而非资源层<br>• 没有单独的准备(Prepare)阶段， Try操作兼备资源操作与准备能力<br>• Try操作可以灵活选择业务资源的 锁定粒度(以业务定粒度) • 较高开发成本<br>误区：很多人把两阶段型操作等同于两 阶段提交协议2PC操作。<br>其实TCC操作也属于两阶段型操作。</p>
+<p> 可补偿操作<br> do: 真正执行业务<br>• 完成业务处理<br>• 业务执行结果外部可见<br> compensate:业务补偿<br>• 抵销(或部分抵销)正向业务操作的业务结果<br>• 补偿操作满足幂等性<br> 约束<br>• 补偿在业务上可行<br>• 由于业务执行结果未隔离、或者补偿不完整带来的风险与成本可控<br>（TCC操作中的Confirm操作和Cancel操作，其实也可以看作是补偿操作）</p>
+<p>注：服务模式是柔性事务流程中的特殊操作实现（实现上对应业务服务要提供相应模式的功能接口）， 还不算是某一种柔性事务解决方案。</p>
+<h3 id="可靠消息最终一致性方案"><a href="#可靠消息最终一致性方案" class="headerlink" title="可靠消息最终一致性方案"></a>可靠消息最终一致性方案</h3><p> 用到的服务模式<br>• 可查询操作、幂等操作<br> 方案特点<br>• 兼容所有实现JMS标准的MQ中间件<br>• 确保业务数据可靠的前提下，实现业务数据的最终一致（理想状态下基本是准实时一致）<br> 行业应用案例<br>• 支付宝、eBay（BASE）、去哪儿……<br>对应支付系统会计异步记账业务<br>银行通知结果信息存储与驱动订单处理</p>
+<p> 实现<br>• 业务处理服务在业务事务提交前，向实时消息服务请求发送消息，实时消息服务只记录消息数据，而不真正发送。业务处理服务在业务事务提交后，向实时消息服务确认 发送。只有在得到确认发送指令后，实时消息服务才真正发送<br> 消息<br>• 业务处理服务在业务事务回滚后，向实时消息服务取消发送。消息状态确认系统定期 找到未确认发送或回滚发送的消息，向业务处理服务询问消息状态，业务处理服务根 据消息ID或消息内容确定该消息是否有效<br> 约束<br>• 被动方的处理结果不影响主动方的处理结果， 被动方的消息处理操作是幂等操作<br> 成本<br>• 可靠消息系统建设成本<br>• 一次消息发送需要两次请求，业务处理服务需实现消息状态回查接口<br> 优点、适用范围<br>• 消息数据独立存储、独立伸缩，降低业务系统与消息系统间的耦合<br>• 对最终一致性时间敏感度较高，降低业务被动方实现成本<br>1.独立部署，独立伸缩（扩展性）<br>2.兼容所有实现JMS标准的MQ中间件<br>3.降低业务系统与消息系统间的耦合性<br>4.可实现数据可靠的前提下确保最终一致性</p>
+<h3 id="-TCC方案"><a href="#-TCC方案" class="headerlink" title=" TCC方案"></a> TCC方案</h3><p> 用到的服务模式<br>• TCC操作、幂等操作、可补偿操作、可查询操作<br> 方案特点<br>• 不与具体的服务框架耦合（在RPC架构中通用）<br>• 位于业务服务层，而非资源层 • 可以灵活选择业务资源的锁定粒度<br>• TCC里对每个服务资源操作的是本地事务，数据被lock的时间短，可扩展性好（可以说是为独立部署的 SOA服务而设计的）<br> 行业应用案例<br>• 支付宝XTS（蚂蚁金融云的分布式事务服务DTS）</p>
+<p> 实现<br>• 一个完整的业务活动由一个主业务服务与若干从业务服务组成<br>• 主业务服务负责发起并完成整个业务活动<br>• 从业务服务提供TCC型业务操作<br>• 业务活动管理器控制业务活动的一致性，它登记业务活动中的操作， 并在 业务活动提交时确认所有的TCC型操作的confirm操作，在业务活动取消 时调用所有TCC型操作的cancel操作<br> 成本<br>• 实现TCC操作的成本<br>• 业务活动结束时confirm或cancel操作的执行成本<br>• 业务活动日志成本<br> 优点、适用范围<br>• 强隔离性、严格一致性要求的业务活动 • 适用于执行时间较短的业务（比如处理账户、收费等业务）<br>1.不与具体的服务框架耦合<br>2.位于业务服务层，而非资源层<br>3.可以灵活选择业务资源的锁定粒度<br>4.适用于强隔离性，严格一致性要求的业务场景<br>5..适用于业务执行时间较短的业务</p>
+<h3 id="最大努力通知型方案"><a href="#最大努力通知型方案" class="headerlink" title="最大努力通知型方案"></a>最大努力通知型方案</h3><p> 用到的服务模式<br>• 可查询操作<br> 方案特点<br>• 业务活动的主动方在完成业务处理后，向业务活动被动方发送通知消息（允许消息丢失）<br>• 主动方可以设置时间阶梯型通知规则，在通知失败后按规则重复通知，直到通知N次后不再通知<br>• 主动方提供校对查询接口给被动方按需校对查询，用于恢复丢失的业务消息<br> 行业应用案例<br>• 银行通知、商户通知等（各大交易业务平台间的商户通知：多次通知、查询校对、对账文件）</p>
+<p> 实现<br>• 业务活动的主动方，在完成业务处理之后，向业务活动的被动方发送消息， 允许消息丢失。<br>• 业务活动的被动方根据定时策略，向业务活动主动方查询，恢复丢失的业 务消息。<br> 约束<br>• 被动方的处理结果不影响主动方的处理结果<br> 成本<br>• 业务查询与校对系统的建设成本<br> 适用范围<br>• 对业务最终一致性的时间敏感度低 • 跨企业的业务活动<br>按规律进行通知，不保证数据一定能通知成功，但会提供可查询操作接口进行核对</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">版权声明：本文为CSDN博主「1Vincent」的原创文章，遵循 CC 4.0 BY-SA 版权协议，转载请附上原文出处链接及本声明。</span><br><span class="line">原文链接：https://blog.csdn.net/wuzhiwei549/article/details/79787866</span><br></pre></td></tr></table></figure>
+
+
+    </article>
+    <!-- license  -->
+    
+        <div class="license-wrapper">
+            <p>Author：<a href="http://none">wtq</a>
+            <p>原文链接：<a href="http://none/2019/08/20/分布式事务学习-01/">http://none/2019/08/20/分布式事务学习-01/</a>
+            <p>发表日期：<a href="http://none/2019/08/20/分布式事务学习-01/">August 20th 2019, 12:00:00 am</a>
+            <p>更新日期：<a href="http://none/2019/08/20/分布式事务学习-01/">September 17th 2019, 5:54:51 pm</a>
+            <p>版权声明：本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
+        </div>
+    
+    <!-- paginator  -->
+    <ul class="post-paginator">
+        <li class="next">
+            
+                <div class="nextSlogan">Next Post</div>
+                <a href= "/2019/08/20/Java基础-03/" title= "Java基础-03-JVM">
+                    <div class="nextTitle">Java基础-03-JVM</div>
+                </a>
+            
+        </li>
+        <li class="previous">
+            
+                <div class="prevSlogan">Previous Post</div>
+                <a href= "/2019/08/20/Java基础-04/" title= "Java基础-04-Lambda">
+                    <div class="prevTitle">Java基础-04-Lambda</div>
+                </a>
+            
+        </li>
+    </ul>
+    <!-- 评论插件 -->
+    <!-- 来必力City版安装代码 -->
+
+<!-- City版安装代码已完成 -->
+    
+    
+    <!-- partial('_partial/comment/changyan') -->
+    <!--PC版-->
+
+
+    
+    
+
+    <!-- 评论 -->
+</main>
+            <!-- profile -->
+            
+        </div>
+        <footer class="footer footer-unloaded">
+    <!-- social  -->
+    
+    <div class="social">
+        
+    
+        
+            
+                <a href="mailto:951352631@qq.com" class="iconfont-archer email" title=email ></a>
+            
+        
+    
+        
+            
+                <a href="https://github.com/yy951352631" class="iconfont-archer github" target="_blank" title=github></a>
+            
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+    </div>
+    
+    <!-- powered by Hexo  -->
+    <div class="copyright">
+        <span id="hexo-power">Powered by <a href="https://hexo.io/" target="_blank">Hexo</a></span><span class="iconfont-archer power">&#xe635;</span><span id="theme-info">theme <a href="https://github.com/fi3ework/hexo-theme-archer" target="_blank">Archer</a></span>
+    </div>
+    <!-- 不蒜子  -->
+    
+    <div class="busuanzi-container">
+    
+     
+    <span id="busuanzi_container_site_pv">PV: <span id="busuanzi_value_site_pv"></span> :)</span>
+    
+    </div>
+    
+</footer>
+    </div>
+    <!-- toc -->
+    
+    <div class="toc-wrapper" style=
+    
+
+
+
+
+
+
+
+top:50vh;
+
+    >
+        <div class="toc-catalog">
+            <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+        </div>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#使用seata完成分布式事务控制"><span class="toc-number">1.</span> <span class="toc-text">使用seata完成分布式事务控制</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#总览"><span class="toc-number">2.</span> <span class="toc-text">总览</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、事务概念"><span class="toc-number">2.1.</span> <span class="toc-text">一、事务概念</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-本地事务"><span class="toc-number">2.1.1.</span> <span class="toc-text">1 本地事务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-分布式事务场景"><span class="toc-number">2.1.2.</span> <span class="toc-text">2 分布式事务场景</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-全局事务（DTP）"><span class="toc-number">2.1.2.1.</span> <span class="toc-text">2.1 全局事务（DTP）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-两阶段提交-Two-Phase-Commit"><span class="toc-number">2.1.2.2.</span> <span class="toc-text">2.2 两阶段提交(Two Phase Commit)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-3-标准分布式事务解决方案的利弊"><span class="toc-number">2.1.2.3.</span> <span class="toc-text">2.3 标准分布式事务解决方案的利弊</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-4-BASE理论"><span class="toc-number">2.1.2.4.</span> <span class="toc-text">2.4 BASE理论</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-5-CAP定理"><span class="toc-number">2.1.2.5.</span> <span class="toc-text">2.5 CAP定理</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-柔性事务"><span class="toc-number">2.1.3.</span> <span class="toc-text">3 柔性事务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-服务模式"><span class="toc-number">2.1.4.</span> <span class="toc-text">4 服务模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#可靠消息最终一致性方案"><span class="toc-number">2.1.5.</span> <span class="toc-text">可靠消息最终一致性方案</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#-TCC方案"><span class="toc-number">2.1.6.</span> <span class="toc-text"> TCC方案</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#最大努力通知型方案"><span class="toc-number">2.1.7.</span> <span class="toc-text">最大努力通知型方案</span></a></li></ol></li></ol></li></ol>
+    </div>
+    
+    <div class="back-top iconfont-archer">&#xe639;</div>
+    <div class="sidebar sidebar-hide">
+    <ul class="sidebar-tabs sidebar-tabs-active-0">
+        <li class="sidebar-tab-archives"><span class="iconfont-archer">&#xe67d;</span><span class="tab-name">Archive</span></li>
+        <li class="sidebar-tab-tags"><span class="iconfont-archer">&#xe61b;</span><span class="tab-name">Tag</span></li>
+        <li class="sidebar-tab-categories"><span class="iconfont-archer">&#xe666;</span><span class="tab-name">Cate</span></li>
+    </ul>
+    <div class="sidebar-content sidebar-content-show-archive">
+          <div class="sidebar-panel-archives">
+    <!-- 在ejs中将archive按照时间排序 -->
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div class="total-and-search">
+        <div class="total-archive">
+        Total : 26
+        </div>
+        <!-- search  -->
+        
+    </div>
+    
+    <div class="post-archive">
+    
+    
+    
+    
+    <div class="archive-year"> 2019 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/20</span><a class="archive-post-title" href= "/2019/09/20/分布式事务-Seata/" >分布式事务学习-02-seata实操</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/11</span><a class="archive-post-title" href= "/2019/09/11/JPA学习-04/" >JPA学习-04</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/10</span><a class="archive-post-title" href= "/2019/09/10/分布式事务-概念原理/" >分布式事务学习-01-Seata概念原理</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/10</span><a class="archive-post-title" href= "/2019/09/10/JPA学习-01/" >JPA学习-01</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/10</span><a class="archive-post-title" href= "/2019/09/10/JPA学习-02/" >JPA学习-02</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/10</span><a class="archive-post-title" href= "/2019/09/10/JPA学习-03/" >JPA学习-03</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/02</span><a class="archive-post-title" href= "/2019/09/02/Quartz/" >Quartz任务调度</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/28</span><a class="archive-post-title" href= "/2019/08/28/Java基础-01/" >Java基础-01-Optional</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/27</span><a class="archive-post-title" href= "/2019/08/27/Java基础-02/" >Java基础-02-Predicate</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/27</span><a class="archive-post-title" href= "/2019/08/27/SpringCloud学习-06/" >SpringCloud-06-Getaway</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/22</span><a class="archive-post-title" href= "/2019/08/22/SpringCloud学习-05/" >SpringCloud-05-Hystrix</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2019/08/20/Java基础-04/" >Java基础-04-Lambda</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2019/08/20/Java基础-03/" >Java基础-03-JVM</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2019/08/20/杂货铺/" >杂乱的知识，定期归档到其他文件</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2019/08/20/分布式事务学习-01/" >分布式事务-seata</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2019/08/20/SpringCloud学习-04/" >SpringCloud-04-Feign</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/16</span><a class="archive-post-title" href= "/2019/08/16/SpringCloud学习-03/" >SpringCloud-03-Ribbon</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/14</span><a class="archive-post-title" href= "/2019/08/14/SpringCloud学习-02/" >SpringCloud-02-Eureka</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/13</span><a class="archive-post-title" href= "/2019/08/13/Maven/" >Maven-01</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/13</span><a class="archive-post-title" href= "/2019/08/13/SpringCloud学习-01/" >SpringCloud-01-配置中心</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/12</span><a class="archive-post-title" href= "/2019/08/12/SpringBoot学习-04/" >SpringBoot-04-JDBC</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/10</span><a class="archive-post-title" href= "/2019/08/10/SpringBoot学习-03/" >SpringBoot-03-servlet容器</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/09</span><a class="archive-post-title" href= "/2019/08/09/SpringBoot学习-02/" >SpringBoot-02-Web工程</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/08</span><a class="archive-post-title" href= "/2019/08/08/SpringBoot学习-01/" >SpringBoot-01-Web工程</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/07</span><a class="archive-post-title" href= "/2019/08/07/hexo-常用操作/" >Hexo常用操作</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/07</span><a class="archive-post-title" href= "/2019/08/07/Hibernate-01/" >Hibernate-01</a>
+        </li>
+    
+    </div>
+  </div>
+        <div class="sidebar-panel-tags">
+    <div class="sidebar-tags-name">
+    
+        <span class="sidebar-tag-name" data-tags="Java基础"><span class="iconfont-archer">&#xe606;</span>Java基础</span>
+    
+        <span class="sidebar-tag-name" data-tags="Hexo"><span class="iconfont-archer">&#xe606;</span>Hexo</span>
+    
+        <span class="sidebar-tag-name" data-tags="杂货铺"><span class="iconfont-archer">&#xe606;</span>杂货铺</span>
+    
+        <span class="sidebar-tag-name" data-tags="Hibernate"><span class="iconfont-archer">&#xe606;</span>Hibernate</span>
+    
+        <span class="sidebar-tag-name" data-tags="JPA"><span class="iconfont-archer">&#xe606;</span>JPA</span>
+    
+        <span class="sidebar-tag-name" data-tags="SpringBoot-WEB"><span class="iconfont-archer">&#xe606;</span>SpringBoot-WEB</span>
+    
+        <span class="sidebar-tag-name" data-tags="SpringCloud"><span class="iconfont-archer">&#xe606;</span>SpringCloud</span>
+    
+        <span class="sidebar-tag-name" data-tags="分布式事务"><span class="iconfont-archer">&#xe606;</span>分布式事务</span>
+    
+        <span class="sidebar-tag-name" data-tags="Maven"><span class="iconfont-archer">&#xe606;</span>Maven</span>
+    
+        <span class="sidebar-tag-name" data-tags="Quartz"><span class="iconfont-archer">&#xe606;</span>Quartz</span>
+    
+    </div>
+    <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
+    <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
+    缺失模块。<br/>
+    1、请确保node版本大于6.2<br/>
+    2、在博客根目录（注意不是archer根目录）执行以下命令：<br/>
+    <span style="color: #f75357; font-size: 1rem; line-height: 2rem;">npm i hexo-generator-json-content --save</span><br/>
+    3、在根目录_config.yml里添加配置：
+    <pre style="color: #787878; font-size: 0.6rem;">
+jsonContent:
+  meta: false
+  pages: false
+  posts:
+    title: true
+    date: true
+    path: true
+    text: false
+    raw: false
+    content: false
+    slug: false
+    updated: false
+    comments: false
+    link: false
+    permalink: false
+    excerpt: false
+    categories: true
+    tags: true</pre>
+    </div> 
+    <div class="sidebar-tags-list"></div>
+</div>
+        <div class="sidebar-panel-categories">
+    <div class="sidebar-categories-name">
+    
+    </div>
+    <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
+    <div class="sidebar-categories-list"></div>
+</div>
+    </div>
+</div> 
+    <script>
+    var siteMeta = {
+        root: "/",
+        author: "wtq"
+    }
+</script>
+    <!-- CDN failover -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+    <script type="text/javascript">
+        if (typeof window.$ === 'undefined')
+        {
+            console.warn('jquery load from jsdelivr failed, will load local script')
+            document.write('<script src="/lib/jquery.min.js">\x3C/script>')
+        }
+    </script>
+    <script src="/scripts/main.js"></script>
+    <!-- algolia -->
+    
+    <!-- busuanzi  -->
+    
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    <!-- CNZZ  -->
+    
+    </div>
+    <!-- async load share.js -->
+    
+        <script src="/scripts/share.js" async></script>    
+     
+    </body>
+</html>
+
+

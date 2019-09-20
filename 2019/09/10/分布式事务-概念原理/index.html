@@ -1,0 +1,1357 @@
+<!DOCTYPE html>
+<html lang="en">
+    <!-- title -->
+
+
+
+
+<!-- keywords -->
+
+
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="author" content="wtq">
+    <meta name="renderer" content="webkit">
+    <meta name="copyright" content="wtq">
+    
+    <meta name="keywords" content="hexo,hexo-theme,hexo-blog">
+    
+    <meta name="description" content>
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>分布式事务学习-01-Seata概念原理 · 王某人的博客</title>
+    <style type="text/css">
+    @font-face {
+        font-family: 'Oswald-Regular';
+        src: url("/font/Oswald-Regular.ttf");
+    }
+
+    body {
+        margin: 0;
+    }
+
+    header,
+    footer,
+    .back-top,
+    .sidebar,
+    .container,
+    .site-intro-meta,
+    .toc-wrapper {
+        display: none;
+    }
+
+    .site-intro {
+        position: relative;
+        z-index: 3;
+        width: 100%;
+        /* height: 50vh; */
+        overflow: hidden;
+    }
+
+    .site-intro-placeholder {
+        position: absolute;
+        z-index: -2;
+        top: 0;
+        left: 0;
+        width: calc(100% + 300px);
+        height: 100%;
+        background: repeating-linear-gradient(-45deg, #444 0, #444 80px, #333 80px, #333 160px);
+        background-position: center center;
+        transform: translate3d(-226px, 0, 0);
+        animation: gradient-move 2.5s ease-out 0s infinite;
+    }
+
+    @keyframes gradient-move {
+        0% {
+            transform: translate3d(-226px, 0, 0);
+        }
+        100% {
+            transform: translate3d(0, 0, 0);
+        }
+    }
+
+</style>
+
+    <link rel="preload" href="/css/style.css?v=20180824" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="stylesheet" href="/css/mobile.css?v=20180824" media="(max-width: 980px)">
+    
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    
+    <!-- /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
+/* This file is meant as a standalone workflow for
+- testing support for link[rel=preload]
+- enabling async CSS loading in browsers that do not support rel=preload
+- applying rel preload css once loaded, whether supported or not.
+*/ -->
+<script>
+(function( w ){
+	"use strict";
+	// rel=preload support test
+	if( !w.loadCSS ){
+		w.loadCSS = function(){};
+	}
+	// define on the loadCSS obj
+	var rp = loadCSS.relpreload = {};
+	// rel=preload feature support test
+	// runs once and returns a function for compat purposes
+	rp.support = (function(){
+		var ret;
+		try {
+			ret = w.document.createElement( "link" ).relList.supports( "preload" );
+		} catch (e) {
+			ret = false;
+		}
+		return function(){
+			return ret;
+		};
+	})();
+
+	// if preload isn't supported, get an asynchronous load by using a non-matching media attribute
+	// then change that media back to its intended value on load
+	rp.bindMediaToggle = function( link ){
+		// remember existing media attr for ultimate state, or default to 'all'
+		var finalMedia = link.media || "all";
+
+		function enableStylesheet(){
+			link.media = finalMedia;
+		}
+
+		// bind load handlers to enable media
+		if( link.addEventListener ){
+			link.addEventListener( "load", enableStylesheet );
+		} else if( link.attachEvent ){
+			link.attachEvent( "onload", enableStylesheet );
+		}
+
+		// Set rel and non-applicable media type to start an async request
+		// note: timeout allows this to happen async to let rendering continue in IE
+		setTimeout(function(){
+			link.rel = "stylesheet";
+			link.media = "only x";
+		});
+		// also enable media after 3 seconds,
+		// which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
+		setTimeout( enableStylesheet, 3000 );
+	};
+
+	// loop through link elements in DOM
+	rp.poly = function(){
+		// double check this to prevent external calls from running
+		if( rp.support() ){
+			return;
+		}
+		var links = w.document.getElementsByTagName( "link" );
+		for( var i = 0; i < links.length; i++ ){
+			var link = links[ i ];
+			// qualify links to those with rel=preload and as=style attrs
+			if( link.rel === "preload" && link.getAttribute( "as" ) === "style" && !link.getAttribute( "data-loadcss" ) ){
+				// prevent rerunning on link
+				link.setAttribute( "data-loadcss", true );
+				// bind listeners to toggle media back
+				rp.bindMediaToggle( link );
+			}
+		}
+	};
+
+	// if unsupported, run the polyfill
+	if( !rp.support() ){
+		// run once at least
+		rp.poly();
+
+		// rerun poly on an interval until onload
+		var run = w.setInterval( rp.poly, 500 );
+		if( w.addEventListener ){
+			w.addEventListener( "load", function(){
+				rp.poly();
+				w.clearInterval( run );
+			} );
+		} else if( w.attachEvent ){
+			w.attachEvent( "onload", function(){
+				rp.poly();
+				w.clearInterval( run );
+			} );
+		}
+	}
+
+
+	// commonjs
+	if( typeof exports !== "undefined" ){
+		exports.loadCSS = loadCSS;
+	}
+	else {
+		w.loadCSS = loadCSS;
+	}
+}( typeof global !== "undefined" ? global : this ) );
+</script>
+
+    <link rel="icon" href="/assets/favicon.ico">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js" as="script">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js" as="script">
+    <link rel="preload" href="/scripts/main.js" as="script">
+    <link rel="preload" as="font" href="/font/Oswald-Regular.ttf" crossorigin>
+    <link rel="preload" as="font" href="https://at.alicdn.com/t/font_327081_1dta1rlogw17zaor.woff" crossorigin>
+    
+    <!-- fancybox -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" defer></script>
+    <!-- 百度统计  -->
+    
+    <!-- 谷歌统计  -->
+    
+</head>
+
+    
+        <body class="post-body">
+    
+    
+<header class="header">
+
+    <div class="read-progress"></div>
+    <div class="header-sidebar-menu">&#xe775;</div>
+    <!-- post页的toggle banner  -->
+    
+    <div class="banner">
+            <div class="blog-title">
+                <a href="/" >王某人的个人博客</a>
+            </div>
+            <div class="post-title">
+                <a href="#" class="post-name">分布式事务学习-01-Seata概念原理</a>
+            </div>
+    </div>
+    
+    <a class="home-link" href=/>王某人的个人博客</a>
+</header>
+    <div class="wrapper">
+        <div class="site-intro" style="
+
+
+
+
+
+
+
+height:50vh;
+">
+    
+    <!-- 主页  -->
+    
+    
+    <!-- 404页  -->
+            
+    <div class="site-intro-placeholder"></div>
+    <div class="site-intro-img" style="background-image: url(/intro/post-bg.jpg)"></div>
+    <div class="site-intro-meta">
+        <!-- 标题  -->
+        <h1 class="intro-title">
+            <!-- 主页  -->
+            
+            分布式事务学习-01-Seata概念原理
+            <!-- 404 -->
+            
+        </h1>
+        <!-- 副标题 -->
+        <p class="intro-subtitle">
+            <!-- 主页副标题  -->
+            
+            
+            <!-- 404 -->
+            
+        </p>
+        <!-- 文章页meta -->
+        
+            <div class="post-intros">
+                <!-- 文章页标签  -->
+                
+                    <div class= post-intro-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "分布式事务">分布式事务</a>
+    
+</div>
+                
+                
+                    <div class="post-intro-read">
+                        <span>Word count: <span class="post-count word-count">5.4k</span>Reading time: <span class="post-count reading-time">19 min</span></span>
+                    </div>
+                
+                <div class="post-intro-meta">
+                    <span class="post-intro-calander iconfont-archer">&#xe676;</span>
+                    <span class="post-intro-time">2019/09/10</span>
+                    
+                    <span id="busuanzi_container_page_pv" class="busuanzi-pv">
+                        <span class="iconfont-archer">&#xe602;</span>
+                        <span id="busuanzi_value_page_pv"></span>
+                    </span>
+                    
+                    <span class="shareWrapper">
+                        <span class="iconfont-archer shareIcon">&#xe71d;</span>
+                        <span class="shareText">Share</span>
+                        <ul class="shareList">
+                            <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                                <div class="share-qrcode"></div>
+                            </li>
+                            <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                            <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                            <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                            <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                        </ul>
+                    </span>
+                </div>
+            </div>
+        
+    </div>
+</div>
+        <script>
+ 
+  // get user agent
+  var browser = {
+    versions: function () {
+      var u = window.navigator.userAgent;
+      return {
+        userAgent: u,
+        trident: u.indexOf('Trident') > -1, //IE内核
+        presto: u.indexOf('Presto') > -1, //opera内核
+        webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+        gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+        mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+        ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+        android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+        iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者安卓QQ浏览器
+        iPad: u.indexOf('iPad') > -1, //是否为iPad
+        webApp: u.indexOf('Safari') == -1, //是否为web应用程序，没有头部与底部
+        weixin: u.indexOf('MicroMessenger') == -1, //是否为微信浏览器
+        uc: u.indexOf('UCBrowser') > -1 //是否为android下的UC浏览器
+      };
+    }()
+  }
+  console.log("userAgent:" + browser.versions.userAgent);
+
+  // callback
+  function fontLoaded() {
+    console.log('font loaded');
+    if (document.getElementsByClassName('site-intro-meta')) {
+      document.getElementsByClassName('intro-title')[0].classList.add('intro-fade-in');
+      document.getElementsByClassName('intro-subtitle')[0].classList.add('intro-fade-in');
+      var postIntros = document.getElementsByClassName('post-intros')[0]
+      if (postIntros) {
+        postIntros.classList.add('post-fade-in');
+      }
+    }
+  }
+
+  // UC不支持跨域，所以直接显示
+  function asyncCb(){
+    if (browser.versions.uc) {
+      console.log("UCBrowser");
+      fontLoaded();
+    } else {
+      WebFont.load({
+        custom: {
+          families: ['Oswald-Regular']
+        },
+        loading: function () {  //所有字体开始加载
+          // console.log('loading');
+        },
+        active: function () {  //所有字体已渲染
+          fontLoaded();
+        },
+        inactive: function () { //字体预加载失败，无效字体或浏览器不支持加载
+          console.log('inactive: timeout');
+          fontLoaded();
+        },
+        timeout: 5000 // Set the timeout to two seconds
+      });
+    }
+  }
+
+  function asyncErr(){
+    console.warn('script load from CDN failed, will load local script')
+  }
+
+  // load webfont-loader async, and add callback function
+  function async(u, cb, err) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (cb) { o.addEventListener('load', function (e) { cb(null, e); }, false); }
+    if (err) { o.addEventListener('error', function (e) { err(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+
+  var asyncLoadWithFallBack = function(arr, success, reject) {
+      var currReject = function(){
+        reject()
+        arr.shift()
+        if(arr.length)
+          async(arr[0], success, currReject)
+        }
+
+      async(arr[0], success, currReject)
+  }
+
+  asyncLoadWithFallBack([
+    "https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js", 
+    "https://cdn.bootcss.com/webfont/1.6.28/webfontloader.js",
+    "/lib/webfontloader.min.js"
+  ], asyncCb, asyncErr)
+</script>        
+        <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
+        <div class="container container-unloaded">
+            <main class="main post-page">
+    <article class="article-entry">
+        <h1 id="Seata—–概念原理"><a href="#Seata—–概念原理" class="headerlink" title="Seata—–概念原理"></a>Seata—–概念原理</h1><p>目录</p>
+<ul>
+<li><p>什么是 Seata AT 模式</p>
+</li>
+<li><p>Seata AT 的使用方法</p>
+</li>
+<li><ul>
+<li>第一步，增加全局事务注解</li>
+<li>第二步，配置代理数据源</li>
+<li>第三步，新建 undo_log 表</li>
+</ul>
+</li>
+<li><p>Seata AT 的工作流程</p>
+</li>
+<li><ul>
+<li>工作流程总览</li>
+<li>图解 AT 模式一阶段流程</li>
+<li>图解二阶段 Commit 流程</li>
+<li>图解二阶段 Rollback 流程</li>
+<li>本节小结</li>
+</ul>
+</li>
+<li><p>Seata AT 模式源码模块拆解</p>
+</li>
+<li><p>Seata AT 模式客户端部分</p>
+</li>
+<li><ul>
+<li>数据源代理部分 —— 三类 Proxy</li>
+<li>ExecuteTemplate.execute</li>
+<li>执行器接口 execute 的实现</li>
+<li>抽象方法 doExecute 的实现</li>
+<li>ConnectionProxy 复写的 commit 方法</li>
+<li>执行一阶段本地事务提交</li>
+<li>GlobalLock 的具体作用</li>
+<li>二阶段异步删除分支 UndoLog</li>
+<li>二阶段生成反向 SQL 回滚</li>
+</ul>
+</li>
+<li><p>Seata AT 模式服务端部分</p>
+</li>
+<li><ul>
+<li>服务端提交全局事务</li>
+<li>服务端异步提交分支事务</li>
+<li>服务端同步回滚分支事务</li>
+</ul>
+</li>
+<li><p>Seata AT 模式的全局锁</p>
+</li>
+<li><ul>
+<li>全局锁的组成和作用</li>
+<li>全局锁的注册</li>
+<li>全局锁的查询</li>
+<li>全局锁的释放</li>
+</ul>
+</li>
+<li><p>Seata AT 模式潜在优化点</p>
+</li>
+<li><p>全文总结</p>
+</li>
+</ul>
+<h3 id="什么是-Seata-AT-模式"><a href="#什么是-Seata-AT-模式" class="headerlink" title="什么是 Seata AT 模式"></a><strong>什么是 Seata AT 模式</strong></h3><p><code>AT</code> 模式是 <code>Seata</code> 主推的分布式事务解决方案，最早来源于阿里中间件团队发布的 <code>TXC</code>服务，后来成功上云改名 <code>GTS</code>。<code>Seata</code> 官方文档中有关于 <code>AT</code> 模式的详细介绍 —— AT Mode [1]，它使得应用代码可以像使用本地事务一样使用分布式事务，完全屏蔽了底层细节，它和笔者之前介绍过的 <code>Seata TCC</code> 模式的区别有以下几点：</p>
+<ol>
+<li>使用上，<code>TCC</code> 依赖于用户自行实现的三个方法成本较大；<code>AT</code> 依赖全局事务注解和代理数据源，其余代码基本不需要改动，对业务无侵入、接入成本极小</li>
+<li><code>TCC</code> 的作用范围在应用层，本质上是实现针对某种业务逻辑的正向和反向方法；<code>AT</code> 模式的作用范围在于底层数据源，通过保存操作行记录的前后快照和生成反向 SQL 语句进行补偿操作，实现难度较大，优点是对上层应用透明</li>
+<li><code>TCC</code> 仅 <code>try</code> 阶段加锁，后续补偿逻辑事务间各自独立；<code>AT</code> 如果一阶段分支事务成功则二阶段一开始全局锁即被释放，否则需要夯住直到分支事务二阶段回滚完成才能释放全局锁</li>
+</ol>
+<h3 id="Seata-AT-的使用方法"><a href="#Seata-AT-的使用方法" class="headerlink" title="Seata AT 的使用方法"></a><strong>Seata AT 的使用方法</strong></h3><p>我们先了解一下如何在应用里使用 <code>AT</code> 模式，流程非常简单，<code>Seata</code> 也提供了 Seata-Samples [2] 方便大家了解如何使用该项目。</p>
+<h4 id="第一步，增加全局事务注解"><a href="#第一步，增加全局事务注解" class="headerlink" title="第一步，增加全局事务注解"></a><strong>第一步，增加全局事务注解</strong></h4><p>首先依赖 <code>Seata</code> 的客户端 <code>SDK</code>，然后在整个分布式事务<strong>发起方</strong>的业务方法上增加 <code>@GlobalTransactional</code> 注解，下面的例子来源于 <code>Seata-Samples dubbo</code> 案例，<code>purchase</code> 是事务发起方的业务方法，通过 <code>RPC</code> 调用了下游<strong>库存服务</strong>和<strong>订单服务</strong>提供的接口：</p>
+<img src="/2019/09/10/分布式事务-概念原理/seata01.png">
+
+<h4 id="第二步，配置数据源"><a href="#第二步，配置数据源" class="headerlink" title="第二步，配置数据源"></a><strong>第二步，配置数据源</strong></h4><p>以 <code>MySQL</code> 为例：</p>
+<img src="/2019/09/10/分布式事务-概念原理/seata02.png">
+
+<h4 id="第三步，新建-undo-log-表"><a href="#第三步，新建-undo-log-表" class="headerlink" title="第三步，新建 undo_log 表"></a><strong>第三步，新建 undo_log 表</strong></h4><p>在事务链涉及的服务的数据库中新建 <code>undo_log</code> 表用来存储 <code>UndoLog</code> 信息，用于二阶段回滚操作，表中包含 <code>xid</code>、<code>branchId</code>、<code>rollback_info</code> 等关键字段信息。</p>
+<h3 id="Seata-AT-的工作流程"><a href="#Seata-AT-的工作流程" class="headerlink" title="Seata AT 的工作流程"></a><strong>Seata AT 的工作流程</strong></h3><h4 id="工作流程总览"><a href="#工作流程总览" class="headerlink" title="工作流程总览"></a><strong>工作流程总览</strong></h4><img src="/2019/09/10/分布式事务-概念原理/seata03.png">
+
+<p>概括来讲，<code>AT</code> 模式的工作流程分为<strong>两阶段</strong>。一阶段进行业务 <code>SQL</code> 执行，并通过 <code>SQL</code> 拦截、<code>SQL</code> 改写等过程生成修改数据前后的快照（<code>Image</code>），并作为 <code>UndoLog</code> 和业务修改<strong>在同一个本地事务中提交</strong>。</p>
+<p>如果一阶段成功那么二阶段仅仅异步删除刚刚插入的 <code>UndoLog</code>；如果二阶段失败则通过 <code>UndoLog</code> 生成反向 <code>SQL</code> 语句回滚一阶段的数据修改。<strong>其中关键的 SQL 解析和拼接工作借助了 Druid Parser 中的代码，这部分本文并不涉及，感兴趣的小伙伴可以去翻看源码，并不是很复杂</strong>。</p>
+<h4 id="图解-AT-模式一阶段流程"><a href="#图解-AT-模式一阶段流程" class="headerlink" title="图解 AT 模式一阶段流程"></a><strong>图解 AT 模式一阶段流程</strong></h4><p>一阶段中分支事务的具体工作有：</p>
+<ol>
+<li>根据需要执行的 <code>SQL</code>（<code>UPDATE</code>、<code>INSERT</code>、<code>DELETE</code>）类型生成相应的 <code>SqlRecognizer</code></li>
+<li>进而生成相应的 <code>SqlExecutor</code></li>
+<li>接着便进入核心逻辑查询数据的前后快照，例如图中标红的部分，拿到修改数据行的前后快照之后，将二者整合生成 <code>UndoLog</code>，并尝试将其和业务修改在同一事务中提交。</li>
+</ol>
+<p>整个流程的流程图如下：</p>
+<img src="/2019/09/10/分布式事务-概念原理/seata04.png">
+
+<p>值得注意的是，<strong>本地事务提交前必须先向服务端注册分支</strong>，分支注册信息中包含由表名和行主键组成的全局锁，如果分支注册过程中发现全局锁正在被其他全局事务锁定则抛出全局锁冲突异常，客户端需要循环等待，直到其他全局事务释放锁之后该本地事务才能提交。<strong>Seata 以这样的机制保证全局事务间的写隔离。</strong></p>
+<h4 id="图解二阶段-Commit-流程"><a href="#图解二阶段-Commit-流程" class="headerlink" title="图解二阶段 Commit 流程"></a><strong>图解二阶段 Commit 流程</strong></h4><p>对服务端来说，等到一阶段完成未抛异常，全局事务的发起方会向服务端申请提交这个全局事务，服务端根据 <code>xid</code> 查询出该全局事务后加锁并关闭这个全局事务，<strong>目的是防止该事务后续还有分支继续注册上来</strong>，同时将其状态从 <code>Begin</code> 修改为 <code>Committing</code>。</p>
+<p>紧接着，判断该全局事务下的分支类型是否均为 <code>AT</code> 类型，若是则服务端会进行<strong>异步提交</strong>，因为 <code>AT</code> 模式下一阶段完成数据已经落地。服务端仅仅修改全局事务状态为 <code>AsyncCommitting</code>，然后会有一个定时线程池去存储介质（<code>File</code> 或者 <code>Database</code>）中查询出待提交的全局事务日志进行提交，如果全局事务提交成功则会释放全局锁并删除事务日志。整个流程如下图所示：</p>
+<img src="/2019/09/10/分布式事务-概念原理/seata05.png">
+
+<p>对客户端来说，先是接收到服务端发送的 <code>branch commit</code> 请求，然后客户端会根据 <code>resourceId</code> 找到相应的 <code>ResourceManager</code>，接着将分支提交请求封装成 <code>Phase2Context</code> 插入内存队列 <code>ASYNC_COMMIT_BUFFER</code>，客户端会有一个定时线程池去查询该队列进行 <code>UndoLog</code> 的异步删除。</p>
+<p>一旦客户端提交失败或者 <code>RPC</code> 超时，则服务端会将该全局事务状态置位 <code>CommitRetrying</code>，之后会由另一个定时线程池去一直重试这些事务直至成功。整个流程如下图所示：</p>
+<p><img src="/2019/09/10/分布式事务-概念原理/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" alt="img"></p>
+<h4 id="图解二阶段-Rollback-流程"><a href="#图解二阶段-Rollback-流程" class="headerlink" title="图解二阶段 Rollback 流程"></a><strong>图解二阶段 Rollback 流程</strong></h4><p>回滚相对复杂一些，如果发起方一阶段抛异常会向服务端请求回滚该全局事务，服务端会根据 <code>xid</code> 查询出这个全局事务，加锁关闭事务使得后续不会再有分支注册上来，并同时更改其状态 <code>Begin</code> 为 <code>Rollbacking</code>，接着进行<strong>同步回滚</strong>以保证数据一致性。除了同步回滚这个点外，其他流程同提交时相似，如果同步回滚成功则释放全局锁并删除事务日志，如果失败则会进行异步重试。整个流程如下图所示：</p>
+<p><img src="/2019/09/10/分布式事务-概念原理/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" alt="img"></p>
+<p>客户端接收到服务端的 <code>branch rollback</code> 请求，先根据 <code>resourceId</code> 拿到对应的数据源代理，然后根据 <code>xid</code> 和 <code>branchId</code> 查询出 <code>UndoLog</code> 记录，反序列化其中的 <code>rollback</code> 字段拿到数据的前后快照，我们称该全局事务为 <code>A</code>。</p>
+<p>根据具体 <code>SQL</code> 类型生成对应的 <code>UndoExecutor</code>，校验一下数据 <code>UndoLog</code> 中的前后快照是否一致或者前置快照和当前数据（这里需要 <code>SELECT</code> 一次）是否一致，如果一致说明<strong>不需要做回滚操作</strong>，如果不一致则生成反向 <code>SQL</code> 进行补偿，在提交本地事务前会检测获取数据库本地锁是否成功，如果失败则说明存在其他全局事务（假设称之为 <code>B</code>）的一阶段正在修改相同的行，但是由于这些行的主键在服务端已经被当前正在执行二阶段回滚的全局事务 <code>A</code> 锁定，因此事务 B 的一阶段在本地提交前尝试获取全局锁一定是失败的，等到获取全局锁超时后全局事务 <code>B</code> 会释放本地锁，这样全局事务 <code>A</code> 就可以继续进行本地事务的提交，成功之后删除本地 <code>UndoLog</code> 记录。整个流程如下图所示：</p>
+<img src="/2019/09/10/分布式事务-概念原理/seata06.png">
+
+<h4 id="本节小结"><a href="#本节小结" class="headerlink" title="本节小结"></a><strong>本节小结</strong></h4><p>我们通过流程图分析了一下 <code>Seata AT</code> 模式两阶段的工作流程，这里提一句，官方文档针对 <code>AT</code> 模式的工作流程提供了一个非常易懂的例子 —— AT 模式工作机制 [3]。</p>
+<p><strong>笔者强烈建议感兴趣的同学阅读过后，再看下文的源码分析</strong></p>
+<h3 id="Seata-AT-模式源码模块拆解"><a href="#Seata-AT-模式源码模块拆解" class="headerlink" title="Seata AT 模式源码模块拆解"></a><strong>Seata AT 模式源码模块拆解</strong></h3><p>通过上面的文字和图解，相信大家已经了解了 <code>Seata AT</code> 模式的基本工作原理，那么本节开始我们正式进入相关源码的分析阶段。第一步，由于 <code>Seata</code> 模块不算少，我们先对整个 <code>Seata</code> 项目的模块进行拆解，挑出其中需要重点关注的模块，忽略那些次要的。</p>
+<blockquote>
+<p>下文的源码分析均基于 <code>Seata v0.6.1</code> 版本</p>
+</blockquote>
+<p><img src="/2019/09/10/分布式事务-概念原理/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" alt="img"></p>
+<p>相比于之前笔者对 <code>Seata TCC</code> 实现的分析，<code>AT</code> 模式的源码就要复杂很多了，基本上大多数模块均有涉及，因此在阅读源码之前，我们先对模块的优先级进行筛选，包括<strong>下文会叙述哪些模块和忽略哪些模块</strong>。</p>
+<p>首先，<code>seata-tcc</code> 与 <code>AT</code> 的功能无关可以不用看；<code>seata-common</code>、<code>seata-core</code>、<code>seata-config</code>、<code>seata-discovery</code> 这些只看名字也能知道大致的功能，后续阅读代码期间经常会看到其中的类，因此都可以<strong>暂时忽略</strong>；<code>seata-tm</code>、<code>seata-rm</code> 这两者都是封装的与 <code>seata-server</code> 进行通信的方法和步骤，这部分笔者已经在上一篇关于 <code>TCC</code> 的文章中叙述过了，<strong>不再赘述</strong>；<code>seata-spring</code> 主要是注解、切面织入、方法拦截等功能的实现，关键点包括全局事务的开启，但是由于 <code>AT</code> 和 <code>TCC</code> 在全局事务开启部分的逻辑是一致的，因此本文也<strong>不再赘述</strong>。</p>
+<p>一通排查下来，和 <code>AT</code> 核心功能有关的模块仅剩下 <code>seata-rm-datasource</code> 和 <code>seata-server</code>，仔细一想这也很合理，因为 Seata 中分支事务才是真正执行数据修改和补偿的部分，因此对于 <code>TCC</code> 模式来说，<code>TwoPhaseBusinessAction</code> 注解的实现类是分支事务，对 <code>AT</code> 模式来说，代理数据源正是分支事务，因此核心逻辑必然在 <code>seata-rm-datasource</code>模块中，而 <code>TC</code> 集群是协调整个全局事务的指挥者，自然 <code>seata-server</code> 模块也是我们需要特别关注的，<strong>但是由于服务端逻辑和 TCC 部分高度相似，除了 v0.6.1 中新增了 DB 模式作为日志存储介质外，因此下文先选取客户端 AT 模式相关源码进行深入分析，最后简要分析下与 AT 模式相关的服务端源码</strong>。</p>
+<h3 id="Seata-AT-模式客户端部分"><a href="#Seata-AT-模式客户端部分" class="headerlink" title="Seata AT 模式客户端部分"></a><strong>Seata AT 模式客户端部分</strong></h3><h4 id="数据源代理部分-——-三类-Proxy"><a href="#数据源代理部分-——-三类-Proxy" class="headerlink" title="数据源代理部分 —— 三类 Proxy"></a><strong>数据源代理部分 —— 三类 Proxy</strong></h4><p>下图来源于 <strong>Seata</strong> 官方文档：</p>
+<img src="/2019/09/10/分布式事务-概念原理/seata07.png">
+
+<p><code>Seata</code> 中主要针对 <code>java.sql</code> 包下的 <code>DataSource</code>、<code>Connection</code>、<code>Statement</code>、<code>PreparedStatement</code> 四个接口进行了再包装，包装类分别为 <code>DataSourceProxy</code>、<code>ConnectionProxy</code>、<code>StatementProxy</code>、<code>PreparedStatementProxy</code>，很好一一对印，其功能是在 <code>SQL</code> 语句执行前后、事务 <code>commit</code> 或者 <code>rollbakc</code> 前后进行一些与 <code>Seata</code> 分布式事务相关的操作，例如<strong>分支注册、状态回报、全局锁查询、快照存储、反向 SQL 生成</strong>等。</p>
+<h4 id="ExecuteTemplate-类的-execute-方法"><a href="#ExecuteTemplate-类的-execute-方法" class="headerlink" title="ExecuteTemplate 类的 execute 方法"></a><strong>ExecuteTemplate 类的 execute 方法</strong></h4><p><img src="/2019/09/10/分布式事务-概念原理/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" alt="img"></p>
+<p><code>AT</code> 模式下，真正分支事务开始是在 <code>StatementProxy</code> 和 <code>PreparedStatementProxy</code>的 <code>execute</code>、<code>executeQuery</code>、<code>executeUpdate</code> 等<strong>具体执行方法</strong>中，这些方法均实现自 <code>Statement</code> 和 <code>PreparedStatement</code> 的标准接口，而方法体内调用了 <code>ExecuteTemplate.execute</code> 做<strong>方法拦截</strong>，下面我们来看看这个方法的实现：</p>
+<p><img src="/2019/09/10/分布式事务-概念原理/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" alt="img"></p>
+<p>下面我们看看这个 <code>executor.execute</code> 方法的实现。</p>
+<h4 id="执行器接口-execute-的实现"><a href="#执行器接口-execute-的实现" class="headerlink" title="执行器接口 execute 的实现"></a><strong>执行器接口 execute 的实现</strong></h4><p><code>execute</code> 方法的实现位于 <code>BaseTransactionalExecutor</code> 类中：</p>
+<p><img src="/2019/09/10/分布式事务-概念原理/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" alt="img"></p>
+<p><code>BaseTransactionalExecutor</code> 类中 <code>execute</code> 方法主要做了一些与全局事务相关的状态值的设定，继续追踪进入 <code>doExecute</code> 方法的实现。</p>
+<h4 id="抽象方法-doExecute-的实现"><a href="#抽象方法-doExecute-的实现" class="headerlink" title="抽象方法 doExecute 的实现"></a><strong>抽象方法 doExecute 的实现</strong></h4><p>终于进入正题，<code>doExecute</code> 方法位于 <code>AbstractDMLBaseExecutor</code> 类中，该类继承自上文中的 <code>BaseTransactionalExecutor</code>。</p>
+<p><code>doExecute</code> 方法体内先拿到具体的连接代理对象 <code>connectionProxy</code>，然后根据 <code>Commit</code> 标识进行不同方法的调用，但翻看代码实现时发现，其实 <code>executeCommitTrue</code>方法就是先把 <code>Commit</code> 标识改成 <code>false</code> 然后再调用 <code>executeCommitFalse</code> 方法。</p>
+<img src="/2019/09/10/分布式事务-概念原理/seata08.png">
+
+<p><code>executeCommitTrue</code> 方法体中有一个无限循环，这么做的意义是，<strong>一旦分支注册时抛出锁冲突异常，则需要一直等待直到别的全局事务释放该全局锁之后才能提交自己的修改，否则一直阻塞等待</strong>。</p>
+<img src="/2019/09/10/分布式事务-概念原理/seata09.png">
+
+<p>下面我们仔细看一下 <code>executeCommitFalse</code> 方法的逻辑，它是实现 <code>AT</code> 模式的关键步骤。其中，<code>beforeImage</code> 是一个抽象方法，针对 <code>INSERT</code>、<code>UPDATE</code>、<code>DELETE</code> 有不同的实现，因为需要将这三种不同的 <code>SQL</code> 解析为相应的 <code>SELECT</code> 语句，查询操作前数据的快照；同样的 <code>afterImage</code> 也是一个抽象方法，来查询操作后数据的快照；<code>statementCallback.execute</code> 语句真正执行 <code>SQL</code>；<code>prepareUndoLog</code> 整合 <code>beforeImage</code> 和 <code>afterImage</code> 生成 <code>UndoLog</code> 对象。</p>
+<p><img src="/2019/09/10/分布式事务-概念原理/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" alt="img"></p>
+<p><code>executeCommitFalse</code> 执行过后，会调用 <code>connectionProxy.commit()</code> 做事务提交，我们看看该代理方法的实现。</p>
+<h4 id="ConnectionProxy-复写的-commit-方法"><a href="#ConnectionProxy-复写的-commit-方法" class="headerlink" title="ConnectionProxy 复写的 commit 方法"></a><strong>ConnectionProxy 复写的 commit 方法</strong></h4><p>该 <code>commit</code> 方法实现自 <code>Connection</code> 接口的 <code>commit</code> 方法：</p>
+<img src="/2019/09/10/分布式事务-概念原理/seata10.png">
+
+<h4 id="执行一阶段本地事务提交"><a href="#执行一阶段本地事务提交" class="headerlink" title="执行一阶段本地事务提交"></a><strong>执行一阶段本地事务提交</strong></h4><p>如果是分支事务，调用 <code>processGlobalTransactionCommit</code> 方法进行提交：</p>
+<img src="/2019/09/10/分布式事务-概念原理/seata11.png">
+
+<h4 id="GlobalLock-的具体作用"><a href="#GlobalLock-的具体作用" class="headerlink" title="GlobalLock 的具体作用"></a><strong>GlobalLock 的具体作用</strong></h4><p>如果是用 <code>GlobalLock</code> 修饰的本地业务方法，虽然该方法并非某个全局事务下的分支事务，但是它对数据资源的操作也需要先查询全局锁，如果存在其他 <code>Seata</code> 全局事务正在修改，则该方法也需等待。所以，如果想要 <code>Seata</code> 全局事务执行期间，数据库不会被其他事务修改，则该方法需要强制添加 <code>GlobalLock</code> 注解，来将其纳入 <code>Seata</code> 分布式事务的管理范围。</p>
+<p>功能有点类似于 <code>Spring</code> 的 <code>@Transactional</code> 注解，如果你希望开启事务，那么必须添加该注解，如果你没有添加那么事务功能自然不生效，业务可能出 <code>BUG</code>；<code>Seata</code> 也一样，如果你希望某个不在全局事务下的 <code>SQL</code> 操作不影响 <code>AT</code> 分布式事务，那么必须添加 <code>GlobalLock</code> 注解。</p>
+<p><img src="/2019/09/10/分布式事务-概念原理/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" alt="img"></p>
+<h4 id="二阶段异步删除分支-UndoLog"><a href="#二阶段异步删除分支-UndoLog" class="headerlink" title="二阶段异步删除分支 UndoLog"></a><strong>二阶段异步删除分支 UndoLog</strong></h4><p>如果一阶段成功，则 <code>TC</code> 会通知客户端 <code>RM</code> 进行第二阶段的提交工作，这部分代码最终实现位于 <code>AsyncWorker</code> 类中的 <code>branchCommit</code> 方法。</p>
+<p><img src="/2019/09/10/分布式事务-概念原理/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" alt="img"></p>
+<p>插入 <code>ASYNC_COMMIT_BUFFER</code> 之后，<code>AsyncWorker</code> 类中会有一个定时任务，从队列中取出分支提交信息 <code>Phase2Context</code>，将其中的 <code>xid</code> 和 <code>branchId</code> 提取出来生成 <code>DELETE SQL</code> 语句，删除本地数据库中存储的相应的 <code>UndoLog</code>。下面是该定时任务的关键方法 <code>doBranchCommits</code> 的实现：</p>
+<img src="/2019/09/10/分布式事务-概念原理/seata12.png">
+
+<h4 id="二阶段生成反向-SQL-回滚"><a href="#二阶段生成反向-SQL-回滚" class="headerlink" title="二阶段生成反向 SQL 回滚"></a><strong>二阶段生成反向 SQL 回滚</strong></h4><p>如果一阶段失败，则二阶段需要回滚一阶段的数据库更新操作，此时涉及到根据 <code>UndoLog</code>构造逆向 <code>SQL</code> 进行补偿。这部分逻辑的入口位于 <code>DataSourceManager</code> 类中的 <code>branchRollback</code> 方法：</p>
+<p><img src="/2019/09/10/分布式事务-概念原理/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" alt="img"></p>
+<p><code>UndoLogManager</code> 负责 <code>UndoLog</code> 的插入、删除、补偿等操作，其中核心方法即为 <code>undo</code>，我们可以看到其中有一个无限 for 循环，一旦当前事务进行二阶段回滚时获取本地锁失败，则进入循环等待逻辑，等待本地锁被释放之后自己再提交本地事务：</p>
+<p><img src="/2019/09/10/分布式事务-概念原理/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" alt="img"></p>
+<p><code>UndoExecutorFactory</code> 类的 <code>getUndoExecutor</code> 方法会根据 <code>UndoLog</code> 中记录的 <code>SQLType</code> 生成不同的 <code>UndoExecutor</code> 返回：</p>
+<p><img src="/2019/09/10/分布式事务-概念原理/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" alt="img"></p>
+<p><code>UndoExecutor</code> 中的 <code>executeOn</code> 方法 首先会调用一个抽象方法 <code>buildUndoSQL</code>，根据 <code>INSERT</code>、<code>UPDATE</code>、<code>DELETE</code> 三种不同的 <code>SQL</code> 类型生成相应的反向 <code>SQL</code> 语句。</p>
+<p>下面我们以 <code>DELETE</code> 为例分析一下 <code>MySQLUndoDeleteExecutor</code> 类的 <code>buildUndoSQL</code>方法的实现，如果一阶段已经删除了某行数据，那么二阶段补偿自然需要构造一个 <code>INSERT</code>语句将被删除的行重新插入。</p>
+<img src="/2019/09/10/分布式事务-概念原理/seata13.png">
+
+<h3 id="Seata-AT-模式服务端部分"><a href="#Seata-AT-模式服务端部分" class="headerlink" title="Seata AT 模式服务端部分"></a><strong>Seata AT 模式服务端部分</strong></h3><p><code>AT</code> 模式下，全局事务注册、提交、回滚均和 <code>TCC</code> 模式一模一样，均是根据一阶段调用抛不抛异常决定。</p>
+<p>区别在于两点：</p>
+<ol>
+<li>分支事务的注册，<code>TCC</code> 模式下分支事务是在进入参与方 <code>Try</code> 方法之前的切面中注册的，而且分支实现完毕不需要再次汇报分支状态；但 <code>AT</code> 模式不一样，分支事务是在代理数据源提交本地事务之前注册的，注册成功才能提交一阶段本地事务，如果注册失败报锁冲突则一直阻塞等待直到该全局锁被释放，且本地提交之后不论是否成功还需要再次向 <code>TC</code> 汇报一次分支状态。</li>
+<li><code>AT</code> 模式由于一阶段已经完成数据修改，因此二阶段可以异步提交，但回滚是同步的，回滚失败才会异步重试；但是 <code>Seata</code> 中 <code>TCC</code> 模式二阶段 <code>Confirm</code> 是同步提交的，可以最大程度保证 <code>TCC</code> 模式的数据一致性，但是笔者认为在要求性能的场景下，<code>TCC</code>的二阶段也可以改为异步提交</li>
+</ol>
+<h4 id="服务端提交全局事务"><a href="#服务端提交全局事务" class="headerlink" title="服务端提交全局事务"></a><strong>服务端提交全局事务</strong></h4><p>核心方法是 <code>DefaultCore</code> 类中的 <code>commit</code> 方法：</p>
+<img src="/2019/09/10/分布式事务-概念原理/seata14.png">
+
+<h4 id="服务端异步提交分支事务"><a href="#服务端异步提交分支事务" class="headerlink" title="服务端异步提交分支事务"></a><strong>服务端异步提交分支事务</strong></h4><p><code>DefaultCoordinator</code> 类中有一个 <code>asyncCommitting</code> 定时线程池，会定时调用 <code>handleAsyncCommitting</code> 方法从存储介质（文件或者数据库）中分批查询出状态为 <code>AsyncCommitting</code> 的全局事务列表，针对每个全局事务调用 <code>doGlobalCommit</code> 方法提交其下所有未提交的分支事务。</p>
+<p><img src="/2019/09/10/分布式事务-概念原理/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" alt="img"></p>
+<h4 id="服务端同步回滚分支事务"><a href="#服务端同步回滚分支事务" class="headerlink" title="服务端同步回滚分支事务"></a><strong>服务端同步回滚分支事务</strong></h4><p>一旦一阶段失败，全局事务发起方通知 <code>TC</code> 回滚全局事务的话，那么二阶段的回滚调用是同步进行的，一旦同步回滚失败才会进入异步重试阶段。核心方法为 <code>DefaultCore</code> 类中的 <code>doGlobalRollback</code> 方法：</p>
+<img src="/2019/09/10/分布式事务-概念原理/seata15.png">
+
+<p>回滚的异步重试与异步提交相同，都是一个定时线程池去扫描存储介质中尚未完成回滚的全局事务，因此这里<strong>不再赘述</strong>。</p>
+<h3 id="Seata-AT-模式的全局锁"><a href="#Seata-AT-模式的全局锁" class="headerlink" title="Seata AT 模式的全局锁"></a><strong>Seata AT 模式的全局锁</strong></h3><h4 id="全局锁的组成和作用"><a href="#全局锁的组成和作用" class="headerlink" title="全局锁的组成和作用"></a><strong>全局锁的组成和作用</strong></h4><p>全局锁主要由表名加操作行的主键两个部分组成，<code>Seata AT</code> 模式使用服务端保存全局锁的方法保证：</p>
+<ol>
+<li>全局事务之前的写隔离</li>
+<li>全局事务与被 <code>GlobalLock</code> 修饰方法间的写隔离性</li>
+</ol>
+<h4 id="全局锁的注册"><a href="#全局锁的注册" class="headerlink" title="全局锁的注册"></a><strong>全局锁的注册</strong></h4><p>当客户端在进行一阶段本地事务提交前，会先向服务端注册分支事务，此时会将修改行的表名、主键信息封装成全局锁一并发送到服务端进行保存，如果服务端保存时发现已经存在其他全局事务锁定了这些行主键，则抛出全局锁冲突异常，客户端循环等待并重试。</p>
+<h4 id="全局锁的查询"><a href="#全局锁的查询" class="headerlink" title="全局锁的查询"></a><strong>全局锁的查询</strong></h4><p>被 @<code>GlobalLock</code> 修饰的方法虽然不在某个全局事务下，但是其在提交事务前也会进行全局锁查询，如果发现全局锁正在被其他全局事务持有，则自身也会循环等待。</p>
+<h4 id="全局锁的释放"><a href="#全局锁的释放" class="headerlink" title="全局锁的释放"></a><strong>全局锁的释放</strong></h4><p>由于二阶段提交是异步进行的，当服务端向客户端发送 <code>branch commit</code> 请求后，客户端仅仅是将分支提交信息插入内存队列即返回，服务端只要判断这个流程没有异常就会释放全局锁。因此，可以说如果一阶段成功则在二阶段一开始就会释放全局锁，不会锁定到二阶段提交流程结束。</p>
+<img src="/2019/09/10/分布式事务-概念原理/seata16.png">
+
+<p>但是如果一阶段失败二阶段进行回滚，则由于回滚是同步进行的，全局锁直到二阶段回滚完成才会被释放。</p>
+<h3 id="Seata-AT-模式潜在优化点"><a href="#Seata-AT-模式潜在优化点" class="headerlink" title="Seata AT 模式潜在优化点"></a><strong>Seata AT 模式潜在优化点</strong></h3><p><code>Seata AT</code> 模式的源码读下来，其逻辑也存在可以优化的地方：</p>
+<ol>
+<li>针对简单 <code>SQL</code> 语句，其后置数据快照可以直接在内存中计算生成，而无需再走一次 <code>SELECT</code></li>
+<li>全局锁可以保存在客户端本地数据库中，这样减少与服务端的 <code>RPC</code> 调用次数</li>
+</ol>
+<h3 id="全文总结"><a href="#全文总结" class="headerlink" title="全文总结"></a><strong>全文总结</strong></h3><p>本文基于 <code>Seata v0.6.1</code> 通过图文结合的方式分析其 AT 模式的工作原理和源码实现，剖析了其中核心的前后快照生成、全局锁机制、服务端协调机制等逻辑，希望对大家有所启发。</p>
+<p><strong>脚注链接</strong></p>
+<ul>
+<li>[1] AT Mode，<a href="https://github.com/seata/seata/wiki/AT-Mode" target="_blank" rel="noopener">https://github.com/seata/seata/wiki/AT-Mode</a></li>
+<li>[2] Seata-Samples，<a href="https://github.com/seata/seata-samples" target="_blank" rel="noopener">https://github.com/seata/seata-samples</a></li>
+<li>[3] AT 模式工作机制，<a href="https://github.com/seata/seata/wiki/AT-Mode#%E5%B7%A5%E4%BD%9C%E6%9C%BA%E5%88%B6" target="_blank" rel="noopener">https://github.com/seata/seata/wiki/AT-Mode#%E5%B7%A5%E4%BD%9C%E6%9C%BA%E5%88%B6</a></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">原创： jiayangchen Young的博客 7月5日</span><br><span class="line">原文链接：https://mp.weixin.qq.com/s/Nb3qeOXXW1xa-qFr-uNi9g</span><br></pre></td></tr></table></figure>
+
+
+    </article>
+    <!-- license  -->
+    
+        <div class="license-wrapper">
+            <p>Author：<a href="http://none">wtq</a>
+            <p>原文链接：<a href="http://none/2019/09/10/分布式事务-概念原理/">http://none/2019/09/10/分布式事务-概念原理/</a>
+            <p>发表日期：<a href="http://none/2019/09/10/分布式事务-概念原理/">September 10th 2019, 12:00:00 am</a>
+            <p>更新日期：<a href="http://none/2019/09/10/分布式事务-概念原理/">September 20th 2019, 4:48:07 pm</a>
+            <p>版权声明：本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
+        </div>
+    
+    <!-- paginator  -->
+    <ul class="post-paginator">
+        <li class="next">
+            
+                <div class="nextSlogan">Next Post</div>
+                <a href= "/2019/09/10/JPA学习-01/" title= "JPA学习-01">
+                    <div class="nextTitle">JPA学习-01</div>
+                </a>
+            
+        </li>
+        <li class="previous">
+            
+                <div class="prevSlogan">Previous Post</div>
+                <a href= "/2019/09/02/Quartz/" title= "Quartz任务调度">
+                    <div class="prevTitle">Quartz任务调度</div>
+                </a>
+            
+        </li>
+    </ul>
+    <!-- 评论插件 -->
+    <!-- 来必力City版安装代码 -->
+
+<!-- City版安装代码已完成 -->
+    
+    
+    <!-- partial('_partial/comment/changyan') -->
+    <!--PC版-->
+
+
+    
+    
+
+    <!-- 评论 -->
+</main>
+            <!-- profile -->
+            
+        </div>
+        <footer class="footer footer-unloaded">
+    <!-- social  -->
+    
+    <div class="social">
+        
+    
+        
+            
+                <a href="mailto:951352631@qq.com" class="iconfont-archer email" title=email ></a>
+            
+        
+    
+        
+            
+                <a href="https://github.com/yy951352631" class="iconfont-archer github" target="_blank" title=github></a>
+            
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+    </div>
+    
+    <!-- powered by Hexo  -->
+    <div class="copyright">
+        <span id="hexo-power">Powered by <a href="https://hexo.io/" target="_blank">Hexo</a></span><span class="iconfont-archer power">&#xe635;</span><span id="theme-info">theme <a href="https://github.com/fi3ework/hexo-theme-archer" target="_blank">Archer</a></span>
+    </div>
+    <!-- 不蒜子  -->
+    
+    <div class="busuanzi-container">
+    
+     
+    <span id="busuanzi_container_site_pv">PV: <span id="busuanzi_value_site_pv"></span> :)</span>
+    
+    </div>
+    
+</footer>
+    </div>
+    <!-- toc -->
+    
+    <div class="toc-wrapper" style=
+    
+
+
+
+
+
+
+
+top:50vh;
+
+    >
+        <div class="toc-catalog">
+            <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+        </div>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Seata—–概念原理"><span class="toc-number">1.</span> <span class="toc-text">Seata—–概念原理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#什么是-Seata-AT-模式"><span class="toc-number">1.0.1.</span> <span class="toc-text">什么是 Seata AT 模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Seata-AT-的使用方法"><span class="toc-number">1.0.2.</span> <span class="toc-text">Seata AT 的使用方法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#第一步，增加全局事务注解"><span class="toc-number">1.0.2.1.</span> <span class="toc-text">第一步，增加全局事务注解</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#第二步，配置数据源"><span class="toc-number">1.0.2.2.</span> <span class="toc-text">第二步，配置数据源</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#第三步，新建-undo-log-表"><span class="toc-number">1.0.2.3.</span> <span class="toc-text">第三步，新建 undo_log 表</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Seata-AT-的工作流程"><span class="toc-number">1.0.3.</span> <span class="toc-text">Seata AT 的工作流程</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#工作流程总览"><span class="toc-number">1.0.3.1.</span> <span class="toc-text">工作流程总览</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#图解-AT-模式一阶段流程"><span class="toc-number">1.0.3.2.</span> <span class="toc-text">图解 AT 模式一阶段流程</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#图解二阶段-Commit-流程"><span class="toc-number">1.0.3.3.</span> <span class="toc-text">图解二阶段 Commit 流程</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#图解二阶段-Rollback-流程"><span class="toc-number">1.0.3.4.</span> <span class="toc-text">图解二阶段 Rollback 流程</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#本节小结"><span class="toc-number">1.0.3.5.</span> <span class="toc-text">本节小结</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Seata-AT-模式源码模块拆解"><span class="toc-number">1.0.4.</span> <span class="toc-text">Seata AT 模式源码模块拆解</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Seata-AT-模式客户端部分"><span class="toc-number">1.0.5.</span> <span class="toc-text">Seata AT 模式客户端部分</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#数据源代理部分-——-三类-Proxy"><span class="toc-number">1.0.5.1.</span> <span class="toc-text">数据源代理部分 —— 三类 Proxy</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ExecuteTemplate-类的-execute-方法"><span class="toc-number">1.0.5.2.</span> <span class="toc-text">ExecuteTemplate 类的 execute 方法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#执行器接口-execute-的实现"><span class="toc-number">1.0.5.3.</span> <span class="toc-text">执行器接口 execute 的实现</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#抽象方法-doExecute-的实现"><span class="toc-number">1.0.5.4.</span> <span class="toc-text">抽象方法 doExecute 的实现</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ConnectionProxy-复写的-commit-方法"><span class="toc-number">1.0.5.5.</span> <span class="toc-text">ConnectionProxy 复写的 commit 方法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#执行一阶段本地事务提交"><span class="toc-number">1.0.5.6.</span> <span class="toc-text">执行一阶段本地事务提交</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#GlobalLock-的具体作用"><span class="toc-number">1.0.5.7.</span> <span class="toc-text">GlobalLock 的具体作用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#二阶段异步删除分支-UndoLog"><span class="toc-number">1.0.5.8.</span> <span class="toc-text">二阶段异步删除分支 UndoLog</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#二阶段生成反向-SQL-回滚"><span class="toc-number">1.0.5.9.</span> <span class="toc-text">二阶段生成反向 SQL 回滚</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Seata-AT-模式服务端部分"><span class="toc-number">1.0.6.</span> <span class="toc-text">Seata AT 模式服务端部分</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#服务端提交全局事务"><span class="toc-number">1.0.6.1.</span> <span class="toc-text">服务端提交全局事务</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#服务端异步提交分支事务"><span class="toc-number">1.0.6.2.</span> <span class="toc-text">服务端异步提交分支事务</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#服务端同步回滚分支事务"><span class="toc-number">1.0.6.3.</span> <span class="toc-text">服务端同步回滚分支事务</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Seata-AT-模式的全局锁"><span class="toc-number">1.0.7.</span> <span class="toc-text">Seata AT 模式的全局锁</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#全局锁的组成和作用"><span class="toc-number">1.0.7.1.</span> <span class="toc-text">全局锁的组成和作用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#全局锁的注册"><span class="toc-number">1.0.7.2.</span> <span class="toc-text">全局锁的注册</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#全局锁的查询"><span class="toc-number">1.0.7.3.</span> <span class="toc-text">全局锁的查询</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#全局锁的释放"><span class="toc-number">1.0.7.4.</span> <span class="toc-text">全局锁的释放</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Seata-AT-模式潜在优化点"><span class="toc-number">1.0.8.</span> <span class="toc-text">Seata AT 模式潜在优化点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#全文总结"><span class="toc-number">1.0.9.</span> <span class="toc-text">全文总结</span></a></li></ol></li></ol></li></ol>
+    </div>
+    
+    <div class="back-top iconfont-archer">&#xe639;</div>
+    <div class="sidebar sidebar-hide">
+    <ul class="sidebar-tabs sidebar-tabs-active-0">
+        <li class="sidebar-tab-archives"><span class="iconfont-archer">&#xe67d;</span><span class="tab-name">Archive</span></li>
+        <li class="sidebar-tab-tags"><span class="iconfont-archer">&#xe61b;</span><span class="tab-name">Tag</span></li>
+        <li class="sidebar-tab-categories"><span class="iconfont-archer">&#xe666;</span><span class="tab-name">Cate</span></li>
+    </ul>
+    <div class="sidebar-content sidebar-content-show-archive">
+          <div class="sidebar-panel-archives">
+    <!-- 在ejs中将archive按照时间排序 -->
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div class="total-and-search">
+        <div class="total-archive">
+        Total : 26
+        </div>
+        <!-- search  -->
+        
+    </div>
+    
+    <div class="post-archive">
+    
+    
+    
+    
+    <div class="archive-year"> 2019 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/20</span><a class="archive-post-title" href= "/2019/09/20/分布式事务-Seata/" >分布式事务学习-02-seata实操</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/11</span><a class="archive-post-title" href= "/2019/09/11/JPA学习-04/" >JPA学习-04</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/10</span><a class="archive-post-title" href= "/2019/09/10/分布式事务-概念原理/" >分布式事务学习-01-Seata概念原理</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/10</span><a class="archive-post-title" href= "/2019/09/10/JPA学习-01/" >JPA学习-01</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/10</span><a class="archive-post-title" href= "/2019/09/10/JPA学习-02/" >JPA学习-02</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/10</span><a class="archive-post-title" href= "/2019/09/10/JPA学习-03/" >JPA学习-03</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/02</span><a class="archive-post-title" href= "/2019/09/02/Quartz/" >Quartz任务调度</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/28</span><a class="archive-post-title" href= "/2019/08/28/Java基础-01/" >Java基础-01-Optional</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/27</span><a class="archive-post-title" href= "/2019/08/27/Java基础-02/" >Java基础-02-Predicate</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/27</span><a class="archive-post-title" href= "/2019/08/27/SpringCloud学习-06/" >SpringCloud-06-Getaway</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/22</span><a class="archive-post-title" href= "/2019/08/22/SpringCloud学习-05/" >SpringCloud-05-Hystrix</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2019/08/20/Java基础-04/" >Java基础-04-Lambda</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2019/08/20/Java基础-03/" >Java基础-03-JVM</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2019/08/20/杂货铺/" >杂乱的知识，定期归档到其他文件</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2019/08/20/分布式事务学习-01/" >分布式事务-seata</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2019/08/20/SpringCloud学习-04/" >SpringCloud-04-Feign</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/16</span><a class="archive-post-title" href= "/2019/08/16/SpringCloud学习-03/" >SpringCloud-03-Ribbon</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/14</span><a class="archive-post-title" href= "/2019/08/14/SpringCloud学习-02/" >SpringCloud-02-Eureka</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/13</span><a class="archive-post-title" href= "/2019/08/13/Maven/" >Maven-01</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/13</span><a class="archive-post-title" href= "/2019/08/13/SpringCloud学习-01/" >SpringCloud-01-配置中心</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/12</span><a class="archive-post-title" href= "/2019/08/12/SpringBoot学习-04/" >SpringBoot-04-JDBC</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/10</span><a class="archive-post-title" href= "/2019/08/10/SpringBoot学习-03/" >SpringBoot-03-servlet容器</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/09</span><a class="archive-post-title" href= "/2019/08/09/SpringBoot学习-02/" >SpringBoot-02-Web工程</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/08</span><a class="archive-post-title" href= "/2019/08/08/SpringBoot学习-01/" >SpringBoot-01-Web工程</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/07</span><a class="archive-post-title" href= "/2019/08/07/hexo-常用操作/" >Hexo常用操作</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/07</span><a class="archive-post-title" href= "/2019/08/07/Hibernate-01/" >Hibernate-01</a>
+        </li>
+    
+    </div>
+  </div>
+        <div class="sidebar-panel-tags">
+    <div class="sidebar-tags-name">
+    
+        <span class="sidebar-tag-name" data-tags="Java基础"><span class="iconfont-archer">&#xe606;</span>Java基础</span>
+    
+        <span class="sidebar-tag-name" data-tags="Hexo"><span class="iconfont-archer">&#xe606;</span>Hexo</span>
+    
+        <span class="sidebar-tag-name" data-tags="杂货铺"><span class="iconfont-archer">&#xe606;</span>杂货铺</span>
+    
+        <span class="sidebar-tag-name" data-tags="Hibernate"><span class="iconfont-archer">&#xe606;</span>Hibernate</span>
+    
+        <span class="sidebar-tag-name" data-tags="JPA"><span class="iconfont-archer">&#xe606;</span>JPA</span>
+    
+        <span class="sidebar-tag-name" data-tags="SpringBoot-WEB"><span class="iconfont-archer">&#xe606;</span>SpringBoot-WEB</span>
+    
+        <span class="sidebar-tag-name" data-tags="SpringCloud"><span class="iconfont-archer">&#xe606;</span>SpringCloud</span>
+    
+        <span class="sidebar-tag-name" data-tags="分布式事务"><span class="iconfont-archer">&#xe606;</span>分布式事务</span>
+    
+        <span class="sidebar-tag-name" data-tags="Maven"><span class="iconfont-archer">&#xe606;</span>Maven</span>
+    
+        <span class="sidebar-tag-name" data-tags="Quartz"><span class="iconfont-archer">&#xe606;</span>Quartz</span>
+    
+    </div>
+    <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
+    <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
+    缺失模块。<br/>
+    1、请确保node版本大于6.2<br/>
+    2、在博客根目录（注意不是archer根目录）执行以下命令：<br/>
+    <span style="color: #f75357; font-size: 1rem; line-height: 2rem;">npm i hexo-generator-json-content --save</span><br/>
+    3、在根目录_config.yml里添加配置：
+    <pre style="color: #787878; font-size: 0.6rem;">
+jsonContent:
+  meta: false
+  pages: false
+  posts:
+    title: true
+    date: true
+    path: true
+    text: false
+    raw: false
+    content: false
+    slug: false
+    updated: false
+    comments: false
+    link: false
+    permalink: false
+    excerpt: false
+    categories: true
+    tags: true</pre>
+    </div> 
+    <div class="sidebar-tags-list"></div>
+</div>
+        <div class="sidebar-panel-categories">
+    <div class="sidebar-categories-name">
+    
+    </div>
+    <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
+    <div class="sidebar-categories-list"></div>
+</div>
+    </div>
+</div> 
+    <script>
+    var siteMeta = {
+        root: "/",
+        author: "wtq"
+    }
+</script>
+    <!-- CDN failover -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+    <script type="text/javascript">
+        if (typeof window.$ === 'undefined')
+        {
+            console.warn('jquery load from jsdelivr failed, will load local script')
+            document.write('<script src="/lib/jquery.min.js">\x3C/script>')
+        }
+    </script>
+    <script src="/scripts/main.js"></script>
+    <!-- algolia -->
+    
+    <!-- busuanzi  -->
+    
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    <!-- CNZZ  -->
+    
+    </div>
+    <!-- async load share.js -->
+    
+        <script src="/scripts/share.js" async></script>    
+     
+    </body>
+</html>
+
+

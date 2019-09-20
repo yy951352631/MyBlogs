@@ -346,6 +346,133 @@
     
     
     <article class="index-post">
+        <a class="abstract-title" href = "/2019/08/12/SpringBoot学习-04/" >
+            
+                <span>SpringBoot-04-JDBC</span>
+        </a>
+        <div class="abstract-content">
+            使用SpringBoot进行数据库操作1、问题：如何使用SpringBoot进行JDBC操作1）创建项目，pom文件添加依赖如下
+12345678910111213141516171819202122232425262728&lt;dependencies&gt;    &lt;dependency&gt;        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;        &lt;artifactId&gt;spring-boot-starter-jdbc&lt;/artifactId&gt;    &lt;/de...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/12</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "SpringBoot-WEB">SpringBoot-WEB</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2019/08/10/SpringBoot学习-03/" >
+            
+                <span>SpringBoot-03-servlet容器</span>
+        </a>
+        <div class="abstract-content">
+            使用SpringBoot开发Web工程1、问题：如何在SpringBoot中注册使用servlet容器三大组件*SpringBoot默认使用Tomcat作为嵌入式的servlet容器，可观察pom文件依赖树
+1spring-boot-starter-web  -&gt;  spring-boot-starter-tomcat
+
+1.如何在SpringBoot使用servlet？1）编写我们的servlet 继承HttpServlet如下
+1234567891011public class MyServlet extends HttpServlet &#123;//处理Get请求@Over...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/10</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "SpringBoot-WEB">SpringBoot-WEB</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2019/08/09/SpringBoot学习-02/" >
+            
+                <span>SpringBoot-02-Web工程</span>
+        </a>
+        <div class="abstract-content">
+            使用SpringBoot开发Web工程1、问题：如何使用Rest风格修改一个pojo类的信息1.1 构建信息回填页面（声明：一下操作基于SpringBoot以及themleaf模板引擎）1）编写我们的Controller类，将待修改的entity信息以及必要的下拉框信息等传递给修改页面
+12345678910//来到我们的修改员工页面@GetMapping(value = "/emp/&#123;id&#125;")    public String toEditPage(@PathVariable("id") Integer id, Model model) &#123;    //显...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/09</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "SpringBoot-WEB">SpringBoot-WEB</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2019/08/08/SpringBoot学习-01/" >
+            
+                <span>SpringBoot-01-Web工程</span>
+        </a>
+        <div class="abstract-content">
+            使用SpringBoot开发Web工程1、问题：经过视图解析器转发后，我们的页面样式失效？1.1 成因：css样式以及js引入的路径为相对路径，经过转发后根路径发生变化，导致样式文件找不到从而引发样式失效的问题。
+1.2 解决：
+1.2.1 将我们的外部引入文件路径修改为如下
+12&lt;link href="&lt;%=path %&gt;/source/bookshop.css" rel="stylesheet" type="text/css"&gt;//这里的path即为 request.getContextPath()
+
+1.2.2 将我们的转发改成为redirect（重定向）方...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/08</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "SpringBoot-WEB">SpringBoot-WEB</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
         <a class="abstract-title" href = "/2019/08/07/Hibernate-01/" >
             
                 <span>Hibernate-01</span>
@@ -780,9 +907,89 @@
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 22
+        Total : 26
         </div>
         <!-- search  -->
         
@@ -798,12 +1005,27 @@
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">09/10</span><a class="archive-post-title" href= "/2019/09/10/JPA学习-02/" >JPA学习-02</a>
+            <span class="archive-post-date">09/20</span><a class="archive-post-title" href= "/2019/09/20/分布式事务-Seata/" >分布式事务学习-02-seata实操</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/11</span><a class="archive-post-title" href= "/2019/09/11/JPA学习-04/" >JPA学习-04</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/10</span><a class="archive-post-title" href= "/2019/09/10/分布式事务-概念原理/" >分布式事务学习-01-Seata概念原理</a>
         </li>
     
     
         <li class="archive-post-item">
             <span class="archive-post-date">09/10</span><a class="archive-post-title" href= "/2019/09/10/JPA学习-01/" >JPA学习-01</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/10</span><a class="archive-post-title" href= "/2019/09/10/JPA学习-02/" >JPA学习-02</a>
         </li>
     
     
@@ -814,11 +1036,6 @@
     
         <li class="archive-post-item">
             <span class="archive-post-date">09/02</span><a class="archive-post-title" href= "/2019/09/02/Quartz/" >Quartz任务调度</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">08/29</span><a class="archive-post-title" href= "/2019/08/29/Hibernate-02/" >Hibernate-02</a>
         </li>
     
     
@@ -843,12 +1060,22 @@
     
     
         <li class="archive-post-item">
+            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2019/08/20/Java基础-04/" >Java基础-04-Lambda</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
             <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2019/08/20/Java基础-03/" >Java基础-03-JVM</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2019/08/20/Java基础-04/" >Java基础-04-Lambda</a>
+            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2019/08/20/杂货铺/" >杂乱的知识，定期归档到其他文件</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2019/08/20/分布式事务学习-01/" >分布式事务-seata</a>
         </li>
     
     
@@ -868,12 +1095,12 @@
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">08/13</span><a class="archive-post-title" href= "/2019/08/13/SpringCloud学习-01/" >SpringCloud-01-配置中心</a>
+            <span class="archive-post-date">08/13</span><a class="archive-post-title" href= "/2019/08/13/Maven/" >Maven-01</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">08/13</span><a class="archive-post-title" href= "/2019/08/13/Maven/" >Maven-01</a>
+            <span class="archive-post-date">08/13</span><a class="archive-post-title" href= "/2019/08/13/SpringCloud学习-01/" >SpringCloud-01-配置中心</a>
         </li>
     
     
@@ -911,17 +1138,21 @@
         <div class="sidebar-panel-tags">
     <div class="sidebar-tags-name">
     
-        <span class="sidebar-tag-name" data-tags="Hibernate"><span class="iconfont-archer">&#xe606;</span>Hibernate</span>
-    
         <span class="sidebar-tag-name" data-tags="Java基础"><span class="iconfont-archer">&#xe606;</span>Java基础</span>
     
         <span class="sidebar-tag-name" data-tags="Hexo"><span class="iconfont-archer">&#xe606;</span>Hexo</span>
+    
+        <span class="sidebar-tag-name" data-tags="杂货铺"><span class="iconfont-archer">&#xe606;</span>杂货铺</span>
+    
+        <span class="sidebar-tag-name" data-tags="Hibernate"><span class="iconfont-archer">&#xe606;</span>Hibernate</span>
+    
+        <span class="sidebar-tag-name" data-tags="JPA"><span class="iconfont-archer">&#xe606;</span>JPA</span>
     
         <span class="sidebar-tag-name" data-tags="SpringBoot-WEB"><span class="iconfont-archer">&#xe606;</span>SpringBoot-WEB</span>
     
         <span class="sidebar-tag-name" data-tags="SpringCloud"><span class="iconfont-archer">&#xe606;</span>SpringCloud</span>
     
-        <span class="sidebar-tag-name" data-tags="JPA"><span class="iconfont-archer">&#xe606;</span>JPA</span>
+        <span class="sidebar-tag-name" data-tags="分布式事务"><span class="iconfont-archer">&#xe606;</span>分布式事务</span>
     
         <span class="sidebar-tag-name" data-tags="Maven"><span class="iconfont-archer">&#xe606;</span>Maven</span>
     

@@ -359,18 +359,50 @@ height:50vh;
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2019/09/10/JPA学习-03/" >
+        <a class="abstract-title" href = "/2019/09/20/分布式事务-Seata/" >
             
-                <span>JPA学习-03</span>
+                <span>分布式事务学习-02-seata实操</span>
         </a>
         <div class="abstract-content">
-            第1章 Specifications动态查询有时我们在查询某个实体的时候，给定的条件是不固定的，这时就需要动态构建相应的查询语句，在Spring Data JPA中可以通过JpaSpecificationExecutor接口查询。相比JPQL,其优势是类型安全,更加的面向对象。
-1234567891011121314public interface JpaSpecificationExecutor&lt;T&gt; &#123;	Optional&lt;T&gt; findOne(@Nullable Specification&lt;T&gt; spec);	List&lt;T&gt; ...
+            Seata日前，分布式数据库中间件 ShardingSphere 将 Seata 分布式事务能力进行整合，旨在打造一致性更强的分布式数据库中间件。
+一、背景数据库领域，分布式事务的实现主要包含：两阶段的 XA 和 BASE 柔性事务。XA 事务底层，依赖于具体的数据库厂商对 XA 两阶段提交协议的支持。通常，XA 协议通过在 Prepare 和 Commit 阶段进行 2PL（2 阶段锁），保证了分布式事务的 ACID，适用于短事务及非云化环境（云化环境下一次 IO 操作大概需要 20ms，两阶段锁会锁住资源长达 40ms，因此热点行上的事务的 TPS 会降到 25/s 左右，非云化环境...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
             <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/09/10</span>
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/09/20</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "分布式事务">分布式事务</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2019/09/11/JPA学习-04/" >
+            
+                <span>JPA学习-04</span>
+        </a>
+        <div class="abstract-content">
+            JPA练习demo1、搭建运行环境
+涉及内容：specification动态查询，.properties（yml）文件配置方式，UUID的使用Lambda表达式（匿名内部类的简写方式）的使用，Optional非空判断，在实体类中抽取用作查询的属性，方便标准的Criteria查询
+
+1）编写项目【specification-ymlconfig-study】pom文件如下1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253&lt;?xml versio...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/09/11</span>
             </div>
             <!-- tags  -->
             
@@ -389,14 +421,13 @@ height:50vh;
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2019/09/10/JPA学习-01/" >
+        <a class="abstract-title" href = "/2019/09/10/JPA学习-03/" >
             
-                <span>JPA学习-01</span>
+                <span>JPA学习-03</span>
         </a>
         <div class="abstract-content">
-            第1章ORM概述ORM（Object-Relational Mapping） 表示对象关系映射。在面向对象的软件开发中，通过ORM，就可以把对象映射到关系型数据库中。只要有一套程序能够做到建立对象与数据库的关联，操作对象就可以直接操作数据库数据，就可以说这套程序实现了ORM对象关系映射
-简单的说：ORM就是建立实体类和数据库表之间的关系，从而达到操作实体类就相当于操作数据库表的目的。
-1.1 为什么使用ORM当实现一个应用程序时（不使用O/R Mapping），我们可能会写特别多数据访问层的代码，从数据库保存数据、修改数据、删除数据，而这些代码都是重复的。而使用ORM则会大大减少重复性代...
+            第1章 Specifications动态查询有时我们在查询某个实体的时候，给定的条件是不固定的，这时就需要动态构建相应的查询语句，在Spring Data JPA中可以通过JpaSpecificationExecutor接口查询。相比JPQL,其优势是类型安全,更加的面向对象。
+1234567891011121314public interface JpaSpecificationExecutor&lt;T&gt; &#123;	Optional&lt;T&gt; findOne(@Nullable Specification&lt;T&gt; spec);	List&lt;T&gt; ...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
@@ -452,6 +483,97 @@ Spring Data JPA 让我们解脱了DAO层的操作，基本上所有CRUD都可以
     
     
     <article class="index-post">
+        <a class="abstract-title" href = "/2019/09/10/JPA学习-01/" >
+            
+                <span>JPA学习-01</span>
+        </a>
+        <div class="abstract-content">
+            第1章ORM概述ORM（Object-Relational Mapping） 表示对象关系映射。在面向对象的软件开发中，通过ORM，就可以把对象映射到关系型数据库中。只要有一套程序能够做到建立对象与数据库的关联，操作对象就可以直接操作数据库数据，就可以说这套程序实现了ORM对象关系映射
+简单的说：ORM就是建立实体类和数据库表之间的关系，从而达到操作实体类就相当于操作数据库表的目的。
+1.1 为什么使用ORM当实现一个应用程序时（不使用O/R Mapping），我们可能会写特别多数据访问层的代码，从数据库保存数据、修改数据、删除数据，而这些代码都是重复的。而使用ORM则会大大减少重复性代...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/09/10</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "JPA">JPA</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2019/09/10/分布式事务-概念原理/" >
+            
+                <span>分布式事务学习-01-Seata概念原理</span>
+        </a>
+        <div class="abstract-content">
+            Seata—–概念原理目录
+
+什么是 Seata AT 模式
+
+Seata AT 的使用方法
+
+
+第一步，增加全局事务注解
+第二步，配置代理数据源
+第三步，新建 undo_log 表
+
+
+Seata AT 的工作流程
+
+
+工作流程总览
+图解 AT 模式一阶段流程
+图解二阶段 Commit 流程
+图解二阶段 Rollback 流程
+本节小结
+
+
+Seata AT 模式源码模块拆解
+
+Seata AT 模式客户端部分
+
+
+数据源代理部分 —— 三类 Proxy
+ExecuteTemplate.execute
+执行器接口 execute 的实现
+抽象方法 doExecute 的实现
+Conne...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/09/10</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "分布式事务">分布式事务</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
         <a class="abstract-title" href = "/2019/09/02/Quartz/" >
             
                 <span>Quartz任务调度</span>
@@ -483,23 +605,30 @@ quartz是开源且具有丰富特性的”任务调度库”，能够集成于�
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2019/08/29/Hibernate-02/" >
+        <a class="abstract-title" href = "/2019/08/28/Java基础-01/" >
             
-                <span>Hibernate-02</span>
+                <span>Java基础-01-Optional</span>
         </a>
         <div class="abstract-content">
-            
+            Optional的使用引言在文章的开头，先说下NPE问题，NPE问题就是，我们在开发中经常碰到的NullPointerException.假设我们有两个类，他们的UML类图如下图所示
+
+在这种情况下，有如下代码
+
+1user.getAddress().getProvince();
+
+这种写法，在user为null时，是有可能报NullPointerException异常的。为了解决这个问题，于是采用下面的写法
+123456if(user!=null)&#123;    Address address = user.getAddress();    if(address!=null)&#1...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
             <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/29</span>
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/28</span>
             </div>
             <!-- tags  -->
             
             <div class= abstract-tags >
     
-        <a class="post-tag" href="javascript:void(0);" data-tags = "Hibernate">Hibernate</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags = "Java基础">Java基础</a>
     
 </div>
             
@@ -512,21 +641,19 @@ quartz是开源且具有丰富特性的”任务调度库”，能够集成于�
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2019/08/28/Java基础-01/" >
+        <a class="abstract-title" href = "/2019/08/27/Java基础-02/" >
             
-                <span>Java基础-01-Optional</span>
+                <span>Java基础-02-Predicate</span>
         </a>
         <div class="abstract-content">
-            Optional的使用引言在文章的开头，先说下NPE问题，NPE问题就是，我们在开发中经常碰到的NullPointerException.假设我们有两个类，他们的UML类图如下图所示在这种情况下，有如下代码
-1user.getAddress().getProvince();
-
-这种写法，在user为null时，是有可能报NullPointerException异常的。为了解决这个问题，于是采用下面的写法
-123456if(user!=null)&#123;    Address address = user.getAddress();    if(address!=null)&#123;...
+            //后期整理
+predicate是java 8中的新特性，java.util.function.Predicate的一个功能接口，可用做lambda表达式的赋值目标。Predicate接口表示采用单个输入并判断返回boolean值的操作；判断的条件可以使用与或非(and,or,negate)等，通过一个断言predicate可以重复利用判断。用例：
+1234567891011121314151617181920212223242526272829303132333435363738394041424344454647package com.demo.pakage;import java....
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
             <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/28</span>
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/27</span>
             </div>
             <!-- tags  -->
             
@@ -572,111 +699,6 @@ quartz是开源且具有丰富特性的”任务调度库”，能够集成于�
             <div class= abstract-tags >
     
         <a class="post-tag" href="javascript:void(0);" data-tags = "SpringCloud">SpringCloud</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/08/27/Java基础-02/" >
-            
-                <span>Java基础-02-Predicate</span>
-        </a>
-        <div class="abstract-content">
-            //后期整理
-predicate是java 8中的新特性，java.util.function.Predicate的一个功能接口，可用做lambda表达式的赋值目标。Predicate接口表示采用单个输入并判断返回boolean值的操作；判断的条件可以使用与或非(and,or,negate)等，通过一个断言predicate可以重复利用判断。用例：
-1234567891011121314151617181920212223242526272829303132333435363738394041424344454647package com.demo.pakage;import java....
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/27</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "Java基础">Java基础</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/08/22/SpringCloud学习-05/" >
-            
-                <span>SpringCloud-05-Hystrix</span>
-        </a>
-        <div class="abstract-content">
-            SpringCloud-Hystrix1、Hystrix是个啥？1.1 背景
-a）分布式系统面临的问题
-复杂分布式体系结构中的应用程序有数十个依赖关系，每个依赖关系在某些时候将不可避免地失败。
-b）服务雪崩
-多个微服务之间调用的时候，假设微服务A调用微服务B和微服务C，微服务B和微服务C又调用其它的微服务，这就是所谓的“扇出”。如果扇出的链路上某个微服务的调用响应时间过长或者不可用，对微服务A的调用就会占用越来越多的系统资源，进而引起系统崩溃，所谓的“雪崩效应”.
-对于高流量的应用来说，单一的后端依赖可能会导致所有服务器上的所有资源都在几秒钟内饱和。比失败更糟糕的是，这些应用程序还可能导...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/22</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "SpringCloud">SpringCloud</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/08/20/Java基础-03/" >
-            
-                <span>Java基础-03-JVM</span>
-        </a>
-        <div class="abstract-content">
-            深入理解JVM监控工具JConsole
-jvisualvm
-*类加载1.在Java代码中，类型的加载，连接与初始化和过程都是在程序运行期间完成的（相对于其他语言如c语言，类型是在编译阶段就已经初始化完成了）
-*动态代理：在编辑阶段不存在，在程序运行期间才创建出来的
-加载：将已经存在的字节码文件从磁盘读入到内存当中
-
-查找并加载类的二进制数据
-
-连接：将类与类之间的关系确定好， 对于字节码的一些加载校验操作也是在这一阶段完成的此外，还负责协调类与类之间的调用关系，如：将类与类之间的符号引用转为直接引用
-
-1.验证：确保被加载的类的正确性
-2.准备：为类的静态变量分配内存，并将其初始化为默认...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/20</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "Java基础">Java基础</a>
     
 </div>
             
@@ -1149,9 +1171,89 @@ jvisualvm
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 22
+        Total : 26
         </div>
         <!-- search  -->
         
@@ -1167,12 +1269,27 @@ jvisualvm
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">09/10</span><a class="archive-post-title" href= "/2019/09/10/JPA学习-02/" >JPA学习-02</a>
+            <span class="archive-post-date">09/20</span><a class="archive-post-title" href= "/2019/09/20/分布式事务-Seata/" >分布式事务学习-02-seata实操</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/11</span><a class="archive-post-title" href= "/2019/09/11/JPA学习-04/" >JPA学习-04</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/10</span><a class="archive-post-title" href= "/2019/09/10/分布式事务-概念原理/" >分布式事务学习-01-Seata概念原理</a>
         </li>
     
     
         <li class="archive-post-item">
             <span class="archive-post-date">09/10</span><a class="archive-post-title" href= "/2019/09/10/JPA学习-01/" >JPA学习-01</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/10</span><a class="archive-post-title" href= "/2019/09/10/JPA学习-02/" >JPA学习-02</a>
         </li>
     
     
@@ -1183,11 +1300,6 @@ jvisualvm
     
         <li class="archive-post-item">
             <span class="archive-post-date">09/02</span><a class="archive-post-title" href= "/2019/09/02/Quartz/" >Quartz任务调度</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">08/29</span><a class="archive-post-title" href= "/2019/08/29/Hibernate-02/" >Hibernate-02</a>
         </li>
     
     
@@ -1212,12 +1324,22 @@ jvisualvm
     
     
         <li class="archive-post-item">
+            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2019/08/20/Java基础-04/" >Java基础-04-Lambda</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
             <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2019/08/20/Java基础-03/" >Java基础-03-JVM</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2019/08/20/Java基础-04/" >Java基础-04-Lambda</a>
+            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2019/08/20/杂货铺/" >杂乱的知识，定期归档到其他文件</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2019/08/20/分布式事务学习-01/" >分布式事务-seata</a>
         </li>
     
     
@@ -1237,12 +1359,12 @@ jvisualvm
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">08/13</span><a class="archive-post-title" href= "/2019/08/13/SpringCloud学习-01/" >SpringCloud-01-配置中心</a>
+            <span class="archive-post-date">08/13</span><a class="archive-post-title" href= "/2019/08/13/Maven/" >Maven-01</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">08/13</span><a class="archive-post-title" href= "/2019/08/13/Maven/" >Maven-01</a>
+            <span class="archive-post-date">08/13</span><a class="archive-post-title" href= "/2019/08/13/SpringCloud学习-01/" >SpringCloud-01-配置中心</a>
         </li>
     
     
@@ -1280,17 +1402,21 @@ jvisualvm
         <div class="sidebar-panel-tags">
     <div class="sidebar-tags-name">
     
-        <span class="sidebar-tag-name" data-tags="Hibernate"><span class="iconfont-archer">&#xe606;</span>Hibernate</span>
-    
         <span class="sidebar-tag-name" data-tags="Java基础"><span class="iconfont-archer">&#xe606;</span>Java基础</span>
     
         <span class="sidebar-tag-name" data-tags="Hexo"><span class="iconfont-archer">&#xe606;</span>Hexo</span>
+    
+        <span class="sidebar-tag-name" data-tags="杂货铺"><span class="iconfont-archer">&#xe606;</span>杂货铺</span>
+    
+        <span class="sidebar-tag-name" data-tags="Hibernate"><span class="iconfont-archer">&#xe606;</span>Hibernate</span>
+    
+        <span class="sidebar-tag-name" data-tags="JPA"><span class="iconfont-archer">&#xe606;</span>JPA</span>
     
         <span class="sidebar-tag-name" data-tags="SpringBoot-WEB"><span class="iconfont-archer">&#xe606;</span>SpringBoot-WEB</span>
     
         <span class="sidebar-tag-name" data-tags="SpringCloud"><span class="iconfont-archer">&#xe606;</span>SpringCloud</span>
     
-        <span class="sidebar-tag-name" data-tags="JPA"><span class="iconfont-archer">&#xe606;</span>JPA</span>
+        <span class="sidebar-tag-name" data-tags="分布式事务"><span class="iconfont-archer">&#xe606;</span>分布式事务</span>
     
         <span class="sidebar-tag-name" data-tags="Maven"><span class="iconfont-archer">&#xe606;</span>Maven</span>
     
