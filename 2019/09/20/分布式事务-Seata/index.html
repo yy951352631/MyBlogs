@@ -451,7 +451,7 @@ height:50vh;
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="meta">@Table</span>(name = <span class="string">"T_SEATA_ACCOUNT"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Account</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Id</span></span><br><span class="line">    <span class="meta">@GeneratedValue</span>(strategy = GenerationType.IDENTITY)</span><br><span class="line">    <span class="keyword">private</span> Long id;</span><br><span class="line">    <span class="keyword">private</span> String account;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">private</span> Double balance;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>4）根据Jpa规范，编写Repository接口</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">BankRepository</span> <span class="keyword">extends</span> <span class="title">JpaRepository</span>&lt;<span class="title">Account</span>,<span class="title">Long</span>&gt;,<span class="title">JpaSpecificationExecutor</span>&lt;<span class="title">Account</span>&gt;</span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Query</span>(<span class="string">"update Account set balance = balance + ?2 where id = ?1"</span>)</span><br><span class="line">    <span class="meta">@Modifying</span> <span class="comment">//表名这是一个更新操作，必须要加~否则报错</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">updataBalance</span><span class="params">(Long id,Double money)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">BankRepository</span> <span class="keyword">extends</span> <span class="title">JpaRepository</span>&lt;<span class="title">Account</span>,<span class="title">Long</span>&gt;,<span class="title">JpaSpecificationExecutor</span>&lt;<span class="title">Account</span>&gt;</span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Query</span>(<span class="string">"update Account set balance = balance + ?2 where id = ?1"</span>)</span><br><span class="line">    <span class="meta">@Modifying</span> <span class="comment">//表明这是一个更新操作，必须要加~否则报错</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">updataBalance</span><span class="params">(Long id,Double money)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>5）service接口</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">BankService</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function">Account <span class="title">findById</span><span class="params">(Long id)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function">List&lt;Account&gt; <span class="title">findAll</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">updateBalance</span><span class="params">(Long id, Double money)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -582,13 +582,18 @@ height:50vh;
             <p>Author：<a href="http://none">wtq</a>
             <p>原文链接：<a href="http://none/2019/09/20/分布式事务-Seata/">http://none/2019/09/20/分布式事务-Seata/</a>
             <p>发表日期：<a href="http://none/2019/09/20/分布式事务-Seata/">September 20th 2019, 12:00:00 am</a>
-            <p>更新日期：<a href="http://none/2019/09/20/分布式事务-Seata/">September 20th 2019, 4:41:18 pm</a>
+            <p>更新日期：<a href="http://none/2019/09/20/分布式事务-Seata/">September 23rd 2019, 9:50:51 am</a>
             <p>版权声明：本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
         </div>
     
     <!-- paginator  -->
     <ul class="post-paginator">
         <li class="next">
+            
+                <div class="nextSlogan">Next Post</div>
+                <a href= "/2019/10/09/Swagger学习/" title= "Swagger">
+                    <div class="nextTitle">Swagger</div>
+                </a>
             
         </li>
         <li class="previous">
@@ -1084,9 +1089,32 @@ top:50vh;
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 26
+        Total : 27
         </div>
         <!-- search  -->
         
@@ -1099,6 +1127,11 @@ top:50vh;
     
     <div class="archive-year"> 2019 </div>
     <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/09</span><a class="archive-post-title" href= "/2019/10/09/Swagger学习/" >Swagger</a>
+        </li>
     
     
         <li class="archive-post-item">
@@ -1162,22 +1195,22 @@ top:50vh;
     
     
         <li class="archive-post-item">
+            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2019/08/20/分布式事务学习-01/" >分布式事务</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2019/08/20/SpringCloud学习-04/" >SpringCloud-04-Feign</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
             <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2019/08/20/Java基础-03/" >Java基础-03-JVM</a>
         </li>
     
     
         <li class="archive-post-item">
             <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2019/08/20/杂货铺/" >杂乱的知识，定期归档到其他文件</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2019/08/20/分布式事务学习-01/" >分布式事务-seata</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2019/08/20/SpringCloud学习-04/" >SpringCloud-04-Feign</a>
         </li>
     
     
@@ -1236,6 +1269,8 @@ top:50vh;
     <div class="sidebar-tags-name">
     
         <span class="sidebar-tag-name" data-tags="Java基础"><span class="iconfont-archer">&#xe606;</span>Java基础</span>
+    
+        <span class="sidebar-tag-name" data-tags="swagger"><span class="iconfont-archer">&#xe606;</span>swagger</span>
     
         <span class="sidebar-tag-name" data-tags="Hexo"><span class="iconfont-archer">&#xe606;</span>Hexo</span>
     

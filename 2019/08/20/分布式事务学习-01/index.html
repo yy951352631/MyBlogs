@@ -22,7 +22,7 @@
     <meta name="description" content>
     <meta http-equiv="Cache-control" content="no-cache">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>分布式事务-seata · 王某人的博客</title>
+    <title>分布式事务 · 王某人的博客</title>
     <style type="text/css">
     @font-face {
         font-family: 'Oswald-Regular';
@@ -217,7 +217,7 @@
                 <a href="/" >王某人的个人博客</a>
             </div>
             <div class="post-title">
-                <a href="#" class="post-name">分布式事务-seata</a>
+                <a href="#" class="post-name">分布式事务</a>
             </div>
     </div>
     
@@ -247,7 +247,7 @@ height:50vh;
         <h1 class="intro-title">
             <!-- 主页  -->
             
-            分布式事务-seata
+            分布式事务
             <!-- 404 -->
             
         </h1>
@@ -401,7 +401,7 @@ height:50vh;
         <div class="container container-unloaded">
             <main class="main post-page">
     <article class="article-entry">
-        <h1 id="使用seata完成分布式事务控制"><a href="#使用seata完成分布式事务控制" class="headerlink" title="使用seata完成分布式事务控制"></a>使用seata完成分布式事务控制</h1><h1 id="总览"><a href="#总览" class="headerlink" title="总览"></a>总览</h1><blockquote>
+        <h1 id="总览"><a href="#总览" class="headerlink" title="总览"></a>总览</h1><blockquote>
 <p> 本系列针对分布式事务提出三种解决方案：可靠消息最终一致性、最大努力通知、TCC。 每种方案分为上下两篇，上篇为原理概述，下篇为具体实现。</p>
 </blockquote>
 <h2 id="一、事务概念"><a href="#一、事务概念" class="headerlink" title="一、事务概念"></a>一、事务概念</h2><p>原子性是指事务是一个不可再分割的工作单元，事务中的操作要么都发生，要么都不发生。<br>一致性是指在事务开始之前和事务结束以后，数据库的完整性约束没有被破坏。这是说数据库事务不能破坏关系数据的完整性以及业务逻辑上的一致性。如A给B转账，不论转账的事务操作是否成功，其两者的存款总额不变<br>隔离性是多个事务并发访问时，事务之间是隔离的，一个事务不应该影响其它事务运行效果。<br>持久性是在事务完成以后，该事务所对数据库所作的更改便持久的保存在数据库之中，并不会被回滚。</p>
@@ -411,7 +411,7 @@ height:50vh;
 <h3 id="2-分布式事务场景"><a href="#2-分布式事务场景" class="headerlink" title="2 分布式事务场景"></a>2 分布式事务场景</h3><h4 id="2-1-全局事务（DTP）"><a href="#2-1-全局事务（DTP）" class="headerlink" title="2.1 全局事务（DTP）"></a>2.1 全局事务（DTP）</h4><p>1）XA是由X/Open组织提出的分布式事务的规范。 XA规范主要定义了<strong>(全局)事务管理器(TM)</strong>和<strong>(局 部)资源管理器(RM)</strong>之间的接口。主流的关系型 数据库产品都是实现了XA接口的。</p>
 <p>2）XA接口是双向的系统接口，在事务管理器 （TM）以及一个或多个资源管理器（RM）之 间形成通信桥梁。</p>
 <p>3）XA之所以需要引入事务管理器是因为，在分布 式系统中，从理论上讲两台机器理论上无法达 到一致的状态，需要引入一个单点进行协调。</p>
-<p>4）由全局事务管理器管理和协调的事务，可以跨 越多个资源（如数据库或JMS队列）和进程。 全局事务管理器一般使用 XA 二阶段提交协议 与数据库进行交互。</p>
+<p>4）由全局事务管理器管理和协调的事务，可以跨越多个资源（如数据库或JMS队列）和进程。 全局事务管理器一般使用 XA 二阶段提交协议 与数据库进行交互。</p>
 <h4 id="2-2-两阶段提交-Two-Phase-Commit"><a href="#2-2-两阶段提交-Two-Phase-Commit" class="headerlink" title="2.2 两阶段提交(Two Phase Commit)"></a>2.2 两阶段提交(Two Phase Commit)</h4><p>1）两阶段提交协议（Two-phase commit protocol） 是XA用于在全局事务中协调多个资源的机制。<br>2）TM和RM间采取两阶段提交(Two Phase Commit) 的方案来解决一致性问题。<br>3）两阶段提交需要一个协调者（TM）来掌控所有参与 者节点（RM）的操作结果并且指引这些节点是否需 要最终提交。</p>
 <p>4）JTA（Java Transaction API）：面向应用、应用服务器与资 源管理器的高层事务接口。<br>5）JTS（Java Transaction Service）：JTA事务管理器的实现标 准，向上支持JTA，向下通过CORBA OTS实现跨事务域的互 操作性。<br>6）EJB：基于组件的应用编程模型，通过声明式事务管理进一步 简化事务应用的编程。<br>7）优点 • 简单一致的编程模型 • 跨域分布处理的ACID保证<br>8）局限 • DTP模型本身的局限</p>
 <h4 id="2-3-标准分布式事务解决方案的利弊"><a href="#2-3-标准分布式事务解决方案的利弊" class="headerlink" title="2.3 标准分布式事务解决方案的利弊"></a>2.3 标准分布式事务解决方案的利弊</h4><p>1）优点：严格的ACID<br>2）缺点：效率非常低（微服务架构下已不太适用）</p>
@@ -448,7 +448,7 @@ height:50vh;
             <p>Author：<a href="http://none">wtq</a>
             <p>原文链接：<a href="http://none/2019/08/20/分布式事务学习-01/">http://none/2019/08/20/分布式事务学习-01/</a>
             <p>发表日期：<a href="http://none/2019/08/20/分布式事务学习-01/">August 20th 2019, 12:00:00 am</a>
-            <p>更新日期：<a href="http://none/2019/08/20/分布式事务学习-01/">September 17th 2019, 5:54:51 pm</a>
+            <p>更新日期：<a href="http://none/2019/08/20/分布式事务学习-01/">September 29th 2019, 10:04:20 am</a>
             <p>版权声明：本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
         </div>
     
@@ -457,8 +457,8 @@ height:50vh;
         <li class="next">
             
                 <div class="nextSlogan">Next Post</div>
-                <a href= "/2019/08/20/Java基础-03/" title= "Java基础-03-JVM">
-                    <div class="nextTitle">Java基础-03-JVM</div>
+                <a href= "/2019/08/20/SpringCloud学习-04/" title= "SpringCloud-04-Feign">
+                    <div class="nextTitle">SpringCloud-04-Feign</div>
                 </a>
             
         </li>
@@ -576,7 +576,7 @@ top:50vh;
         <div class="toc-catalog">
             <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
         </div>
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#使用seata完成分布式事务控制"><span class="toc-number">1.</span> <span class="toc-text">使用seata完成分布式事务控制</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#总览"><span class="toc-number">2.</span> <span class="toc-text">总览</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、事务概念"><span class="toc-number">2.1.</span> <span class="toc-text">一、事务概念</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-本地事务"><span class="toc-number">2.1.1.</span> <span class="toc-text">1 本地事务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-分布式事务场景"><span class="toc-number">2.1.2.</span> <span class="toc-text">2 分布式事务场景</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-全局事务（DTP）"><span class="toc-number">2.1.2.1.</span> <span class="toc-text">2.1 全局事务（DTP）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-两阶段提交-Two-Phase-Commit"><span class="toc-number">2.1.2.2.</span> <span class="toc-text">2.2 两阶段提交(Two Phase Commit)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-3-标准分布式事务解决方案的利弊"><span class="toc-number">2.1.2.3.</span> <span class="toc-text">2.3 标准分布式事务解决方案的利弊</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-4-BASE理论"><span class="toc-number">2.1.2.4.</span> <span class="toc-text">2.4 BASE理论</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-5-CAP定理"><span class="toc-number">2.1.2.5.</span> <span class="toc-text">2.5 CAP定理</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-柔性事务"><span class="toc-number">2.1.3.</span> <span class="toc-text">3 柔性事务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-服务模式"><span class="toc-number">2.1.4.</span> <span class="toc-text">4 服务模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#可靠消息最终一致性方案"><span class="toc-number">2.1.5.</span> <span class="toc-text">可靠消息最终一致性方案</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#-TCC方案"><span class="toc-number">2.1.6.</span> <span class="toc-text"> TCC方案</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#最大努力通知型方案"><span class="toc-number">2.1.7.</span> <span class="toc-text">最大努力通知型方案</span></a></li></ol></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#总览"><span class="toc-number">1.</span> <span class="toc-text">总览</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、事务概念"><span class="toc-number">1.1.</span> <span class="toc-text">一、事务概念</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-本地事务"><span class="toc-number">1.1.1.</span> <span class="toc-text">1 本地事务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-分布式事务场景"><span class="toc-number">1.1.2.</span> <span class="toc-text">2 分布式事务场景</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-全局事务（DTP）"><span class="toc-number">1.1.2.1.</span> <span class="toc-text">2.1 全局事务（DTP）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-两阶段提交-Two-Phase-Commit"><span class="toc-number">1.1.2.2.</span> <span class="toc-text">2.2 两阶段提交(Two Phase Commit)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-3-标准分布式事务解决方案的利弊"><span class="toc-number">1.1.2.3.</span> <span class="toc-text">2.3 标准分布式事务解决方案的利弊</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-4-BASE理论"><span class="toc-number">1.1.2.4.</span> <span class="toc-text">2.4 BASE理论</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-5-CAP定理"><span class="toc-number">1.1.2.5.</span> <span class="toc-text">2.5 CAP定理</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-柔性事务"><span class="toc-number">1.1.3.</span> <span class="toc-text">3 柔性事务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-服务模式"><span class="toc-number">1.1.4.</span> <span class="toc-text">4 服务模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#可靠消息最终一致性方案"><span class="toc-number">1.1.5.</span> <span class="toc-text">可靠消息最终一致性方案</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#-TCC方案"><span class="toc-number">1.1.6.</span> <span class="toc-text"> TCC方案</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#最大努力通知型方案"><span class="toc-number">1.1.7.</span> <span class="toc-text">最大努力通知型方案</span></a></li></ol></li></ol></li></ol>
     </div>
     
     <div class="back-top iconfont-archer">&#xe639;</div>
@@ -955,9 +955,32 @@ top:50vh;
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 26
+        Total : 27
         </div>
         <!-- search  -->
         
@@ -970,6 +993,11 @@ top:50vh;
     
     <div class="archive-year"> 2019 </div>
     <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/09</span><a class="archive-post-title" href= "/2019/10/09/Swagger学习/" >Swagger</a>
+        </li>
     
     
         <li class="archive-post-item">
@@ -1033,22 +1061,22 @@ top:50vh;
     
     
         <li class="archive-post-item">
+            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2019/08/20/分布式事务学习-01/" >分布式事务</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2019/08/20/SpringCloud学习-04/" >SpringCloud-04-Feign</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
             <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2019/08/20/Java基础-03/" >Java基础-03-JVM</a>
         </li>
     
     
         <li class="archive-post-item">
             <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2019/08/20/杂货铺/" >杂乱的知识，定期归档到其他文件</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2019/08/20/分布式事务学习-01/" >分布式事务-seata</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2019/08/20/SpringCloud学习-04/" >SpringCloud-04-Feign</a>
         </li>
     
     
@@ -1107,6 +1135,8 @@ top:50vh;
     <div class="sidebar-tags-name">
     
         <span class="sidebar-tag-name" data-tags="Java基础"><span class="iconfont-archer">&#xe606;</span>Java基础</span>
+    
+        <span class="sidebar-tag-name" data-tags="swagger"><span class="iconfont-archer">&#xe606;</span>swagger</span>
     
         <span class="sidebar-tag-name" data-tags="Hexo"><span class="iconfont-archer">&#xe606;</span>Hexo</span>
     

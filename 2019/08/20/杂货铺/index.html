@@ -272,7 +272,7 @@ height:50vh;
                 
                 
                     <div class="post-intro-read">
-                        <span>Word count: <span class="post-count word-count">756</span>Reading time: <span class="post-count reading-time">3 min</span></span>
+                        <span>Word count: <span class="post-count word-count">1.4k</span>Reading time: <span class="post-count reading-time">6 min</span></span>
                     </div>
                 
                 <div class="post-intro-meta">
@@ -421,7 +421,39 @@ height:50vh;
 
 <h2 id="6、通过配置类的方式配置quartz的一些初始化信息"><a href="#6、通过配置类的方式配置quartz的一些初始化信息" class="headerlink" title="6、通过配置类的方式配置quartz的一些初始化信息"></a>6、通过配置类的方式配置quartz的一些初始化信息</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.platform.quartz.configuration;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.autoconfigure.quartz.SchedulerFactoryBeanCustomizer;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Bean;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Configuration;</span><br><span class="line"><span class="keyword">import</span> org.springframework.scheduling.quartz.SchedulerFactoryBean;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.fasterxml.jackson.databind.ObjectMapper;</span><br><span class="line"><span class="keyword">import</span> com.fasterxml.jackson.databind.SerializationFeature;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 通过配置类的方式配置quartz的一些初始化信息</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SchedulerConfig</span> <span class="keyword">implements</span> <span class="title">SchedulerFactoryBeanCustomizer</span></span>&#123;</span><br><span class="line">	</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">customize</span><span class="params">(SchedulerFactoryBean schedulerFactoryBean)</span> </span>&#123;</span><br><span class="line">		 	schedulerFactoryBean.setStartupDelay(<span class="number">2</span>);</span><br><span class="line">	        schedulerFactoryBean.setAutoStartup(<span class="keyword">true</span>);</span><br><span class="line">	        schedulerFactoryBean.setOverwriteExistingJobs(<span class="keyword">true</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="meta">@Bean</span>(<span class="string">"objectMapper"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> ObjectMapper <span class="title">myMapper</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ObjectMapper().disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
+<h2 id="7、docker"><a href="#7、docker" class="headerlink" title="7、docker"></a>7、docker</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">安装docker ：</span><br><span class="line">1.安装Ubuntu</span><br><span class="line">2.执行命令下载：apt-get install docker </span><br><span class="line">3.安装：apt install docker.io</span><br><span class="line">4.启动docker ：systemctl start docker</span><br><span class="line">5.设置开机启动docker：systemctl enable docker</span><br><span class="line">6.停止docker ： systemctl stop docker</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">-------docker常用操作-------</span><br><span class="line">1.查找镜像：docker search mysql </span><br><span class="line">2.拉取镜像：docker pull mysql</span><br><span class="line">3.查看当前docker主机下有哪些镜像： docker imagesage-id</span><br><span class="line">4.删除指定本地镜像：docker rmi-id</span><br><span class="line">5.运行镜像：docker run --name mysql_my -d mysql:latest</span><br><span class="line">#docker run --name mysql_my(相当于安装时自定义的名字) -d（后台运行） mysql（要运行的镜像名）:latest（版本tag）</span><br><span class="line">6.查看当前docker 运行中的容器：docker ps</span><br><span class="line">6.1查看当前所有运行过的容器 ：docker ps -a</span><br><span class="line">7.停止运行中的容器：docker stop (id)</span><br><span class="line">8.重新启动一个已经关闭的容器：docker start (id)</span><br><span class="line">9.删除一个容器（这个容器必须是停止状态） ： docker rm (id)</span><br><span class="line">10.ip 地址映射 ： docker run -d -p 8888:8080 tomcat</span><br><span class="line">docker run -d -p 8888:8080 (将虚拟机的8888端口映射成容器的8080端口) tomcat</span><br><span class="line">11.查看本机防火墙状态 ： service firewalld status  (Ubuntu ：ufw status)</span><br><span class="line">12.关闭防火墙 ： service firewalld stop</span><br><span class="line">13.查看容器日志：docker logs (id)</span><br><span class="line">14.mysql的正确启动方式：docker run --name mysql01 -e MYSQL_ROOT_PASSWORD=123456 -d mysql</span><br><span class="line">15.加端口映射docker run -p 3306:3306 --name mysql02 -e MYSQL_ROOT_PASSWORD=123456 -d mysql</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">---Ubuntu防火墙---</span><br><span class="line">1.开启：ufw enable</span><br><span class="line">2.关闭：ufw disable</span><br><span class="line">3.查看状态：ufw status</span><br></pre></td></tr></table></figure>
 
+<h2 id="8、解决远程连接数据库（镜像）-1251错误"><a href="#8、解决远程连接数据库（镜像）-1251错误" class="headerlink" title="8、解决远程连接数据库（镜像） 1251错误"></a>8、解决远程连接数据库（镜像） 1251错误</h2><p>Navicat远程连接Docker容器启动的MySQL报错Client does not support authentication protocol requested by server consider解决方法。<br>前言：<br>先使用正确的方式启动mysql容器：</p>
+<p>docker run -p 3306:3306 –name mysql01 -e MYSQL_ROOT_PASSWORD=root -d mysql</p>
+<p>在容器中连接mysql数据库：根据官方文档的方式连接</p>
+<p><a href="https://hub.docker.com/_/mysql/" target="_blank" rel="noopener">https://hub.docker.com/_/mysql/</a></p>
+<p>对应MySQL的连接指令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -it --link mysql01:mysql --rm mysql sh -c &apos;exec mysql -h&quot;$MYSQL_PORT_3306_TCP_ADDR&quot; -P&quot;$MYSQL_PORT_3306_TCP_PORT&quot; -uroot -p&quot;$MYSQL_ENV_MYSQL_ROOT_PASSWORD&quot;&apos;</span><br></pre></td></tr></table></figure>
+
+<p>连接成功后进入mysql指令行：</p>
+<p>正文：</p>
+<blockquote>
+<p>1.查看mysql的版本</p>
+<p>mysql&gt; status</p>
+<p>mysql Ver 8.0.12 for Linux on x86_64 (MySQL Community Server - GPL)</p>
+<p>2.进行远程连接授权；</p>
+<p>mysql&gt; grant all on <em>.</em> to ‘root’@’%’;</p>
+<p>3.修改加密规则</p>
+<p>mysql&gt; ALTER USER ‘root’@’localhost’ IDENTIFIED BY ‘password’ PASSWORD EXPIRE NEVER;</p>
+<p>4.更新root用户密码：</p>
+<p>ALTER USER ‘root’@’%’ IDENTIFIED WITH mysql_native_password BY ‘root’;（密码改为root）</p>
+<p>5.设置完成可以连接数据库</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">版权声明：</span><br><span class="line">本文为CSDN博主「big1」的原创文章，遵循 CC 4.0 BY-SA 版权协议，转载请附上原文出处链接及本声明。</span><br><span class="line">原文链接：https://blog.csdn.net/u011490595/article/details/82050325</span><br></pre></td></tr></table></figure>
+
+<h2 id="9、Windows自带远程桌面连接使用"><a href="#9、Windows自带远程桌面连接使用" class="headerlink" title="9、Windows自带远程桌面连接使用"></a>9、Windows自带远程桌面连接使用</h2><p>1）运行（windos+R）输入</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mstsc</span><br></pre></td></tr></table></figure>
+
+<p>2）输入ip，用户名及密码登入</p>
+<img src="/2019/08/20/杂货铺/zhp01.png">
+
+<p>3）登入成功</p>
+<img src="/2019/08/20/杂货铺/zhp02.png">
     </article>
     <!-- license  -->
     
@@ -429,7 +461,7 @@ height:50vh;
             <p>Author：<a href="http://none">wtq</a>
             <p>原文链接：<a href="http://none/2019/08/20/杂货铺/">http://none/2019/08/20/杂货铺/</a>
             <p>发表日期：<a href="http://none/2019/08/20/杂货铺/">August 20th 2019, 12:00:00 am</a>
-            <p>更新日期：<a href="http://none/2019/08/20/杂货铺/">September 16th 2019, 10:01:55 am</a>
+            <p>更新日期：<a href="http://none/2019/08/20/杂货铺/">September 26th 2019, 3:33:26 pm</a>
             <p>版权声明：本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
         </div>
     
@@ -438,16 +470,16 @@ height:50vh;
         <li class="next">
             
                 <div class="nextSlogan">Next Post</div>
-                <a href= "/2019/08/22/SpringCloud学习-05/" title= "SpringCloud-05-Hystrix">
-                    <div class="nextTitle">SpringCloud-05-Hystrix</div>
+                <a href= "/2019/08/20/Java基础-04/" title= "Java基础-04-Lambda">
+                    <div class="nextTitle">Java基础-04-Lambda</div>
                 </a>
             
         </li>
         <li class="previous">
             
                 <div class="prevSlogan">Previous Post</div>
-                <a href= "/2019/08/20/SpringCloud学习-04/" title= "SpringCloud-04-Feign">
-                    <div class="prevTitle">SpringCloud-04-Feign</div>
+                <a href= "/2019/08/20/Java基础-03/" title= "Java基础-03-JVM">
+                    <div class="prevTitle">Java基础-03-JVM</div>
                 </a>
             
         </li>
@@ -557,7 +589,7 @@ top:50vh;
         <div class="toc-catalog">
             <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
         </div>
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#散乱的知识点"><span class="toc-number">1.</span> <span class="toc-text">散乱的知识点</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1、-Qualifier"><span class="toc-number">1.1.</span> <span class="toc-text">1、@Qualifier</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2、-RequestMapping注解下的consumes-amp-produces属性"><span class="toc-number">1.2.</span> <span class="toc-text">2、@RequestMapping注解下的consumes &amp; produces属性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3、如何制定全局的唯一入口"><span class="toc-number">1.3.</span> <span class="toc-text">3、如何制定全局的唯一入口</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4、忽略警告"><span class="toc-number">1.4.</span> <span class="toc-text">4、忽略警告</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5、quartz相关注解"><span class="toc-number">1.5.</span> <span class="toc-text">5、quartz相关注解</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6、通过配置类的方式配置quartz的一些初始化信息"><span class="toc-number">1.6.</span> <span class="toc-text">6、通过配置类的方式配置quartz的一些初始化信息</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#散乱的知识点"><span class="toc-number">1.</span> <span class="toc-text">散乱的知识点</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1、-Qualifier"><span class="toc-number">1.1.</span> <span class="toc-text">1、@Qualifier</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2、-RequestMapping注解下的consumes-amp-produces属性"><span class="toc-number">1.2.</span> <span class="toc-text">2、@RequestMapping注解下的consumes &amp; produces属性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3、如何制定全局的唯一入口"><span class="toc-number">1.3.</span> <span class="toc-text">3、如何制定全局的唯一入口</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4、忽略警告"><span class="toc-number">1.4.</span> <span class="toc-text">4、忽略警告</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5、quartz相关注解"><span class="toc-number">1.5.</span> <span class="toc-text">5、quartz相关注解</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6、通过配置类的方式配置quartz的一些初始化信息"><span class="toc-number">1.6.</span> <span class="toc-text">6、通过配置类的方式配置quartz的一些初始化信息</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7、docker"><span class="toc-number">1.7.</span> <span class="toc-text">7、docker</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8、解决远程连接数据库（镜像）-1251错误"><span class="toc-number">1.8.</span> <span class="toc-text">8、解决远程连接数据库（镜像） 1251错误</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9、Windows自带远程桌面连接使用"><span class="toc-number">1.9.</span> <span class="toc-text">9、Windows自带远程桌面连接使用</span></a></li></ol></li></ol>
     </div>
     
     <div class="back-top iconfont-archer">&#xe639;</div>
@@ -936,9 +968,32 @@ top:50vh;
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 26
+        Total : 27
         </div>
         <!-- search  -->
         
@@ -951,6 +1006,11 @@ top:50vh;
     
     <div class="archive-year"> 2019 </div>
     <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/09</span><a class="archive-post-title" href= "/2019/10/09/Swagger学习/" >Swagger</a>
+        </li>
     
     
         <li class="archive-post-item">
@@ -1014,22 +1074,22 @@ top:50vh;
     
     
         <li class="archive-post-item">
+            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2019/08/20/分布式事务学习-01/" >分布式事务</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2019/08/20/SpringCloud学习-04/" >SpringCloud-04-Feign</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
             <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2019/08/20/Java基础-03/" >Java基础-03-JVM</a>
         </li>
     
     
         <li class="archive-post-item">
             <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2019/08/20/杂货铺/" >杂乱的知识，定期归档到其他文件</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2019/08/20/分布式事务学习-01/" >分布式事务-seata</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2019/08/20/SpringCloud学习-04/" >SpringCloud-04-Feign</a>
         </li>
     
     
@@ -1088,6 +1148,8 @@ top:50vh;
     <div class="sidebar-tags-name">
     
         <span class="sidebar-tag-name" data-tags="Java基础"><span class="iconfont-archer">&#xe606;</span>Java基础</span>
+    
+        <span class="sidebar-tag-name" data-tags="swagger"><span class="iconfont-archer">&#xe606;</span>swagger</span>
     
         <span class="sidebar-tag-name" data-tags="Hexo"><span class="iconfont-archer">&#xe606;</span>Hexo</span>
     
