@@ -401,7 +401,7 @@ Sharding——JDBC的核心功能为数据分片和读写分离，通过Sharding
 前后端集成联调，前端人员和后端人员无法做到：“及时协商，尽早解决”，最终导致问题集中爆发
 
 2、解决方案
-1）首先制定schema【计划提纲】，试试更新最新的API，降低集成的风险
+1）首先制定schema【计划提纲】，实时更新最新的API，降低集成的风险
 2）早些年：制定word文档
 3）前后端分离：
 ​        1.前端测试后端接口：postman
@@ -529,14 +529,15 @@ Sharding——JDBC的核心功能为数据分片和读写分离，通过Sharding
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2019/09/10/JPA学习-01/" >
+        <a class="abstract-title" href = "/2019/09/10/JPA学习-02/" >
             
-                <span>JPA学习-01</span>
+                <span>JPA学习-02</span>
         </a>
         <div class="abstract-content">
-            第1章ORM概述ORM（Object-Relational Mapping） 表示对象关系映射。在面向对象的软件开发中，通过ORM，就可以把对象映射到关系型数据库中。只要有一套程序能够做到建立对象与数据库的关联，操作对象就可以直接操作数据库数据，就可以说这套程序实现了ORM对象关系映射
-简单的说：ORM就是建立实体类和数据库表之间的关系，从而达到操作实体类就相当于操作数据库表的目的。
-1.1 为什么使用ORM当实现一个应用程序时（不使用O/R Mapping），我们可能会写特别多数据访问层的代码，从数据库保存数据、修改数据、删除数据，而这些代码都是重复的。而使用ORM则会大大减少重复性代...
+            第1章 Spring Data JPA的概述1.1 Spring Data JPA概述
+
+Spring Data JPA 是 Spring 基于 ORM 框架、JPA 规范的基础上封装的一套JPA应用框架，可使开发者用极简的代码即可实现对数据库的访问和操作。它提供了包括增删改查等在内的常用功能，且易于扩展！学习并使用 Spring Data JPA 可以极大提高开发效率！
+Spring Data JPA 让我们解脱了DAO层的操作，基本上所有CRUD都可以依赖于它来实现,在实际的工作工程中，推荐使用Spring Data JPA + ORM（如：hibernate）完成操作，这样在切换不...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
@@ -560,15 +561,14 @@ Sharding——JDBC的核心功能为数据分片和读写分离，通过Sharding
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2019/09/10/JPA学习-02/" >
+        <a class="abstract-title" href = "/2019/09/10/JPA学习-01/" >
             
-                <span>JPA学习-02</span>
+                <span>JPA学习-01</span>
         </a>
         <div class="abstract-content">
-            第1章 Spring Data JPA的概述1.1 Spring Data JPA概述
-
-Spring Data JPA 是 Spring 基于 ORM 框架、JPA 规范的基础上封装的一套JPA应用框架，可使开发者用极简的代码即可实现对数据库的访问和操作。它提供了包括增删改查等在内的常用功能，且易于扩展！学习并使用 Spring Data JPA 可以极大提高开发效率！
-Spring Data JPA 让我们解脱了DAO层的操作，基本上所有CRUD都可以依赖于它来实现,在实际的工作工程中，推荐使用Spring Data JPA + ORM（如：hibernate）完成操作，这样在切换不...
+            第1章ORM概述ORM（Object-Relational Mapping） 表示对象关系映射。在面向对象的软件开发中，通过ORM，就可以把对象映射到关系型数据库中。只要有一套程序能够做到建立对象与数据库的关联，操作对象就可以直接操作数据库数据，就可以说这套程序实现了ORM对象关系映射
+简单的说：ORM就是建立实体类和数据库表之间的关系，从而达到操作实体类就相当于操作数据库表的目的。
+1.1 为什么使用ORM当实现一个应用程序时（不使用O/R Mapping），我们可能会写特别多数据访问层的代码，从数据库保存数据、修改数据、删除数据，而这些代码都是重复的。而使用ORM则会大大减少重复性代...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
@@ -1301,6 +1301,8 @@ quartz是开源且具有丰富特性的”任务调度库”，能够集成于�
     
     
     
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
         Total : 28
@@ -1344,12 +1346,12 @@ quartz是开源且具有丰富特性的”任务调度库”，能够集成于�
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">09/10</span><a class="archive-post-title" href= "/2019/09/10/JPA学习-02/" >JPA学习-02</a>
+            <span class="archive-post-date">09/10</span><a class="archive-post-title" href= "/2019/09/10/JPA学习-01/" >JPA学习-01</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">09/10</span><a class="archive-post-title" href= "/2019/09/10/JPA学习-01/" >JPA学习-01</a>
+            <span class="archive-post-date">09/10</span><a class="archive-post-title" href= "/2019/09/10/JPA学习-02/" >JPA学习-02</a>
         </li>
     
     

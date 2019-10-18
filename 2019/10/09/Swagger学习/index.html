@@ -405,7 +405,7 @@ height:50vh;
 <p>前后端集成联调，前端人员和后端人员无法做到：“及时协商，尽早解决”，最终导致问题集中爆发</p>
 </blockquote>
 <h2 id="2、解决方案"><a href="#2、解决方案" class="headerlink" title="2、解决方案"></a>2、解决方案</h2><blockquote>
-<p>1）首先制定schema【计划提纲】，试试更新最新的API，降低集成的风险</p>
+<p>1）首先制定schema【计划提纲】，实时更新最新的API，降低集成的风险</p>
 <p>2）早些年：制定word文档</p>
 <p>3）前后端分离：</p>
 <p>​        1.前端测试后端接口：postman</p>
@@ -435,13 +435,13 @@ height:50vh;
 <figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">http://127.0.0.1:8080/swagger-ui.html</span></span><br></pre></td></tr></table></figure>
 
 <p>页面结果如下</p>
-<img src="/2019/10/09/Swagger学习/Swagger学习\swagger01.png">
+<img src="/2019/10/09/Swagger学习/swagger01.png">
 
 
 
 <h2 id="6、配置swagger"><a href="#6、配置swagger" class="headerlink" title="6、配置swagger"></a>6、配置swagger</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@EnableSwagger</span>2 <span class="comment">//开启swagger2</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SwaggerConfig</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Docket <span class="title">docker</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="comment">// 通过Docket获取SWAGGER_2的bean实例</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Docket(DocumentationType.SWAGGER_2) </span><br><span class="line">                .apiInfo(apiInfo());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> ApiInfo <span class="title">apiInfo</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="comment">//作者信息</span></span><br><span class="line">        Contact DEFAULT_CONTACT = <span class="keyword">new</span> Contact(<span class="string">"wtq"</span>, <span class="string">"wtq.com"</span>, <span class="string">"9966@qq.com"</span>);</span><br><span class="line">        <span class="comment">//配置我们的swagger信息</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span>  ApiInfo(<span class="string">"API文档"</span>, <span class="string">"我的API文档"</span>, <span class="string">"v1.0"</span>, <span class="string">"urn:tos"</span>,</span><br><span class="line">                DEFAULT_CONTACT, <span class="string">"Apache 2.0"</span>, <span class="string">"http://www.apache.org/licenses/LICENSE-2.0"</span>, <span class="keyword">new</span> ArrayList&lt;VendorExtension&gt;());</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p><img src="/2019/10/09/Swagger学习/Swagger学习\swagger02.png"><img src="/2019/10/09/Swagger学习/C:%5CUsers%5C95135%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5C1570589625970.png" alt="1570589625970"></p>
+<p><img src="/2019/10/09/Swagger学习/swagger02.png"><img src="/2019/10/09/Swagger学习/C:%5CUsers%5C95135%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5C1570589625970.png" alt="1570589625970"></p>
 <h2 id="7、Swagger配置扫描接口"><a href="#7、Swagger配置扫描接口" class="headerlink" title="7、Swagger配置扫描接口"></a>7、Swagger配置扫描接口</h2><blockquote>
 <p>Docket.select()</p>
 </blockquote>
@@ -452,7 +452,7 @@ height:50vh;
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Docket <span class="title">docker</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Docket(DocumentationType.SWAGGER_2) <span class="comment">// 通过Docket获取SWAGGER_2的bean实例</span></span><br><span class="line">        .apiInfo(apiInfo())</span><br><span class="line">        .enable(<span class="keyword">false</span>)<span class="comment">//关闭我们的Swagger，关闭后Swagger不能在浏览器中访问</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>页面访问效果如下：</p>
-<img src="/2019/10/09/Swagger学习/Swagger学习\swagger03.png">
+<img src="/2019/10/09/Swagger学习/swagger03.png">
 
 <p>7.3）我希望我的Swagger只在生产中使用，在发布中不使用，怎么做？</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Docket <span class="title">docker</span><span class="params">(Environment environment)</span></span>&#123;</span><br><span class="line"></span><br><span class="line">       <span class="comment">//设置要显示的swagger环境</span></span><br><span class="line">       Profiles profiles = Profiles.of(<span class="string">"dev"</span>);</span><br><span class="line">       <span class="comment">//通过environment.acceptsProfiles 判断是否处于自己设定的环境当中</span></span><br><span class="line">       <span class="keyword">boolean</span> flag = environment.acceptsProfiles(profiles);</span><br><span class="line"></span><br><span class="line">       <span class="keyword">return</span> <span class="keyword">new</span> Docket(DocumentationType.SWAGGER_2) <span class="comment">// 通过Docket获取SWAGGER_2的bean实例</span></span><br><span class="line">               .apiInfo(apiInfo())</span><br><span class="line">               .enable(flag)</span><br><span class="line">           ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -465,12 +465,12 @@ height:50vh;
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Docket <span class="title">docket1</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Docket(DocumentationType.SWAGGER_2).groupName(<span class="string">"A"</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Docket <span class="title">docket2</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Docket(DocumentationType.SWAGGER_2).groupName(<span class="string">"B"</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Docket <span class="title">docket3</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Docket(DocumentationType.SWAGGER_2).groupName(<span class="string">"C"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>访问swagger页面效果如下</p>
-<img src="/2019/10/09/Swagger学习/Swagger学习\swagger04.png">
+<img src="/2019/10/09/Swagger学习/swagger04.png">
 
 <h2 id="8、model的扫描"><a href="#8、model的扫描" class="headerlink" title="8、model的扫描"></a>8、model的扫描</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@ApiModel</span>(<span class="string">"用户实体类"</span>)  <span class="comment">//为Api文档加入中文注释</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">User</span> </span>&#123;</span><br><span class="line">    <span class="meta">@ApiModelProperty</span>(<span class="string">"用户名"</span>)</span><br><span class="line">    <span class="keyword">private</span> String userName;</span><br><span class="line">    <span class="meta">@ApiModelProperty</span>(<span class="string">"密码"</span>)</span><br><span class="line">    <span class="keyword">private</span> String password;</span><br><span class="line">    ..</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>文档页面效果：</p>
-<img src="/2019/10/09/Swagger学习/Swagger学习\swagger05.png">
+<img src="/2019/10/09/Swagger学习/swagger05.png">
 
 <p>补充：其他位置的常用注释</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="meta">@Api</span>(<span class="string">"控制类"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HelloController</span> </span>&#123;</span><br><span class="line">    <span class="meta">@ApiOperation</span>(<span class="string">"hello控制类"</span>)</span><br><span class="line">    <span class="meta">@GetMapping</span>(<span class="string">"/hello"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">sayHello</span><span class="params">(@ApiParam(<span class="string">"用户名"</span>)</span> String name)</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"hello world"</span> + name;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -490,7 +490,7 @@ height:50vh;
             <p>Author：<a href="http://none">wtq</a>
             <p>原文链接：<a href="http://none/2019/10/09/Swagger学习/">http://none/2019/10/09/Swagger学习/</a>
             <p>发表日期：<a href="http://none/2019/10/09/Swagger学习/">October 9th 2019, 12:00:00 am</a>
-            <p>更新日期：<a href="http://none/2019/10/09/Swagger学习/">October 9th 2019, 2:23:39 pm</a>
+            <p>更新日期：<a href="http://none/2019/10/09/Swagger学习/">October 18th 2019, 10:16:06 am</a>
             <p>版权声明：本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
         </div>
     
@@ -1039,6 +1039,8 @@ top:50vh;
     
     
     
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
         Total : 28
@@ -1082,12 +1084,12 @@ top:50vh;
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">09/10</span><a class="archive-post-title" href= "/2019/09/10/JPA学习-02/" >JPA学习-02</a>
+            <span class="archive-post-date">09/10</span><a class="archive-post-title" href= "/2019/09/10/JPA学习-01/" >JPA学习-01</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">09/10</span><a class="archive-post-title" href= "/2019/09/10/JPA学习-01/" >JPA学习-01</a>
+            <span class="archive-post-date">09/10</span><a class="archive-post-title" href= "/2019/09/10/JPA学习-02/" >JPA学习-02</a>
         </li>
     
     
