@@ -359,6 +359,73 @@ height:50vh;
     
     
     <article class="index-post">
+        <a class="abstract-title" href = "/2019/09/02/Quartz/" >
+            
+                <span>Quartz任务调度</span>
+        </a>
+        <div class="abstract-content">
+            Quartz任务调度一.Quartz概念Quartz是OpenSymphony开源组织在Job scheduling领域又一个开源项目，它可以与J2EE与J2SE应用程序相结合也可以单独使用。
+quartz是开源且具有丰富特性的”任务调度库”，能够集成于任何的java应用，小到独立的应用，大至电子商业系统。quartz能够创建亦简单亦复杂的调度，以执行上十、上百，甚至上万的任务。任务job被定义为标准的java组件，能够执行任何你想要实现的功能。quartz调度框架包含许多企业级的特性，如JTA事务、集群的支持。
+简而言之，quartz就是基于java实现的任务调度框架，用于执行你想要执...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/09/02</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "Quartz">Quartz</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2019/08/28/Java基础-01/" >
+            
+                <span>Java基础-01-Optional</span>
+        </a>
+        <div class="abstract-content">
+            Optional的使用引言在文章的开头，先说下NPE问题，NPE问题就是，我们在开发中经常碰到的NullPointerException.假设我们有两个类，他们的UML类图如下图所示
+
+在这种情况下，有如下代码
+
+1user.getAddress().getProvince();
+
+这种写法，在user为null时，是有可能报NullPointerException异常的。为了解决这个问题，于是采用下面的写法
+123456if(user!=null)&#123;    Address address = user.getAddress();    if(address!=null)&#1...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/28</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "Java基础">Java基础</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
         <a class="abstract-title" href = "/2019/08/27/Java基础-02/" >
             
                 <span>Java基础-02-Predicate</span>
@@ -619,77 +686,6 @@ jvisualvm
             <div class= abstract-tags >
     
         <a class="post-tag" href="javascript:void(0);" data-tags = "Java基础">Java基础</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/08/16/SpringCloud学习-03/" >
-            
-                <span>SpringCloud-03-Ribbon</span>
-        </a>
-        <div class="abstract-content">
-            SpringCloud-Ribbon（负载平衡工具）1、问题：Ribbon-是个啥？Ribbon是一套负载均衡工具，作用于客户端。
-1.1 解释：
-a）正常来讲，当我们的消费者需要某种服务时，会在eureka寻找该服务，并进行调用，但是这种调用会具有不确定性，可能会导致某一个服务被长期调用，或被多个消费者调用，而其他的服务却处于相对空闲的状态，这就导致了我们所谓的“短板效应”，使得整个系统的响应时间变长，运算效率降低，为了应对这种状况，我们需要Ribbon这个工具来帮助我们将这些服务采用一定的策略“相对平均的”分配给那些需要的消费者，以此来提高系统的运作效率。
-b）ribbon是在客户端...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/16</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "SpringCloud">SpringCloud</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/08/14/SpringCloud学习-02/" >
-            
-                <span>SpringCloud-02-Eureka</span>
-        </a>
-        <div class="abstract-content">
-            SpringCloud-Eureka1、问题：Eureka是个啥？是一个服务发现组件。
-1.1 图解：
-
-1.2 运作流程
-1）当服务提供者启动时，就会将其端口号以及IP地址注册到服务发现组件。
-2） 服务消费者也需要注册到服务发组件中。（服务消费者也会充当服务提供者 ）
-3）服务消费者首先调用我们的服务发现组件，获取到他想要的服务（ip和端口），进而调用我们的服务提供者相应的服务。
-*细节：
-1）服务消费者会将使用过的服务相关信息缓存到本地，因而即便服务发现组件挂掉，我们的服务消费者仍然可以在提供者缓存列表中获取相应服务。
-2） 服务发现组件有多台，保证其可靠性。
-3） 服务提供者如果...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/14</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "SpringCloud">SpringCloud</a>
     
 </div>
             
@@ -1286,9 +1282,13 @@ b）ribbon是在客户端...
     
     
     
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 28
+        Total : 30
         </div>
         <!-- search  -->
         
@@ -1298,6 +1298,25 @@ b）ribbon是在客户端...
     
     
     
+    
+    <div class="archive-year"> 2020 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">06/21</span><a class="archive-post-title" href= "/2020/06/21/SQL语句练习/" >SQL查询练习</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">06/18</span><a class="archive-post-title" href= "/2020/06/18/Redis基础/" >Redis-基础篇</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
     
     <div class="archive-year"> 2019 </div>
     <ul class="year-list">
@@ -1329,12 +1348,12 @@ b）ribbon是在客户端...
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">09/10</span><a class="archive-post-title" href= "/2019/09/10/JPA学习-01/" >JPA学习-01</a>
+            <span class="archive-post-date">09/10</span><a class="archive-post-title" href= "/2019/09/10/JPA学习-02/" >JPA学习-02</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">09/10</span><a class="archive-post-title" href= "/2019/09/10/JPA学习-02/" >JPA学习-02</a>
+            <span class="archive-post-date">09/10</span><a class="archive-post-title" href= "/2019/09/10/JPA学习-01/" >JPA学习-01</a>
         </li>
     
     
@@ -1369,6 +1388,11 @@ b）ribbon是在客户端...
     
     
         <li class="archive-post-item">
+            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2019/08/20/SpringCloud学习-04/" >SpringCloud-04-Feign</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
             <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2019/08/20/Java基础-03/" >Java基础-03-JVM</a>
         </li>
     
@@ -1385,11 +1409,6 @@ b）ribbon是在客户端...
     
         <li class="archive-post-item">
             <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2019/08/20/杂货铺/" >杂乱的知识，定期归档到其他文件</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2019/08/20/SpringCloud学习-04/" >SpringCloud-04-Feign</a>
         </li>
     
     
@@ -1449,6 +1468,8 @@ b）ribbon是在客户端...
     
         <span class="sidebar-tag-name" data-tags="Java基础"><span class="iconfont-archer">&#xe606;</span>Java基础</span>
     
+        <span class="sidebar-tag-name" data-tags="sql"><span class="iconfont-archer">&#xe606;</span>sql</span>
+    
         <span class="sidebar-tag-name" data-tags="swagger"><span class="iconfont-archer">&#xe606;</span>swagger</span>
     
         <span class="sidebar-tag-name" data-tags="Hexo"><span class="iconfont-archer">&#xe606;</span>Hexo</span>
@@ -1468,6 +1489,8 @@ b）ribbon是在客户端...
         <span class="sidebar-tag-name" data-tags="ShardingJdbc"><span class="iconfont-archer">&#xe606;</span>ShardingJdbc</span>
     
         <span class="sidebar-tag-name" data-tags="Maven"><span class="iconfont-archer">&#xe606;</span>Maven</span>
+    
+        <span class="sidebar-tag-name" data-tags="Redis"><span class="iconfont-archer">&#xe606;</span>Redis</span>
     
         <span class="sidebar-tag-name" data-tags="Quartz"><span class="iconfont-archer">&#xe606;</span>Quartz</span>
     
