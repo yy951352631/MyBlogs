@@ -359,6 +359,46 @@ height:50vh;
     
     
     <article class="index-post">
+        <a class="abstract-title" href = "/2019/08/20/Java基础-03/" >
+            
+                <span>Java基础-03-JVM</span>
+        </a>
+        <div class="abstract-content">
+            深入理解JVM监控工具JConsole
+jvisualvm
+*类加载1.在Java代码中，类型的加载，连接与初始化和过程都是在程序运行期间完成的（相对于其他语言如c语言，类型是在编译阶段就已经初始化完成了）
+*动态代理：在编辑阶段不存在，在程序运行期间才创建出来的
+加载：将已经存在的字节码文件从磁盘读入到内存当中
+
+查找并加载类的二进制数据
+
+连接：将类与类之间的关系确定好， 对于字节码的一些加载校验操作也是在这一阶段完成的此外，还负责协调类与类之间的调用关系，如：将类与类之间的符号引用转为直接引用
+
+1.验证：确保被加载的类的正确性
+2.准备：为类的静态变量分配内存，并将其初始化为默认...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/20</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "Java基础">Java基础</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
         <a class="abstract-title" href = "/2019/08/16/SpringCloud学习-03/" >
             
                 <span>SpringCloud-03-Ribbon</span>
@@ -430,6 +470,35 @@ b）ribbon是在客户端...
     
     
     <article class="index-post">
+        <a class="abstract-title" href = "/2019/08/13/SpringCloud学习-01/" >
+            
+                <span>SpringCloud-01-配置中心</span>
+        </a>
+        <div class="abstract-content">
+            SpringCloud配置中心1、问题：SpringCloud配置中心为何物？1.1 背景&amp;概念：微服务意味着要将单体应用中的业务拆分成一个个子服务，每个服务的粒度相对较小，因此系统中会出现大量的服务。由于每个服务都需要必要的配置信息才能运行，所以一套集中式的、动态的配置管理设施是必不可少的。SpringCloud提供了ConfigServer来解决这个问题，我们每一个微服务自己带着一个application.yml，上百个配置文件的管理，使得我们分身乏术，运维工程师心态爆炸。因而SpringCloud Config为微服务架构中的微服务提供集中化的外部配置支持，配置服务器为各个...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/13</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "SpringCloud">SpringCloud</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
         <a class="abstract-title" href = "/2019/08/13/Maven/" >
             
                 <span>Maven-01</span>
@@ -449,35 +518,6 @@ b）ribbon是在客户端...
             <div class= abstract-tags >
     
         <a class="post-tag" href="javascript:void(0);" data-tags = "Maven">Maven</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/08/13/SpringCloud学习-01/" >
-            
-                <span>SpringCloud-01-配置中心</span>
-        </a>
-        <div class="abstract-content">
-            SpringCloud配置中心1、问题：SpringCloud配置中心为何物？1.1 背景&amp;概念：微服务意味着要将单体应用中的业务拆分成一个个子服务，每个服务的粒度相对较小，因此系统中会出现大量的服务。由于每个服务都需要必要的配置信息才能运行，所以一套集中式的、动态的配置管理设施是必不可少的。SpringCloud提供了ConfigServer来解决这个问题，我们每一个微服务自己带着一个application.yml，上百个配置文件的管理，使得我们分身乏术，运维工程师心态爆炸。因而SpringCloud Config为微服务架构中的微服务提供集中化的外部配置支持，配置服务器为各个...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/13</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "SpringCloud">SpringCloud</a>
     
 </div>
             
@@ -617,35 +657,6 @@ b）ribbon是在客户端...
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2019/08/07/Hibernate-01/" >
-            
-                <span>Hibernate-01</span>
-        </a>
-        <div class="abstract-content">
-            Hibernate干啥的？答：Hibernate 作为一个 ORM 解决方案，实际上位于 java 应用与关系数据库之间。Hibernate 的设计目标是减少工程中95％的 SQL 与 JDBC 操作。当然还有其它的数据持久化解决方案。但是Hibernate 与其它方案不同在于它不阻断您使用强大的 SQL 与 JDBC，它只是希望您将更多的精力用于关系设计与业务逻辑上。Hibernate 可能不是最好的 data-centric applications（以数据为中心应用程序）的解决方案，它只是用存储过程来实现数据库业务逻辑。但是它是一个java 中间层，用于提供面向对象的建模与业务逻辑...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/07</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "Hibernate">Hibernate</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
         <a class="abstract-title" href = "/2019/08/07/hexo-常用操作/" >
             
                 <span>Hexo常用操作</span>
@@ -676,7 +687,7 @@ b）ribbon是在客户端...
     <!-- paginator  -->
     
     <nav class="page-nav">
-        <a class="extend prev" rel="prev" href="/page/2/">&#60; PREV</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span>
+        <a class="extend prev" rel="prev" href="/page/2/">&#60; PREV</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/4/">NEXT &#62;</a>
     </nav>
     
 </main>
@@ -1245,9 +1256,18 @@ b）ribbon是在客户端...
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 30
+        Total : 31
         </div>
         <!-- search  -->
         
@@ -1260,6 +1280,11 @@ b）ribbon是在客户端...
     
     <div class="archive-year"> 2020 </div>
     <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">06/24</span><a class="archive-post-title" href= "/2020/06/24/Redis高级/" >Redis-高级篇</a>
+        </li>
     
     
         <li class="archive-post-item">
@@ -1302,7 +1327,7 @@ b）ribbon是在客户端...
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">09/10</span><a class="archive-post-title" href= "/2019/09/10/JPA学习-03/" >JPA学习-03</a>
+            <span class="archive-post-date">09/10</span><a class="archive-post-title" href= "/2019/09/10/JPA学习-02/" >JPA学习-02</a>
         </li>
     
     
@@ -1312,12 +1337,12 @@ b）ribbon是在客户端...
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">09/10</span><a class="archive-post-title" href= "/2019/09/10/JPA学习-02/" >JPA学习-02</a>
+            <span class="archive-post-date">09/10</span><a class="archive-post-title" href= "/2019/09/10/分布式事务-概念原理/" >分布式事务学习-01-Seata概念原理</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">09/10</span><a class="archive-post-title" href= "/2019/09/10/分布式事务-概念原理/" >分布式事务学习-01-Seata概念原理</a>
+            <span class="archive-post-date">09/10</span><a class="archive-post-title" href= "/2019/09/10/JPA学习-03/" >JPA学习-03</a>
         </li>
     
     
@@ -1347,17 +1372,12 @@ b）ribbon是在客户端...
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2019/08/20/Java基础-04/" >Java基础-04-Lambda</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
             <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2019/08/20/Java基础-03/" >Java基础-03-JVM</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2019/08/20/分布式事务学习-01/" >分布式事务</a>
+            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2019/08/20/Java基础-04/" >Java基础-04-Lambda</a>
         </li>
     
     
@@ -1368,6 +1388,11 @@ b）ribbon是在客户端...
     
         <li class="archive-post-item">
             <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2019/08/20/杂货铺/" >杂乱的知识，定期归档到其他文件</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2019/08/20/分布式事务学习-01/" >分布式事务</a>
         </li>
     
     
@@ -1412,12 +1437,12 @@ b）ribbon是在客户端...
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">08/07</span><a class="archive-post-title" href= "/2019/08/07/Hibernate-01/" >Hibernate-01</a>
+            <span class="archive-post-date">08/07</span><a class="archive-post-title" href= "/2019/08/07/hexo-常用操作/" >Hexo常用操作</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">08/07</span><a class="archive-post-title" href= "/2019/08/07/hexo-常用操作/" >Hexo常用操作</a>
+            <span class="archive-post-date">08/07</span><a class="archive-post-title" href= "/2019/08/07/Hibernate-01/" >Hibernate-01</a>
         </li>
     
     </div>
@@ -1433,9 +1458,9 @@ b）ribbon是在客户端...
     
         <span class="sidebar-tag-name" data-tags="sql"><span class="iconfont-archer">&#xe606;</span>sql</span>
     
-        <span class="sidebar-tag-name" data-tags="swagger"><span class="iconfont-archer">&#xe606;</span>swagger</span>
-    
         <span class="sidebar-tag-name" data-tags="Hexo"><span class="iconfont-archer">&#xe606;</span>Hexo</span>
+    
+        <span class="sidebar-tag-name" data-tags="swagger"><span class="iconfont-archer">&#xe606;</span>swagger</span>
     
         <span class="sidebar-tag-name" data-tags="杂货铺"><span class="iconfont-archer">&#xe606;</span>杂货铺</span>
     
@@ -1445,9 +1470,9 @@ b）ribbon是在客户端...
     
         <span class="sidebar-tag-name" data-tags="分布式事务"><span class="iconfont-archer">&#xe606;</span>分布式事务</span>
     
-        <span class="sidebar-tag-name" data-tags="ShardingJdbc"><span class="iconfont-archer">&#xe606;</span>ShardingJdbc</span>
-    
         <span class="sidebar-tag-name" data-tags="Maven"><span class="iconfont-archer">&#xe606;</span>Maven</span>
+    
+        <span class="sidebar-tag-name" data-tags="ShardingJdbc"><span class="iconfont-archer">&#xe606;</span>ShardingJdbc</span>
     
         <span class="sidebar-tag-name" data-tags="Redis"><span class="iconfont-archer">&#xe606;</span>Redis</span>
     
