@@ -359,6 +359,53 @@ height:50vh;
     
     
     <article class="index-post">
+        <a class="abstract-title" href = "/2020/09/02/Redis集群/" >
+            
+                <span>Redis-集群</span>
+        </a>
+        <div class="abstract-content">
+            Redis集群互联网“三高”架构
+1.高并发
+2.高性能
+3.高可用
+
+
+
+问题：你的“Redis”是否高可用？
+
+单机redis的风险与问题
+​    问题1.机器故障
+​        现象：硬盘故障，系统崩溃，
+​        本质：数据丢失，很可能对业务造成灾难性打击
+​        结论：基本上会放弃使用redis
+​    问题2：容量瓶颈
+​        现象：内存不足，从16G升级到64G再到128G无限升级内存
+​        本质：穷，硬件条件跟不上
+​        结论：放弃使用redis
+final结论：为了避免单点Redis服务器故障，准备多台服务器，...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/09/02</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "Redis">Redis</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
         <a class="abstract-title" href = "/2020/06/24/Redis高级/" >
             
                 <span>Redis-高级篇</span>
@@ -596,6 +643,37 @@ Sharding——JDBC的核心功能为数据分片和读写分离，通过Sharding
     
     
     <article class="index-post">
+        <a class="abstract-title" href = "/2019/09/10/JPA学习-01/" >
+            
+                <span>JPA学习-01</span>
+        </a>
+        <div class="abstract-content">
+            第1章ORM概述ORM（Object-Relational Mapping） 表示对象关系映射。在面向对象的软件开发中，通过ORM，就可以把对象映射到关系型数据库中。只要有一套程序能够做到建立对象与数据库的关联，操作对象就可以直接操作数据库数据，就可以说这套程序实现了ORM对象关系映射
+简单的说：ORM就是建立实体类和数据库表之间的关系，从而达到操作实体类就相当于操作数据库表的目的。
+1.1 为什么使用ORM当实现一个应用程序时（不使用O/R Mapping），我们可能会写特别多数据访问层的代码，从数据库保存数据、修改数据、删除数据，而这些代码都是重复的。而使用ORM则会大大减少重复性代...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/09/10</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "JPA">JPA</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
         <a class="abstract-title" href = "/2019/09/10/JPA学习-03/" >
             
                 <span>JPA学习-03</span>
@@ -614,98 +692,6 @@ Sharding——JDBC的核心功能为数据分片和读写分离，通过Sharding
             <div class= abstract-tags >
     
         <a class="post-tag" href="javascript:void(0);" data-tags = "JPA">JPA</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/09/10/JPA学习-02/" >
-            
-                <span>JPA学习-02</span>
-        </a>
-        <div class="abstract-content">
-            第1章 Spring Data JPA的概述1.1 Spring Data JPA概述
-
-Spring Data JPA 是 Spring 基于 ORM 框架、JPA 规范的基础上封装的一套JPA应用框架，可使开发者用极简的代码即可实现对数据库的访问和操作。它提供了包括增删改查等在内的常用功能，且易于扩展！学习并使用 Spring Data JPA 可以极大提高开发效率！
-Spring Data JPA 让我们解脱了DAO层的操作，基本上所有CRUD都可以依赖于它来实现,在实际的工作工程中，推荐使用Spring Data JPA + ORM（如：hibernate）完成操作，这样在切换不...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/09/10</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "JPA">JPA</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/09/10/分布式事务-概念原理/" >
-            
-                <span>分布式事务学习-01-Seata概念原理</span>
-        </a>
-        <div class="abstract-content">
-            Seata—–概念原理目录
-
-什么是 Seata AT 模式
-
-Seata AT 的使用方法
-
-
-第一步，增加全局事务注解
-第二步，配置代理数据源
-第三步，新建 undo_log 表
-
-
-Seata AT 的工作流程
-
-
-工作流程总览
-图解 AT 模式一阶段流程
-图解二阶段 Commit 流程
-图解二阶段 Rollback 流程
-本节小结
-
-
-Seata AT 模式源码模块拆解
-
-Seata AT 模式客户端部分
-
-
-数据源代理部分 —— 三类 Proxy
-ExecuteTemplate.execute
-执行器接口 execute 的实现
-抽象方法 doExecute 的实现
-Conne...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/09/10</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "分布式事务">分布式事务</a>
     
 </div>
             
@@ -1293,9 +1279,26 @@ Conne...
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 31
+        Total : 32
         </div>
         <!-- search  -->
         
@@ -1308,6 +1311,11 @@ Conne...
     
     <div class="archive-year"> 2020 </div>
     <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/02</span><a class="archive-post-title" href= "/2020/09/02/Redis集群/" >Redis-集群</a>
+        </li>
     
     
         <li class="archive-post-item">
@@ -1355,7 +1363,7 @@ Conne...
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">09/10</span><a class="archive-post-title" href= "/2019/09/10/JPA学习-02/" >JPA学习-02</a>
+            <span class="archive-post-date">09/10</span><a class="archive-post-title" href= "/2019/09/10/分布式事务-概念原理/" >分布式事务学习-01-Seata概念原理</a>
         </li>
     
     
@@ -1365,7 +1373,7 @@ Conne...
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">09/10</span><a class="archive-post-title" href= "/2019/09/10/分布式事务-概念原理/" >分布式事务学习-01-Seata概念原理</a>
+            <span class="archive-post-date">09/10</span><a class="archive-post-title" href= "/2019/09/10/JPA学习-02/" >JPA学习-02</a>
         </li>
     
     
@@ -1400,11 +1408,6 @@ Conne...
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2019/08/20/Java基础-03/" >Java基础-03-JVM</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
             <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2019/08/20/Java基础-04/" >Java基础-04-Lambda</a>
         </li>
     
@@ -1415,12 +1418,17 @@ Conne...
     
     
         <li class="archive-post-item">
+            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2019/08/20/分布式事务学习-01/" >分布式事务</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
             <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2019/08/20/杂货铺/" >杂乱的知识，定期归档到其他文件</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2019/08/20/分布式事务学习-01/" >分布式事务</a>
+            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2019/08/20/Java基础-03/" >Java基础-03-JVM</a>
         </li>
     
     
@@ -1465,12 +1473,12 @@ Conne...
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">08/07</span><a class="archive-post-title" href= "/2019/08/07/hexo-常用操作/" >Hexo常用操作</a>
+            <span class="archive-post-date">08/07</span><a class="archive-post-title" href= "/2019/08/07/Hibernate-01/" >Hibernate-01</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">08/07</span><a class="archive-post-title" href= "/2019/08/07/Hibernate-01/" >Hibernate-01</a>
+            <span class="archive-post-date">08/07</span><a class="archive-post-title" href= "/2019/08/07/hexo-常用操作/" >Hexo常用操作</a>
         </li>
     
     </div>
@@ -1480,15 +1488,15 @@ Conne...
     
         <span class="sidebar-tag-name" data-tags="Java基础"><span class="iconfont-archer">&#xe606;</span>Java基础</span>
     
+        <span class="sidebar-tag-name" data-tags="sql"><span class="iconfont-archer">&#xe606;</span>sql</span>
+    
         <span class="sidebar-tag-name" data-tags="Hibernate"><span class="iconfont-archer">&#xe606;</span>Hibernate</span>
     
         <span class="sidebar-tag-name" data-tags="JPA"><span class="iconfont-archer">&#xe606;</span>JPA</span>
     
-        <span class="sidebar-tag-name" data-tags="sql"><span class="iconfont-archer">&#xe606;</span>sql</span>
+        <span class="sidebar-tag-name" data-tags="swagger"><span class="iconfont-archer">&#xe606;</span>swagger</span>
     
         <span class="sidebar-tag-name" data-tags="Hexo"><span class="iconfont-archer">&#xe606;</span>Hexo</span>
-    
-        <span class="sidebar-tag-name" data-tags="swagger"><span class="iconfont-archer">&#xe606;</span>swagger</span>
     
         <span class="sidebar-tag-name" data-tags="杂货铺"><span class="iconfont-archer">&#xe606;</span>杂货铺</span>
     
